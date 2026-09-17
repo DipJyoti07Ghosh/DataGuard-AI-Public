@@ -180,6 +180,13 @@ class DatasetVersion(Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    pii_result = relationship(
+        "PIIScanResult",
+        back_populates="version",
+        uselist=False,
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
     __table_args__ = (
         UniqueConstraint(

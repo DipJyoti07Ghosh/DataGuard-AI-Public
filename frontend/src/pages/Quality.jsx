@@ -148,6 +148,10 @@ export default function Quality() {
             <span>📊</span>
             <span>View Profile</span>
           </Link>
+          <Link to={`/datasets/${datasetId}/versions/${versionId}/pii`} className="btn btn-secondary flex-row align-center" style={{ gap: '8px', borderColor: 'rgba(236, 72, 153, 0.4)' }}>
+            <span>🔐</span>
+            <span>Scan for PII</span>
+          </Link>
           <Link to="/datasets" className="btn btn-secondary">
             📁 Datasets
           </Link>

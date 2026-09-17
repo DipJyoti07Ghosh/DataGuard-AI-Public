@@ -11,6 +11,7 @@ import Upload from './pages/Upload';
 import Datasets from './pages/Datasets';
 import Profiling from './pages/Profiling';
 import Quality from './pages/Quality';
+import PII from './pages/PII';
 import Assistant from './pages/Assistant';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/datasets" element={<Datasets />} />
           <Route path="/datasets/:datasetId/versions/:versionId/profile" element={<Profiling />} />
           <Route path="/datasets/:datasetId/versions/:versionId/quality" element={<Quality />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/pii" element={<PII />} />
           <Route path="/assistant" element={<Assistant />} />
         </Route>
       </Routes>

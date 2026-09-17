@@ -143,13 +143,31 @@ export default function Upload() {
         {metadata && (
           <div className="header-action-group">
             {metadata.dataset_id && metadata.version_id && (
-              <Link
-                to={`/datasets/${metadata.dataset_id}/versions/${metadata.version_id}/profile`}
-                className="btn btn--primary"
-                id="view-profile-btn"
-              >
-                📊 View Automated Profile
-              </Link>
+              <>
+                <Link
+                  to={`/datasets/${metadata.dataset_id}/versions/${metadata.version_id}/profile`}
+                  className="btn btn--primary"
+                  id="view-profile-btn"
+                >
+                  📊 View Automated Profile
+                </Link>
+                <Link
+                  to={`/datasets/${metadata.dataset_id}/versions/${metadata.version_id}/quality`}
+                  className="btn btn--primary"
+                  id="view-quality-btn"
+                  style={{ background: 'linear-gradient(135deg, #3b82f6, #6366f1)' }}
+                >
+                  🛡 Run Quality Check
+                </Link>
+                <Link
+                  to={`/datasets/${metadata.dataset_id}/versions/${metadata.version_id}/pii`}
+                  className="btn btn--primary"
+                  id="view-pii-btn"
+                  style={{ background: 'linear-gradient(135deg, #ec4899, #8b5cf6)' }}
+                >
+                  🔐 Scan for PII
+                </Link>
+              </>
             )}
             <Link to="/datasets" className="btn btn--secondary" id="view-datasets-btn">
               🗃️ View in Repository

@@ -182,6 +182,13 @@ export default function Profiling() {
           >
             🛡 Quality Scorecard
           </Link>
+          <Link
+            to={`/datasets/${datasetId}/versions/${versionId}/pii`}
+            className="btn btn--primary"
+            style={{ background: 'linear-gradient(135deg, #ec4899, #8b5cf6)' }}
+          >
+            🔐 Scan for PII
+          </Link>
           <Link to="/datasets" className="btn btn--secondary">
             🗃️ All Datasets
           </Link>

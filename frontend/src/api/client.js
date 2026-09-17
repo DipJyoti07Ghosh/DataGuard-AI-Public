@@ -192,6 +192,47 @@ export async function getQualityDetails(datasetId, versionId, params = {}) {
   return request(`/datasets/${datasetId}/versions/${versionId}/quality/details${qs}`);
 }
 
+// ---------------------------------------------------------------------------
+// PII Detection Endpoints (Phase 6)
+// ---------------------------------------------------------------------------
+
+/**
+ * Trigger an automated PII detection scan for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {boolean} [force=false] - Whether to force re-scan.
+ * @returns {Promise<Object>} PIIScanResultResponse object.
+ */
+export async function scanPII(datasetId, versionId, force = false) {
+  return request(
+    `/datasets/${datasetId}/versions/${versionId}/pii/scan?force_recompute=${force}`,
+    { method: 'POST' }
+  );
+}
+
+/**
+ * Retrieve cached PII scan results for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @returns {Promise<Object>} PIIScanResultResponse object.
+ */
+export async function getPIIScan(datasetId, versionId) {
+  return request(`/datasets/${datasetId}/versions/${versionId}/pii`);
+}
+
+/**
+ * Retrieve detailed PII findings with optional query filters.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {Object} [params={}] - Filter params { entity_type, risk_level, column_name }.
+ * @returns {Promise<Object>} PIIDetailsResponse object.
+ */
+export async function getPIIDetails(datasetId, versionId, params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const qs = query ? `?${query}` : '';
+  return request(`/datasets/${datasetId}/versions/${versionId}/pii/details${qs}`);
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -204,4 +245,8 @@ export default {
   generateQuality,
   getQuality,
   getQualityDetails,
+  scanPII,
+  getPIIScan,
+  getPIIDetails,
 };
+

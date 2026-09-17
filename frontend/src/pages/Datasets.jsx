@@ -291,23 +291,31 @@ export default function Datasets() {
                                   {new Date(v.uploaded_at).toLocaleString()}
                                 </td>
                                 <td>
-                                  <div className="flex-row" style={{ gap: '8px' }}>
-                                    <Link
-                                      to={`/datasets/${ds.id}/versions/${v.id}/profile`}
-                                      className="btn btn--secondary btn--sm"
-                                      id={`view-profile-${v.id}`}
-                                    >
-                                      📊 Profile
-                                    </Link>
-                                    <Link
-                                      to={`/datasets/${ds.id}/versions/${v.id}/quality`}
-                                      className="btn btn--secondary btn--sm"
-                                      id={`view-quality-${v.id}`}
-                                      style={{ borderColor: 'rgba(99, 102, 241, 0.4)' }}
-                                    >
-                                      🛡 Quality
-                                    </Link>
-                                  </div>
+                                    <div className="flex-row" style={{ gap: '8px' }}>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/profile`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-profile-${v.id}`}
+                                      >
+                                        📊 Profile
+                                      </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/quality`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-quality-${v.id}`}
+                                        style={{ borderColor: 'rgba(99, 102, 241, 0.4)' }}
+                                      >
+                                        🛡 Quality
+                                      </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/pii`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-pii-${v.id}`}
+                                        style={{ borderColor: 'rgba(236, 72, 153, 0.4)' }}
+                                      >
+                                        🔐 PII
+                                      </Link>
+                                    </div>
                                 </td>
                               </tr>
                             ))}
