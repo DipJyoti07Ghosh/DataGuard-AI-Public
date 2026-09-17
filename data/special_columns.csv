@@ -1,0 +1,4 @@
+Order # / ID,Tax Rate (%),Customer & Co.,Price ($ / USD),Status [Active?]
+101,8.5,Acme Corp,99.99,True
+102,7.0,Beta LLC,149.5,False
+103,9.25,Gamma Inc,20.0,True

@@ -1,0 +1,31 @@
+/**
+ * DataGuard AI — Root Application Component
+ *
+ * Sets up React Router with main layout and page routes.
+ */
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainLayout from './components/Layout/MainLayout';
+import Dashboard from './pages/Dashboard';
+import Upload from './pages/Upload';
+import Datasets from './pages/Datasets';
+import Profiling from './pages/Profiling';
+import Quality from './pages/Quality';
+import Assistant from './pages/Assistant';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/datasets" element={<Datasets />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/profile" element={<Profiling />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/quality" element={<Quality />} />
+          <Route path="/assistant" element={<Assistant />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
