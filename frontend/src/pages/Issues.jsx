@@ -1,16 +1,8 @@
 /**
- * DataGuard AI — Phase 9 Dataset Health & Issue Prioritization Dashboard
+ * DataGuard AI — Prioritization & Dataset Health Dashboard (Phase 9)
  *
- * Provides:
- * 1. Holistic 0-100 Dataset Health Score & Grade
- * 2. 4-Way Health Breakdown: Quality (60%), Risk (15%), Anomaly (15%), Privacy (10%)
- * 3. 4 Top-level KPI Cards (Critical, High, Total Issues, Columns Affected)
- * 4. Column Health Cross-Signal Matrix
- * 5. Prioritized Data Quality Issues Table with Multi-Filter Chips
- * 6. Interactive Slide-Out Drawer disclosing:
- *    - Score component breakdown (Severity, Affected, Sensitivity, Confidence, Cross-Signal)
- *    - Structured upstream evidence & context (Zero raw PII)
- *    - Safe, non-destructive actionable remediation guidance
+ * Enterprise Data Observability, Holistic Dataset Health Scoring (0–100),
+ * Cross-Signal Issue Prioritization, and Non-Destructive Remediation Engine.
  */
 
 import { useState, useEffect } from 'react';
@@ -34,6 +26,7 @@ export default function Issues() {
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState(null);
+  const [copiedKey, setCopiedKey] = useState(null);
 
   // Filters
   const [severityFilter, setSeverityFilter] = useState('ALL');
@@ -43,7 +36,6 @@ export default function Issues() {
   // Slide-out Drawer State
   const [selectedIssue, setSelectedIssue] = useState(null);
 
-  // Load initial data
   useEffect(() => {
     loadData();
   }, [datasetId, versionId]);
@@ -102,12 +94,18 @@ export default function Issues() {
     }
   }
 
+  const copyToClipboard = (text, key) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
+
   // Filtered issues
   const filteredIssues = issues.filter((iss) => {
-    if (severityFilter !== 'ALL' && iss.severity.toUpperCase() !== severityFilter) {
+    if (severityFilter !== 'ALL' && iss.severity?.toUpperCase() !== severityFilter) {
       return false;
     }
-    if (sourceFilter !== 'ALL' && iss.source.toUpperCase() !== sourceFilter) {
+    if (sourceFilter !== 'ALL' && iss.source?.toUpperCase() !== sourceFilter) {
       return false;
     }
     if (searchColumn && !((iss.column_name || 'dataset').toLowerCase().includes(searchColumn.toLowerCase()))) {
@@ -119,45 +117,45 @@ export default function Issues() {
   const getGradeBadge = (grade) => {
     switch (grade) {
       case 'EXCELLENT':
-        return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-emerald-900/20';
+        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-emerald-950/20';
       case 'GOOD':
-        return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-cyan-900/20';
+        return 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-cyan-950/20';
       case 'NEEDS ATTENTION':
-        return 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-amber-900/20';
+        return 'bg-amber-500/15 text-amber-300 border-amber-500/40 shadow-amber-950/20';
       case 'POOR':
-        return 'bg-orange-500/20 text-orange-300 border-orange-500/40 shadow-orange-900/20';
+        return 'bg-orange-500/15 text-orange-300 border-orange-500/40 shadow-orange-950/20';
       case 'CRITICAL':
       default:
-        return 'bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-rose-900/20';
+        return 'bg-rose-500/15 text-rose-300 border-rose-500/40 shadow-rose-950/20';
     }
   };
 
   const getSeverityBadge = (sev) => {
     switch (sev?.toUpperCase()) {
       case 'CRITICAL':
-        return 'bg-rose-500/20 text-rose-300 border-rose-500/30';
+        return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
       case 'HIGH':
-        return 'bg-orange-500/20 text-orange-300 border-orange-500/30';
+        return 'bg-orange-500/15 text-orange-300 border-orange-500/30';
       case 'MEDIUM':
-        return 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+        return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
       case 'LOW':
       default:
-        return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
     }
   };
 
   const getSourceBadge = (src) => {
     switch (src?.toUpperCase()) {
       case 'QUALITY':
-        return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+        return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
       case 'PII':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+        return 'bg-blue-500/15 text-blue-300 border-blue-500/30';
       case 'RISK':
-        return 'bg-rose-500/20 text-rose-300 border-rose-500/30';
+        return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
       case 'ANOMALY':
-        return 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+        return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
       default:
-        return 'bg-slate-500/20 text-slate-300 border-slate-500/30';
+        return 'bg-slate-500/15 text-slate-300 border-slate-500/30';
     }
   };
 
@@ -172,24 +170,49 @@ export default function Issues() {
     );
   }
 
+  // Calculate circumference for SVG circular gauge
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+  const healthScoreVal = summary?.health_score || 0;
+  const strokeDashoffset = circumference - (healthScoreVal / 100) * circumference;
+
   return (
-    <div className="space-y-8 pb-16">
-      {/* 1. Header & Navigation */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl shadow-2xl">
+    <div className="space-y-8 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 1. Header & Context */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4 border-b border-slate-800 pb-5">
         <div>
+          <div className="flex items-center space-x-3 text-xs text-slate-400 mb-1.5">
+            <Link
+              to="/datasets"
+              className="hover:text-cyan-400 transition flex items-center gap-1 font-medium"
+            >
+              ← Datasets
+            </Link>
+            <span className="text-slate-600">/</span>
+            <span className="text-slate-200 font-semibold">{dataset?.name || 'Dataset'}</span>
+            <span className="px-2 py-0.5 text-xs font-mono rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              V{version?.version_number}
+            </span>
+            <span className="text-slate-600">•</span>
+            <span className="text-slate-400 font-mono">
+              {version?.row_count} rows × {version?.column_count} cols
+            </span>
+          </div>
+
           <div className="flex items-center gap-3">
             <span className="text-3xl">🎯</span>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">
-              Quality Scoring & Issue Prioritization
-            </h1>
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
+                Prioritization & Dataset Health
+              </h1>
+              <p className="text-slate-400 text-sm mt-0.5">
+                Understand overall dataset health and prioritize the issues that require attention.
+              </p>
+            </div>
           </div>
-          <p className="text-slate-400 text-sm mt-1">
-            Dataset: <span className="text-white font-medium">{dataset?.name}</span> • Version:{' '}
-            <span className="text-cyan-400 font-mono">V{version?.version_number}</span> •{' '}
-            {version?.row_count} rows × {version?.column_count} cols
-          </p>
         </div>
 
+        {/* Action Controls */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleReanalyze}
@@ -243,7 +266,7 @@ export default function Issues() {
         >
           ⚠️ Anomalies
         </Link>
-        <span className="px-4 py-2 rounded-lg text-sm font-semibold text-cyan-300 bg-cyan-950/60 border border-cyan-500/30">
+        <span className="px-4 py-2 rounded-lg text-sm font-semibold text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 shadow-sm">
           🎯 Prioritization / Health
         </span>
       </div>
@@ -257,177 +280,224 @@ export default function Issues() {
         </div>
       )}
 
-      {/* 2. Top Section: Dataset Health Scorecard & 4-Way Breakdown */}
+      {/* 2. Health Score Hero & 4-Way Breakdown Grid */}
       {summary && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Main Health Gauge */}
-          <div className="lg:col-span-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl flex flex-col items-center justify-center text-center shadow-xl">
-            <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">
-              Holistic Dataset Health Score
-            </span>
-            <div className="relative flex items-center justify-center my-3">
-              <div className="w-36 h-36 rounded-full border-8 border-slate-800 flex items-center justify-center relative">
-                <div
-                  className="absolute inset-0 rounded-full border-8 border-cyan-400 transition-all duration-1000"
-                  style={{
-                    clipPath: `polygon(0 0, 100% 0, 100% ${summary.health_score}%, 0 ${summary.health_score}%)`,
-                  }}
-                />
-                <div className="flex flex-col items-center">
+          {/* Left: Health Score Hero Section */}
+          <div className="lg:col-span-4 bg-slate-900/70 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl flex flex-col items-center justify-between text-center shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 -mr-6 -mt-6 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl" />
+            <div>
+              <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">
+                Dataset Health Score
+              </span>
+              <span className="text-[11px] text-slate-500 font-medium block mb-3">
+                Overall dataset health
+              </span>
+
+              {/* Circular Radial Gauge */}
+              <div className="relative flex items-center justify-center my-2">
+                <svg className="w-36 h-36 transform -rotate-90">
+                  <circle
+                    cx="72"
+                    cy="72"
+                    r={radius}
+                    className="stroke-slate-800"
+                    strokeWidth="10"
+                    fill="transparent"
+                  />
+                  <circle
+                    cx="72"
+                    cy="72"
+                    r={radius}
+                    className="stroke-cyan-400 transition-all duration-1000 ease-out"
+                    strokeWidth="10"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    strokeLinecap="round"
+                    fill="transparent"
+                  />
+                </svg>
+                <div className="absolute flex flex-col items-center">
                   <span className="text-4xl font-extrabold text-white tracking-tight">
                     {summary.health_score.toFixed(1)}
                   </span>
-                  <span className="text-xs text-slate-400 font-medium">/ 100</span>
+                  <span className="text-[11px] text-slate-400 font-medium">/ 100</span>
                 </div>
               </div>
+
+              {/* Health Grade Badge */}
+              <div
+                className={`px-4 py-1.5 rounded-full border text-xs font-bold tracking-wide uppercase shadow-lg mt-2 inline-block ${getGradeBadge(
+                  summary.health_grade
+                )}`}
+              >
+                {summary.health_grade}
+              </div>
             </div>
-            <div
-              className={`px-4 py-1.5 rounded-full border text-xs font-bold tracking-wide uppercase shadow-lg mt-2 ${getGradeBadge(
-                summary.health_grade
-              )}`}
-            >
-              Grade: {summary.health_grade}
+
+            <div className="mt-6 pt-4 border-t border-slate-800/80 text-[11px] text-slate-500 leading-relaxed">
+              Deterministic synthesis: Quality (60%), Risk (15%), Anomaly (15%), Privacy (10%).
             </div>
-            <p className="text-xs text-slate-500 mt-3 max-w-xs">
-              Deterministic weighted synthesis: Quality (60%), Risk (15%), Anomaly (15%), Privacy (10%).
-            </p>
           </div>
 
-          {/* 4-Way Health Breakdown Components */}
-          <div className="lg:col-span-8 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl shadow-xl flex flex-col justify-between">
+          {/* Right: 4-Way Health Breakdown Grid (4 Component Cards) */}
+          <div className="lg:col-span-8 bg-slate-900/70 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl shadow-xl flex flex-col justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <span>📊</span> 4-Way Subsystem Health Breakdown
-              </h3>
-              <div className="space-y-4">
-                {/* Quality Health */}
-                <div>
-                  <div className="flex justify-between text-xs font-medium mb-1">
-                    <span className="text-slate-300 flex items-center gap-1.5">
-                      <span>✅</span> Quality Health (Phase 5 — 60% weight)
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                  <span>📊</span> Subsystem Health Breakdown
+                </h3>
+                <span className="text-xs text-slate-500 font-mono">
+                  Calculated: {new Date(summary.calculated_at).toLocaleTimeString()}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* 1. Quality Health Card */}
+                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                      <span>✅</span> QUALITY
                     </span>
-                    <span className="font-mono text-cyan-400">{summary.quality_health.toFixed(1)} / 100</span>
+                    <span className="text-xs font-mono font-bold text-cyan-400">
+                      {summary.quality_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    </span>
                   </div>
-                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full transition-all duration-700"
                       style={{ width: `${summary.quality_health}%` }}
                     />
                   </div>
+                  <p className="text-[11px] text-slate-400">
+                    Data validation health (60% weight)
+                  </p>
                 </div>
 
-                {/* Risk Health */}
-                <div>
-                  <div className="flex justify-between text-xs font-medium mb-1">
-                    <span className="text-slate-300 flex items-center gap-1.5">
-                      <span>🧠</span> Risk Health (Phase 7 — 15% weight)
+                {/* 2. Risk Health Card */}
+                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                      <span>🧠</span> RISK
                     </span>
-                    <span className="font-mono text-cyan-400">{summary.risk_health.toFixed(1)} / 100</span>
+                    <span className="text-xs font-mono font-bold text-cyan-400">
+                      {summary.risk_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    </span>
                   </div>
-                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-rose-500 to-amber-400 rounded-full transition-all duration-700"
                       style={{ width: `${summary.risk_health}%` }}
                     />
                   </div>
+                  <p className="text-[11px] text-slate-400">
+                    Column risk exposure (15% weight)
+                  </p>
                 </div>
 
-                {/* Anomaly Health */}
-                <div>
-                  <div className="flex justify-between text-xs font-medium mb-1">
-                    <span className="text-slate-300 flex items-center gap-1.5">
-                      <span>⚠️</span> Anomaly Health (Phase 8 — 15% weight)
+                {/* 3. Anomaly Health Card */}
+                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                      <span>⚠️</span> ANOMALY
                     </span>
-                    <span className="font-mono text-cyan-400">{summary.anomaly_health.toFixed(1)} / 100</span>
+                    <span className="text-xs font-mono font-bold text-cyan-400">
+                      {summary.anomaly_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    </span>
                   </div>
-                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700"
                       style={{ width: `${summary.anomaly_health}%` }}
                     />
                   </div>
+                  <p className="text-[11px] text-slate-400">
+                    Statistical anomaly health (15% weight)
+                  </p>
                 </div>
 
-                {/* Privacy Health */}
-                <div>
-                  <div className="flex justify-between text-xs font-medium mb-1">
-                    <span className="text-slate-300 flex items-center gap-1.5">
-                      <span>🔒</span> Privacy Health (Phase 6 — 10% weight)
+                {/* 4. Privacy Health Card */}
+                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                      <span>🔒</span> PRIVACY
                     </span>
-                    <span className="font-mono text-cyan-400">{summary.privacy_health.toFixed(1)} / 100</span>
+                    <span className="text-xs font-mono font-bold text-cyan-400">
+                      {summary.privacy_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    </span>
                   </div>
-                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-indigo-400 rounded-full transition-all duration-700"
                       style={{ width: `${summary.privacy_health}%` }}
                     />
                   </div>
+                  <p className="text-[11px] text-slate-400">
+                    PII exposure health (10% weight)
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800/80 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2">
+            <div className="pt-4 mt-4 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
               <span>Each subsystem remains separately identifiable without conflating exposure with data corruption.</span>
-              <span className="text-slate-500">
-                Calculated at: {new Date(summary.calculated_at).toLocaleTimeString()}
-              </span>
             </div>
           </div>
         </div>
       )}
 
-      {/* 3. KPI Cards */}
+      {/* 3. Issue Summary KPIs */}
       {summary && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-800 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-rose-400">Critical Priority</span>
-              <span className="text-xl">🚨</span>
-            </div>
-            <div className="text-3xl font-extrabold text-white mt-2">{summary.critical_issues}</div>
-            <span className="text-xs text-slate-500">Requires immediate attention</span>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="bg-slate-900/70 p-4 rounded-xl border border-slate-800 backdrop-blur-xl shadow-lg">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-300">Total Issues</div>
+            <div className="text-2xl font-extrabold text-white mt-1.5">{summary.total_issues}</div>
+            <span className="text-[10px] text-slate-500">Deduplicated</span>
           </div>
 
-          <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-800 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-orange-400">High Priority</span>
-              <span className="text-xl">🔥</span>
-            </div>
-            <div className="text-3xl font-extrabold text-white mt-2">{summary.high_issues}</div>
-            <span className="text-xs text-slate-500">High impact on dataset</span>
+          <div className="bg-slate-900/70 p-4 rounded-xl border border-rose-500/20 backdrop-blur-xl shadow-lg">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-400">Critical</div>
+            <div className="text-2xl font-extrabold text-rose-400 mt-1.5">{summary.critical_issues}</div>
+            <span className="text-[10px] text-slate-500">Immediate action</span>
           </div>
 
-          <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-800 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">Total Issues</span>
-              <span className="text-xl">📋</span>
-            </div>
-            <div className="text-3xl font-extrabold text-white mt-2">{summary.total_issues}</div>
-            <span className="text-xs text-slate-500">Deduplicated logical findings</span>
+          <div className="bg-slate-900/70 p-4 rounded-xl border border-orange-500/20 backdrop-blur-xl shadow-lg">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-orange-400">High</div>
+            <div className="text-2xl font-extrabold text-orange-400 mt-1.5">{summary.high_issues}</div>
+            <span className="text-[10px] text-slate-500">Elevated impact</span>
           </div>
 
-          <div className="bg-slate-900/60 p-5 rounded-xl border border-slate-800 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-400">Columns Affected</span>
-              <span className="text-xl">📐</span>
-            </div>
-            <div className="text-3xl font-extrabold text-white mt-2">
+          <div className="bg-slate-900/70 p-4 rounded-xl border border-amber-500/20 backdrop-blur-xl shadow-lg">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-400">Medium</div>
+            <div className="text-2xl font-extrabold text-amber-300 mt-1.5">{summary.medium_issues}</div>
+            <span className="text-[10px] text-slate-500">Moderate impact</span>
+          </div>
+
+          <div className="bg-slate-900/70 p-4 rounded-xl border border-emerald-500/20 backdrop-blur-xl shadow-lg">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Low</div>
+            <div className="text-2xl font-extrabold text-emerald-300 mt-1.5">{summary.low_issues}</div>
+            <span className="text-[10px] text-slate-500">Minor deviation</span>
+          </div>
+
+          <div className="bg-slate-900/70 p-4 rounded-xl border border-cyan-500/20 backdrop-blur-xl shadow-lg">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-cyan-400">Cols Affected</div>
+            <div className="text-2xl font-extrabold text-cyan-300 mt-1.5">
               {summary.columns_affected_count}{' '}
               <span className="text-xs text-slate-500 font-normal">/ {summary.total_columns_evaluated}</span>
             </div>
-            <span className="text-xs text-slate-500">Columns with quality or risk signals</span>
+            <span className="text-[10px] text-slate-500">With signals</span>
           </div>
         </div>
       )}
 
       {/* 4. Column Health Cross-Signal Matrix */}
       {summary?.column_health_matrix?.length > 0 && (
-        <div className="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl shadow-xl space-y-4">
+        <div className="bg-slate-900/70 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl shadow-xl space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span>🏛️</span> Columns Requiring Attention (Cross-Signal Matrix)
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>🏛️</span> Column Cross-Signal Matrix
             </h3>
-            <span className="text-xs text-slate-500">Sorted by highest priority & cross-signal agreement</span>
+            <span className="text-xs text-slate-500">Sorted by highest priority & cross-signal consensus</span>
           </div>
 
           <div className="overflow-x-auto">
@@ -451,8 +521,8 @@ export default function Issues() {
                     <td className="py-3 px-3 font-mono text-slate-400">{col.data_type}</td>
                     <td className="py-3 px-3">
                       {col.quality_status === 'VIOLATION' ? (
-                        <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-medium">
-                          {col.quality_issues_count} Failed Rule(s)
+                        <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/30 font-medium">
+                          {col.quality_issues_count} Violation(s)
                         </span>
                       ) : (
                         <span className="text-slate-500">Clean</span>
@@ -460,7 +530,7 @@ export default function Issues() {
                     </td>
                     <td className="py-3 px-3">
                       <span className="text-slate-300 font-medium">{col.domain}</span>{' '}
-                      <span className="text-xs font-mono text-slate-500">({col.risk_score.toFixed(0)})</span>
+                      <span className="text-[11px] font-mono text-slate-500">({col.risk_score.toFixed(0)})</span>
                     </td>
                     <td className="py-3 px-3">
                       {col.anomaly_detected ? (
@@ -473,7 +543,7 @@ export default function Issues() {
                     </td>
                     <td className="py-3 px-3">
                       {col.pii_detected ? (
-                        <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
+                        <span className="px-2 py-0.5 rounded bg-blue-500/15 text-blue-300 border border-blue-500/30 font-medium">
                           {col.pii_entities.join(', ')}
                         </span>
                       ) : (
@@ -502,15 +572,15 @@ export default function Issues() {
         </div>
       )}
 
-      {/* 5. Prioritized Data Quality Issues Table */}
-      <div className="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl shadow-xl space-y-6">
+      {/* 5. Prioritized Issue Table */}
+      <div className="bg-slate-900/70 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl shadow-xl space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <span>📑</span> Deduplicated & Prioritized Issue Backlog
+            <h2 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>📑</span> Prioritized Issue Backlog
             </h2>
             <p className="text-slate-400 text-xs mt-0.5">
-              Ranked by deterministic multi-factor priority score (Severity 30%, Data Impact 25%, Sensitivity 20%, Confidence 15%, Evidence 10%)
+              Ranked by deterministic multi-factor priority score: Severity (30%), Data Impact (25%), Sensitivity (20%), Confidence (15%), Evidence (10%).
             </p>
           </div>
 
@@ -560,19 +630,19 @@ export default function Issues() {
           </div>
         </div>
 
-        {/* Table */}
+        {/* Issue Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-slate-300 border-collapse">
             <thead>
               <tr className="border-b border-slate-800 text-slate-400 font-semibold uppercase text-xs tracking-wider">
                 <th className="py-3 px-4">Priority</th>
                 <th className="py-3 px-3">Severity</th>
+                <th className="py-3 px-4">Issue</th>
                 <th className="py-3 px-4">Column / Scope</th>
-                <th className="py-3 px-4">Issue Title</th>
                 <th className="py-3 px-3">Source</th>
-                <th className="py-3 px-3">Affected %</th>
+                <th className="py-3 px-3">Affected Data</th>
                 <th className="py-3 px-4">Remediation Action</th>
-                <th className="py-3 px-4 text-right">Inspect</th>
+                <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
@@ -589,33 +659,50 @@ export default function Issues() {
                     onClick={() => setSelectedIssue(iss)}
                     className="hover:bg-slate-800/40 cursor-pointer transition-colors group"
                   >
+                    {/* Priority Score prominent numeric badge */}
                     <td className="py-3.5 px-4 font-mono font-extrabold text-cyan-400">
-                      {iss.priority_score.toFixed(1)}
+                      <span className="px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
+                        {iss.priority_score.toFixed(1)}
+                      </span>
                     </td>
+
+                    {/* Severity Badge */}
                     <td className="py-3.5 px-3">
                       <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getSeverityBadge(iss.severity)}`}>
                         {iss.severity}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-white font-medium">
-                      {iss.column_name || <span className="text-slate-500 italic">Dataset-wide</span>}
-                    </td>
+
+                    {/* Issue Title */}
                     <td className="py-3.5 px-4 font-medium text-slate-200 group-hover:text-cyan-300 transition-colors">
                       {iss.title}
                     </td>
+
+                    {/* Column / Scope */}
+                    <td className="py-3.5 px-4 font-mono text-white font-medium text-xs">
+                      {iss.column_name || <span className="text-slate-500 italic">Dataset-wide</span>}
+                    </td>
+
+                    {/* Source Tag */}
                     <td className="py-3.5 px-3">
                       <span className={`px-2 py-0.5 rounded text-xs font-semibold border ${getSourceBadge(iss.source)}`}>
                         {iss.source}
                       </span>
                     </td>
-                    <td className="py-3.5 px-3 font-mono text-slate-400">
-                      {iss.affected_percentage.toFixed(1)}%
+
+                    {/* Affected Data */}
+                    <td className="py-3.5 px-3 font-mono text-slate-400 text-xs">
+                      {iss.affected_percentage.toFixed(1)}% <span className="text-slate-500">({iss.affected_rows}r)</span>
                     </td>
+
+                    {/* Remediation Action Summary */}
                     <td className="py-3.5 px-4 text-xs text-slate-400 max-w-xs truncate">
                       {iss.recommendation?.summary || 'Investigate issue details'}
                     </td>
+
+                    {/* Action button */}
                     <td className="py-3.5 px-4 text-right">
-                      <button className="px-3 py-1 rounded-lg bg-slate-800 group-hover:bg-cyan-600 text-xs font-medium text-slate-300 group-hover:text-white transition-colors">
+                      <button className="px-3 py-1 rounded-lg bg-slate-800 group-hover:bg-cyan-600 text-xs font-medium text-slate-300 group-hover:text-white transition-colors border border-slate-700">
                         Inspect →
                       </button>
                     </td>
@@ -629,7 +716,10 @@ export default function Issues() {
 
       {/* 6. Slide-Out Issue Detail Drawer */}
       {selectedIssue && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div
+          className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fade-in"
+          onClick={() => setSelectedIssue(null)}
+        >
           <div
             className="w-full max-w-2xl bg-slate-900 border-l border-slate-800 h-full p-6 overflow-y-auto space-y-6 shadow-2xl flex flex-col justify-between"
             onClick={(e) => e.stopPropagation()}
@@ -645,13 +735,13 @@ export default function Issues() {
                     <span className={`px-2.5 py-1 rounded-md text-xs font-semibold border ${getSourceBadge(selectedIssue.source)}`}>
                       {selectedIssue.source} Signal
                     </span>
-                    <span className="font-mono text-xs text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
+                    <span className="font-mono text-xs text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
                       Priority: {selectedIssue.priority_score.toFixed(1)} / 100
                     </span>
                   </div>
                   <h2 className="text-xl font-bold text-white">{selectedIssue.title}</h2>
                   <p className="text-xs text-slate-400 font-mono mt-1">
-                    Target: {selectedIssue.column_name || 'Dataset-Wide'} • Type: {selectedIssue.issue_type}
+                    Target: {selectedIssue.column_name || 'Dataset-Wide'} • Category: {selectedIssue.issue_type}
                   </p>
                 </div>
                 <button
@@ -662,12 +752,14 @@ export default function Issues() {
                 </button>
               </div>
 
-              {/* Description */}
+              {/* 1. Issue Overview & Affected Data */}
               <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-2">
                 <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
-                  Issue Summary & Impact
+                  Issue Overview & Impact
                 </span>
-                <p className="text-sm text-slate-200 leading-relaxed">{selectedIssue.description}</p>
+                <p className="text-sm text-slate-200 leading-relaxed font-medium">
+                  {selectedIssue.description}
+                </p>
                 <div className="flex items-center gap-4 text-xs font-mono text-slate-400 pt-1">
                   <span>Affected Rows: {selectedIssue.affected_rows}</span>
                   <span>•</span>
@@ -675,36 +767,95 @@ export default function Issues() {
                 </div>
               </div>
 
-              {/* Priority Score Component Breakdown */}
+              {/* 2. Priority Score Component Breakdown with Visual Progress Bars */}
               <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-3">
                 <span className="text-xs font-semibold uppercase text-cyan-400 tracking-wider">
-                  Deterministic Priority Breakdown (0–100)
+                  Priority Score Component Breakdown
                 </span>
-                <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 block">Severity (30% weight)</span>
-                    <span className="font-mono text-white font-bold">{selectedIssue.severity}</span>
+                <div className="space-y-2.5 text-xs">
+                  {/* Severity Factor */}
+                  <div>
+                    <div className="flex justify-between text-slate-300 mb-1">
+                      <span>Severity (30% weight)</span>
+                      <span className="font-mono font-bold text-white">{selectedIssue.severity}</span>
+                    </div>
+                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-rose-500 h-full rounded-full"
+                        style={{
+                          width: `${
+                            selectedIssue.severity === 'CRITICAL'
+                              ? 100
+                              : selectedIssue.severity === 'HIGH'
+                              ? 75
+                              : selectedIssue.severity === 'MEDIUM'
+                              ? 50
+                              : 25
+                          }%`,
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 block">Affected Data (25% weight)</span>
-                    <span className="font-mono text-white font-bold">{selectedIssue.affected_percentage.toFixed(1)}%</span>
+
+                  {/* Affected Data */}
+                  <div>
+                    <div className="flex justify-between text-slate-300 mb-1">
+                      <span>Affected Data Impact (25% weight)</span>
+                      <span className="font-mono font-bold text-white">{selectedIssue.affected_percentage.toFixed(1)}%</span>
+                    </div>
+                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-orange-500 h-full rounded-full"
+                        style={{ width: `${Math.min(100, selectedIssue.affected_percentage)}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 block">Data Sensitivity (20% weight)</span>
-                    <span className="font-mono text-white font-bold">{selectedIssue.sensitivity_score.toFixed(1)} / 100</span>
+
+                  {/* Sensitivity */}
+                  <div>
+                    <div className="flex justify-between text-slate-300 mb-1">
+                      <span>Data Sensitivity Heuristic (20% weight)</span>
+                      <span className="font-mono font-bold text-white">{selectedIssue.sensitivity_score.toFixed(1)} / 100</span>
+                    </div>
+                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-amber-500 h-full rounded-full"
+                        style={{ width: `${selectedIssue.sensitivity_score}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800">
-                    <span className="text-slate-400 block">Confidence Heuristic (15% weight)</span>
-                    <span className="font-mono text-white font-bold">{selectedIssue.confidence_score.toFixed(1)} / 100</span>
+
+                  {/* Confidence */}
+                  <div>
+                    <div className="flex justify-between text-slate-300 mb-1">
+                      <span>Confidence Heuristic (15% weight)</span>
+                      <span className="font-mono font-bold text-white">{selectedIssue.confidence_score.toFixed(1)} / 100</span>
+                    </div>
+                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-cyan-500 h-full rounded-full"
+                        style={{ width: `${selectedIssue.confidence_score}%` }}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="text-xs text-slate-400 flex items-center justify-between pt-1">
-                  <span>Cross-Signal Evidence Score:</span>
-                  <span className="font-mono text-cyan-300 font-bold">{selectedIssue.evidence_score.toFixed(1)} / 100</span>
+
+                  {/* Cross-Signal Evidence */}
+                  <div>
+                    <div className="flex justify-between text-slate-300 mb-1">
+                      <span>Cross-Signal Evidence Score (10% weight)</span>
+                      <span className="font-mono font-bold text-white">{selectedIssue.evidence_score.toFixed(1)} / 100</span>
+                    </div>
+                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className="bg-indigo-500 h-full rounded-full"
+                        style={{ width: `${selectedIssue.evidence_score}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Actionable Remediation Guidance */}
+              {/* 3. Actionable Remediation Guidance */}
               {selectedIssue.recommendation && (
                 <div className="bg-gradient-to-br from-slate-950 to-cyan-950/30 p-5 rounded-xl border border-cyan-500/30 space-y-4">
                   <div className="flex items-center gap-2">
@@ -714,15 +865,21 @@ export default function Issues() {
                     </h3>
                   </div>
 
-                  <p className="text-xs text-slate-300 font-medium">
-                    {selectedIssue.recommendation.summary}
-                  </p>
+                  {/* Why this matters */}
+                  <div>
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">
+                      Why This Matters:
+                    </span>
+                    <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                      {selectedIssue.recommendation.summary}
+                    </p>
+                  </div>
 
-                  {/* Investigation Steps */}
+                  {/* Recommended Action: Investigation Steps */}
                   {selectedIssue.recommendation.investigation_steps?.length > 0 && (
                     <div>
                       <span className="text-xs font-semibold text-cyan-300 uppercase tracking-wider block mb-2">
-                        Diagnostic & Investigation Steps:
+                        Recommended Investigation Steps:
                       </span>
                       <ul className="space-y-1.5 text-xs text-slate-300 list-disc list-inside">
                         {selectedIssue.recommendation.investigation_steps.map((step, idx) => (
@@ -734,7 +891,7 @@ export default function Issues() {
                     </div>
                   )}
 
-                  {/* Preventive Measures */}
+                  {/* Recommended Action: Preventive Measures */}
                   {selectedIssue.recommendation.preventive_measures?.length > 0 && (
                     <div>
                       <span className="text-xs font-semibold text-cyan-300 uppercase tracking-wider block mb-2">
@@ -760,13 +917,21 @@ export default function Issues() {
                 </div>
               )}
 
-              {/* Diagnostic Evidence Details */}
+              {/* 4. Diagnostic Evidence Details */}
               {selectedIssue.evidence && Object.keys(selectedIssue.evidence).length > 0 && (
                 <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-2">
-                  <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
-                    Underlying Diagnostic Evidence
-                  </span>
-                  <pre className="text-xs font-mono text-slate-400 bg-slate-900 p-3 rounded-lg overflow-x-auto max-h-48 border border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
+                      Underlying Diagnostic Evidence
+                    </span>
+                    <button
+                      onClick={() => copyToClipboard(JSON.stringify(selectedIssue.evidence, null, 2), 'evidence')}
+                      className="text-xs text-cyan-400 hover:text-cyan-300 font-medium"
+                    >
+                      {copiedKey === 'evidence' ? '✓ Copied' : 'Copy Evidence JSON'}
+                    </button>
+                  </div>
+                  <pre className="text-xs font-mono text-slate-400 bg-slate-900 p-3 rounded-lg overflow-x-auto max-h-40 border border-slate-800">
                     {JSON.stringify(selectedIssue.evidence, null, 2)}
                   </pre>
                 </div>
