@@ -3,9 +3,10 @@
  *
  * Enterprise Data Observability, Holistic Dataset Health Scoring (0–100),
  * Cross-Signal Issue Prioritization, and Non-Destructive Remediation Engine.
+ * Matches the core DataGuard AI design system and styling tokens.
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   analyzeIssues,
@@ -117,55 +118,114 @@ export default function Issues() {
   const getGradeBadge = (grade) => {
     switch (grade) {
       case 'EXCELLENT':
-        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-emerald-950/20';
+        return {
+          bg: 'rgba(16, 185, 129, 0.15)',
+          color: '#10b981',
+          border: 'rgba(16, 185, 129, 0.35)',
+        };
       case 'GOOD':
-        return 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-cyan-950/20';
+        return {
+          bg: 'rgba(56, 189, 248, 0.15)',
+          color: '#38bdf8',
+          border: 'rgba(56, 189, 248, 0.35)',
+        };
       case 'NEEDS ATTENTION':
-        return 'bg-amber-500/15 text-amber-300 border-amber-500/40 shadow-amber-950/20';
+        return {
+          bg: 'rgba(245, 158, 11, 0.15)',
+          color: '#f59e0b',
+          border: 'rgba(245, 158, 11, 0.35)',
+        };
       case 'POOR':
-        return 'bg-orange-500/15 text-orange-300 border-orange-500/40 shadow-orange-950/20';
+        return {
+          bg: 'rgba(249, 115, 22, 0.15)',
+          color: '#f97316',
+          border: 'rgba(249, 115, 22, 0.35)',
+        };
       case 'CRITICAL':
       default:
-        return 'bg-rose-500/15 text-rose-300 border-rose-500/40 shadow-rose-950/20';
+        return {
+          bg: 'rgba(244, 63, 94, 0.15)',
+          color: '#f43f5e',
+          border: 'rgba(244, 63, 94, 0.35)',
+        };
     }
   };
 
   const getSeverityBadge = (sev) => {
     switch (sev?.toUpperCase()) {
       case 'CRITICAL':
-        return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+        return {
+          bg: 'rgba(244, 63, 94, 0.15)',
+          color: '#f43f5e',
+          border: 'rgba(244, 63, 94, 0.35)',
+        };
       case 'HIGH':
-        return 'bg-orange-500/15 text-orange-300 border-orange-500/30';
+        return {
+          bg: 'rgba(249, 115, 22, 0.15)',
+          color: '#f97316',
+          border: 'rgba(249, 115, 22, 0.35)',
+        };
       case 'MEDIUM':
-        return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+        return {
+          bg: 'rgba(245, 158, 11, 0.15)',
+          color: '#f59e0b',
+          border: 'rgba(245, 158, 11, 0.35)',
+        };
       case 'LOW':
       default:
-        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+        return {
+          bg: 'rgba(16, 185, 129, 0.15)',
+          color: '#10b981',
+          border: 'rgba(16, 185, 129, 0.35)',
+        };
     }
   };
 
   const getSourceBadge = (src) => {
     switch (src?.toUpperCase()) {
       case 'QUALITY':
-        return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+        return {
+          bg: 'rgba(168, 85, 247, 0.15)',
+          color: '#c084fc',
+          border: 'rgba(168, 85, 247, 0.35)',
+        };
       case 'PII':
-        return 'bg-blue-500/15 text-blue-300 border-blue-500/30';
+        return {
+          bg: 'rgba(56, 189, 248, 0.15)',
+          color: '#38bdf8',
+          border: 'rgba(56, 189, 248, 0.35)',
+        };
       case 'RISK':
-        return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+        return {
+          bg: 'rgba(244, 63, 94, 0.15)',
+          color: '#f43f5e',
+          border: 'rgba(244, 63, 94, 0.35)',
+        };
       case 'ANOMALY':
-        return 'bg-amber-500/15 text-amber-300 border-amber-500/30';
+        return {
+          bg: 'rgba(245, 158, 11, 0.15)',
+          color: '#fbbf24',
+          border: 'rgba(245, 158, 11, 0.35)',
+        };
       default:
-        return 'bg-slate-500/15 text-slate-300 border-slate-500/30';
+        return {
+          bg: 'rgba(148, 163, 184, 0.15)',
+          color: '#94a3b8',
+          border: 'rgba(148, 163, 184, 0.3)',
+        };
     }
   };
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <div className="w-12 h-12 border-4 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin" />
-        <p className="text-slate-400 font-medium animate-pulse">
-          Synthesizing multi-phase signals & prioritizing dataset issues...
-        </p>
+      <div className="page-container flex-center" style={{ minHeight: '60vh' }}>
+        <div className="glass-card flex-col flex-center" style={{ padding: '48px', maxWidth: '480px', textAlign: 'center' }}>
+          <div className="spinner" style={{ width: '40px', height: '40px', marginBottom: '20px' }}></div>
+          <h2 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Synthesizing Health & Prioritizing Issues...</h2>
+          <p className="text-muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+            Aggregating multi-phase signals (Quality, ML Risk, Anomalies, PII) into deterministic priority rankings.
+          </p>
+        </div>
       </div>
     );
   }
@@ -175,58 +235,55 @@ export default function Issues() {
   const circumference = 2 * Math.PI * radius;
   const healthScoreVal = summary?.health_score || 0;
   const strokeDashoffset = circumference - (healthScoreVal / 100) * circumference;
+  const gradeBadgeInfo = getGradeBadge(summary?.health_grade);
 
   return (
-    <div className="space-y-8 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* 1. Header & Context */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4 border-b border-slate-800 pb-5">
+    <div className="page-container" style={{ paddingBottom: '60px' }}>
+      {/* 1. Top Header & Context */}
+      <div className="flex-row justify-between align-center" style={{ marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div className="flex items-center space-x-3 text-xs text-slate-400 mb-1.5">
-            <Link
-              to="/datasets"
-              className="hover:text-cyan-400 transition flex items-center gap-1 font-medium"
-            >
+          <div className="flex-row align-center" style={{ gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
+            <Link to="/datasets" className="text-muted" style={{ fontSize: '0.88rem', textDecoration: 'none' }}>
               ← Datasets
             </Link>
-            <span className="text-slate-600">/</span>
-            <span className="text-slate-200 font-semibold">{dataset?.name || 'Dataset'}</span>
-            <span className="px-2 py-0.5 text-xs font-mono rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+            <span className="text-muted" style={{ opacity: 0.6 }}>/</span>
+            <span style={{ fontWeight: '600', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+              {dataset?.name || 'Dataset'}
+            </span>
+            <span className="badge badge-primary" style={{ fontSize: '0.8rem', padding: '3px 8px' }}>
               V{version?.version_number}
             </span>
-            <span className="text-slate-600">•</span>
-            <span className="text-slate-400 font-mono">
-              {version?.row_count} rows × {version?.column_count} cols
+            <span className="text-muted" style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>
+              • {version?.row_count?.toLocaleString()} rows × {version?.column_count} cols
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🎯</span>
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent">
-                Prioritization & Dataset Health
-              </h1>
-              <p className="text-slate-400 text-sm mt-0.5">
-                Understand overall dataset health and prioritize the issues that require attention.
-              </p>
-            </div>
+          <div className="flex-row align-center" style={{ gap: '10px' }}>
+            <h1 style={{ margin: 0, fontSize: '1.75rem', fontWeight: '700' }}>
+              🎯 Prioritization & Dataset Health
+            </h1>
           </div>
+          <p className="text-muted" style={{ margin: '4px 0 0 0', fontSize: '0.92rem' }}>
+            Understand overall dataset health and prioritize the issues that require attention.
+          </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex-row align-center" style={{ gap: '10px' }}>
           <button
+            className="btn btn-secondary flex-row align-center"
+            style={{ gap: '8px' }}
             onClick={handleReanalyze}
             disabled={analyzing}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-sm shadow-lg shadow-cyan-500/20 transition-all duration-200 disabled:opacity-50"
           >
             {analyzing ? (
               <>
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                <div className="spinner-sm"></div>
                 <span>Re-analyzing...</span>
               </>
             ) : (
               <>
-                <span>⚡</span>
+                <span>🔄</span>
                 <span>Recompute Health & Priorities</span>
               </>
             )}
@@ -235,46 +292,74 @@ export default function Issues() {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
+      <div className="flex-row align-center" style={{ gap: '8px', marginBottom: '24px', flexWrap: 'wrap', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px' }}>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/profile`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          📊 Profiling
+          <span>📊</span>
+          <span>Profile</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/quality`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          ✅ Data Quality
+          <span>🛡</span>
+          <span>Quality</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/pii`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          🔒 PII Scan
+          <span>🔐</span>
+          <span>PII Scan</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/risk`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          🧠 ML Risk
+          <span>🤖</span>
+          <span>ML Risk</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/anomalies`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          ⚠️ Anomalies
+          <span>⚠️</span>
+          <span>Anomalies</span>
         </Link>
-        <span className="px-4 py-2 rounded-lg text-sm font-semibold text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 shadow-sm">
-          🎯 Prioritization / Health
+        <span
+          className="btn btn-secondary flex-row align-center"
+          style={{
+            gap: '6px',
+            fontSize: '0.85rem',
+            borderColor: 'rgba(6, 182, 212, 0.5)',
+            color: '#38bdf8',
+            background: 'rgba(6, 182, 212, 0.12)',
+            fontWeight: '700',
+          }}
+        >
+          <span>🎯</span>
+          <span>Prioritization</span>
         </span>
+        <Link to="/datasets" className="btn btn-secondary" style={{ fontSize: '0.85rem' }}>
+          📁 Datasets
+        </Link>
       </div>
 
       {error && (
-        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-300 text-sm flex items-center justify-between">
-          <span>{error}</span>
-          <button onClick={loadData} className="underline text-xs hover:text-rose-200">
+        <div className="alert-box alert-box--error" style={{ marginBottom: '20px' }}>
+          <span className="alert-icon">⚠️</span>
+          <div className="alert-content">
+            <strong>Prioritization Error</strong>
+            <p>{error}</p>
+          </div>
+          <button onClick={loadData} className="btn btn--sm btn--secondary" style={{ alignSelf: 'center' }}>
             Retry
           </button>
         </div>
@@ -282,165 +367,224 @@ export default function Issues() {
 
       {/* 2. Health Score Hero & 4-Way Breakdown Grid */}
       {summary && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid-responsive" style={{ gridTemplateColumns: 'minmax(280px, 1fr) 2fr', gap: '20px', marginBottom: '24px' }}>
           {/* Left: Health Score Hero Section */}
-          <div className="lg:col-span-4 bg-slate-900/70 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl flex flex-col items-center justify-between text-center shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 -mr-6 -mt-6 w-28 h-28 bg-cyan-500/10 rounded-full blur-2xl" />
+          <div
+            className="glass-card flex-col items-center justify-between"
+            style={{
+              padding: '24px',
+              textAlign: 'center',
+              borderLeft: `5px solid ${gradeBadgeInfo.color}`,
+              background: 'var(--bg-card)',
+            }}
+          >
             <div>
-              <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">
+              <span className="stat-label" style={{ display: 'block', marginBottom: '4px' }}>
                 Dataset Health Score
               </span>
-              <span className="text-[11px] text-slate-500 font-medium block mb-3">
-                Overall dataset health
+              <span className="text-muted" style={{ fontSize: '0.78rem', display: 'block', marginBottom: '12px' }}>
+                Overall dataset integrity & posture
               </span>
 
               {/* Circular Radial Gauge */}
-              <div className="relative flex items-center justify-center my-2">
-                <svg className="w-36 h-36 transform -rotate-90">
+              <div style={{ position: 'relative', width: '130px', height: '130px', margin: '0 auto' }}>
+                <svg width="130" height="130" style={{ transform: 'rotate(-90deg)' }}>
                   <circle
-                    cx="72"
-                    cy="72"
+                    cx="65"
+                    cy="65"
                     r={radius}
-                    className="stroke-slate-800"
+                    stroke="var(--bg-input)"
                     strokeWidth="10"
                     fill="transparent"
                   />
                   <circle
-                    cx="72"
-                    cy="72"
+                    cx="65"
+                    cy="65"
                     r={radius}
-                    className="stroke-cyan-400 transition-all duration-1000 ease-out"
+                    stroke={gradeBadgeInfo.color}
                     strokeWidth="10"
                     strokeDasharray={circumference}
                     strokeDashoffset={strokeDashoffset}
                     strokeLinecap="round"
                     fill="transparent"
+                    style={{ transition: 'stroke-dashoffset 0.8s ease' }}
                   />
                 </svg>
-                <div className="absolute flex flex-col items-center">
-                  <span className="text-4xl font-extrabold text-white tracking-tight">
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-primary)', lineHeight: 1 }}>
                     {summary.health_score.toFixed(1)}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-medium">/ 100</span>
+                  <span className="text-muted" style={{ fontSize: '0.75rem', marginTop: '2px' }}>/ 100</span>
                 </div>
               </div>
 
               {/* Health Grade Badge */}
               <div
-                className={`px-4 py-1.5 rounded-full border text-xs font-bold tracking-wide uppercase shadow-lg mt-2 inline-block ${getGradeBadge(
-                  summary.health_grade
-                )}`}
+                style={{
+                  marginTop: '14px',
+                  padding: '4px 14px',
+                  borderRadius: '12px',
+                  background: gradeBadgeInfo.bg,
+                  color: gradeBadgeInfo.color,
+                  border: `1px solid ${gradeBadgeInfo.border}`,
+                  fontSize: '0.8rem',
+                  fontWeight: '700',
+                  letterSpacing: '0.05em',
+                  display: 'inline-block',
+                }}
               >
-                {summary.health_grade}
+                ● {summary.health_grade}
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-800/80 text-[11px] text-slate-500 leading-relaxed">
+            <div
+              style={{
+                marginTop: '16px',
+                paddingTop: '12px',
+                borderTop: '1px solid var(--border-subtle)',
+                fontSize: '0.75rem',
+                color: 'var(--text-muted)',
+                lineHeight: '1.4',
+              }}
+            >
               Deterministic synthesis: Quality (60%), Risk (15%), Anomaly (15%), Privacy (10%).
             </div>
           </div>
 
           {/* Right: 4-Way Health Breakdown Grid (4 Component Cards) */}
-          <div className="lg:col-span-8 bg-slate-900/70 p-6 rounded-2xl border border-slate-800/80 backdrop-blur-xl shadow-xl flex flex-col justify-between">
+          <div className="glass-card flex-col justify-between" style={{ padding: '24px', background: 'var(--bg-card)' }}>
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                  <span>📊</span> Subsystem Health Breakdown
+              <div className="flex-row justify-between align-center" style={{ marginBottom: '16px' }}>
+                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)' }}>
+                  📊 Subsystem Health Breakdown
                 </h3>
-                <span className="text-xs text-slate-500 font-mono">
+                <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
                   Calculated: {new Date(summary.calculated_at).toLocaleTimeString()}
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
                 {/* 1. Quality Health Card */}
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <span>✅</span> QUALITY
+                <div style={{ padding: '14px', borderRadius: '8px', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                      ✅ QUALITY
                     </span>
-                    <span className="text-xs font-mono font-bold text-cyan-400">
-                      {summary.quality_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#38bdf8' }}>
+                      {summary.quality_health.toFixed(1)} <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>/ 100</span>
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: 'var(--bg-input)', overflow: 'hidden', margin: '8px 0' }}>
                     <div
-                      className="h-full bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full transition-all duration-700"
-                      style={{ width: `${summary.quality_health}%` }}
+                      style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #a855f7, #38bdf8)',
+                        width: `${summary.quality_health}%`,
+                        transition: 'width 0.5s ease',
+                      }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                     Data validation health (60% weight)
-                  </p>
+                  </span>
                 </div>
 
                 {/* 2. Risk Health Card */}
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <span>🧠</span> RISK
+                <div style={{ padding: '14px', borderRadius: '8px', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                      🧠 RISK
                     </span>
-                    <span className="text-xs font-mono font-bold text-cyan-400">
-                      {summary.risk_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#38bdf8' }}>
+                      {summary.risk_health.toFixed(1)} <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>/ 100</span>
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: 'var(--bg-input)', overflow: 'hidden', margin: '8px 0' }}>
                     <div
-                      className="h-full bg-gradient-to-r from-rose-500 to-amber-400 rounded-full transition-all duration-700"
-                      style={{ width: `${summary.risk_health}%` }}
+                      style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #f43f5e, #f59e0b)',
+                        width: `${summary.risk_health}%`,
+                        transition: 'width 0.5s ease',
+                      }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                     Column risk exposure (15% weight)
-                  </p>
+                  </span>
                 </div>
 
                 {/* 3. Anomaly Health Card */}
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <span>⚠️</span> ANOMALY
+                <div style={{ padding: '14px', borderRadius: '8px', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                      ⚠️ ANOMALY
                     </span>
-                    <span className="text-xs font-mono font-bold text-cyan-400">
-                      {summary.anomaly_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#38bdf8' }}>
+                      {summary.anomaly_health.toFixed(1)} <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>/ 100</span>
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: 'var(--bg-input)', overflow: 'hidden', margin: '8px 0' }}>
                     <div
-                      className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700"
-                      style={{ width: `${summary.anomaly_health}%` }}
+                      style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #f59e0b, #10b981)',
+                        width: `${summary.anomaly_health}%`,
+                        transition: 'width 0.5s ease',
+                      }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                     Statistical anomaly health (15% weight)
-                  </p>
+                  </span>
                 </div>
 
                 {/* 4. Privacy Health Card */}
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <span>🔒</span> PRIVACY
+                <div style={{ padding: '14px', borderRadius: '8px', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                      🔒 PRIVACY
                     </span>
-                    <span className="text-xs font-mono font-bold text-cyan-400">
-                      {summary.privacy_health.toFixed(1)} <span className="text-slate-500 text-[10px]">/ 100</span>
+                    <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#38bdf8' }}>
+                      {summary.privacy_health.toFixed(1)} <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>/ 100</span>
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: 'var(--bg-input)', overflow: 'hidden', margin: '8px 0' }}>
                     <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-indigo-400 rounded-full transition-all duration-700"
-                      style={{ width: `${summary.privacy_health}%` }}
+                      style={{
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #3b82f6, #6366f1)',
+                        width: `${summary.privacy_health}%`,
+                        transition: 'width 0.5s ease',
+                      }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                     PII exposure health (10% weight)
-                  </p>
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
-              <span>Each subsystem remains separately identifiable without conflating exposure with data corruption.</span>
+            <div
+              style={{
+                marginTop: '16px',
+                paddingTop: '12px',
+                borderTop: '1px solid var(--border-subtle)',
+                fontSize: '0.78rem',
+                color: 'var(--text-muted)',
+              }}
+            >
+              Each subsystem remains separately identifiable without conflating exposure with data corruption.
             </div>
           </div>
         </div>
@@ -448,120 +592,180 @@ export default function Issues() {
 
       {/* 3. Issue Summary KPIs */}
       {summary && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <div className="bg-slate-900/70 p-4 rounded-xl border border-slate-800 backdrop-blur-xl shadow-lg">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-300">Total Issues</div>
-            <div className="text-2xl font-extrabold text-white mt-1.5">{summary.total_issues}</div>
-            <span className="text-[10px] text-slate-500">Deduplicated</span>
-          </div>
-
-          <div className="bg-slate-900/70 p-4 rounded-xl border border-rose-500/20 backdrop-blur-xl shadow-lg">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-400">Critical</div>
-            <div className="text-2xl font-extrabold text-rose-400 mt-1.5">{summary.critical_issues}</div>
-            <span className="text-[10px] text-slate-500">Immediate action</span>
-          </div>
-
-          <div className="bg-slate-900/70 p-4 rounded-xl border border-orange-500/20 backdrop-blur-xl shadow-lg">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-orange-400">High</div>
-            <div className="text-2xl font-extrabold text-orange-400 mt-1.5">{summary.high_issues}</div>
-            <span className="text-[10px] text-slate-500">Elevated impact</span>
-          </div>
-
-          <div className="bg-slate-900/70 p-4 rounded-xl border border-amber-500/20 backdrop-blur-xl shadow-lg">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-400">Medium</div>
-            <div className="text-2xl font-extrabold text-amber-300 mt-1.5">{summary.medium_issues}</div>
-            <span className="text-[10px] text-slate-500">Moderate impact</span>
-          </div>
-
-          <div className="bg-slate-900/70 p-4 rounded-xl border border-emerald-500/20 backdrop-blur-xl shadow-lg">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Low</div>
-            <div className="text-2xl font-extrabold text-emerald-300 mt-1.5">{summary.low_issues}</div>
-            <span className="text-[10px] text-slate-500">Minor deviation</span>
-          </div>
-
-          <div className="bg-slate-900/70 p-4 rounded-xl border border-cyan-500/20 backdrop-blur-xl shadow-lg">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-cyan-400">Cols Affected</div>
-            <div className="text-2xl font-extrabold text-cyan-300 mt-1.5">
-              {summary.columns_affected_count}{' '}
-              <span className="text-xs text-slate-500 font-normal">/ {summary.total_columns_evaluated}</span>
+        <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+          <div className="stat-card" style={{ padding: '14px' }}>
+            <div className="flex-col">
+              <span className="stat-label">Total Issues</span>
+              <div className="stat-value" style={{ fontSize: '1.4rem' }}>{summary.total_issues}</div>
+              <span className="text-muted" style={{ fontSize: '0.72rem' }}>Deduplicated</span>
             </div>
-            <span className="text-[10px] text-slate-500">With signals</span>
+          </div>
+
+          <div className="stat-card" style={{ padding: '14px', borderLeft: '3px solid #f43f5e' }}>
+            <div className="flex-col">
+              <span className="stat-label" style={{ color: '#f43f5e' }}>Critical</span>
+              <div className="stat-value" style={{ fontSize: '1.4rem', color: '#f43f5e' }}>{summary.critical_issues}</div>
+              <span className="text-muted" style={{ fontSize: '0.72rem' }}>Immediate action</span>
+            </div>
+          </div>
+
+          <div className="stat-card" style={{ padding: '14px', borderLeft: '3px solid #f97316' }}>
+            <div className="flex-col">
+              <span className="stat-label" style={{ color: '#f97316' }}>High</span>
+              <div className="stat-value" style={{ fontSize: '1.4rem', color: '#f97316' }}>{summary.high_issues}</div>
+              <span className="text-muted" style={{ fontSize: '0.72rem' }}>Elevated impact</span>
+            </div>
+          </div>
+
+          <div className="stat-card" style={{ padding: '14px', borderLeft: '3px solid #f59e0b' }}>
+            <div className="flex-col">
+              <span className="stat-label" style={{ color: '#fbbf24' }}>Medium</span>
+              <div className="stat-value" style={{ fontSize: '1.4rem', color: '#fbbf24' }}>{summary.medium_issues}</div>
+              <span className="text-muted" style={{ fontSize: '0.72rem' }}>Moderate impact</span>
+            </div>
+          </div>
+
+          <div className="stat-card" style={{ padding: '14px', borderLeft: '3px solid #10b981' }}>
+            <div className="flex-col">
+              <span className="stat-label" style={{ color: '#10b981' }}>Low</span>
+              <div className="stat-value" style={{ fontSize: '1.4rem', color: '#10b981' }}>{summary.low_issues}</div>
+              <span className="text-muted" style={{ fontSize: '0.72rem' }}>Minor deviation</span>
+            </div>
+          </div>
+
+          <div className="stat-card" style={{ padding: '14px', borderLeft: '3px solid #38bdf8' }}>
+            <div className="flex-col">
+              <span className="stat-label" style={{ color: '#38bdf8' }}>Cols Affected</span>
+              <div className="stat-value" style={{ fontSize: '1.4rem', color: '#38bdf8' }}>
+                {summary.columns_affected_count}{' '}
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 'normal' }}>
+                  / {summary.total_columns_evaluated}
+                </span>
+              </div>
+              <span className="text-muted" style={{ fontSize: '0.72rem' }}>With signals</span>
+            </div>
           </div>
         </div>
       )}
 
       {/* 4. Column Health Cross-Signal Matrix */}
       {summary?.column_health_matrix?.length > 0 && (
-        <div className="bg-slate-900/70 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl shadow-xl space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>🏛️</span> Column Cross-Signal Matrix
+        <div className="results-table-card" style={{ marginBottom: '28px' }}>
+          <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+              🏛️ Column Cross-Signal Matrix
             </h3>
-            <span className="text-xs text-slate-500">Sorted by highest priority & cross-signal consensus</span>
+            <span className="text-muted" style={{ fontSize: '0.78rem' }}>
+              Sorted by highest priority & cross-signal consensus
+            </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300 border-collapse">
+          <div className="table-responsive">
+            <table className="data-table" style={{ width: '100%' }}>
               <thead>
-                <tr className="border-b border-slate-800 text-slate-400 font-semibold uppercase tracking-wider">
-                  <th className="py-3 px-4">Column Name</th>
-                  <th className="py-3 px-3">Type</th>
-                  <th className="py-3 px-3">Quality</th>
-                  <th className="py-3 px-3">ML Domain / Risk</th>
-                  <th className="py-3 px-3">Anomalies</th>
-                  <th className="py-3 px-3">PII Exposure</th>
-                  <th className="py-3 px-3">Cross-Signals</th>
-                  <th className="py-3 px-4 text-right">Max Priority</th>
+                <tr>
+                  <th style={{ minWidth: '150px' }}>Column Name</th>
+                  <th style={{ minWidth: '90px' }}>Type</th>
+                  <th style={{ minWidth: '120px' }}>Quality</th>
+                  <th style={{ minWidth: '140px' }}>ML Domain / Risk</th>
+                  <th style={{ minWidth: '110px' }}>Anomalies</th>
+                  <th style={{ minWidth: '120px' }}>PII Exposure</th>
+                  <th style={{ minWidth: '120px' }}>Cross-Signals</th>
+                  <th style={{ minWidth: '100px', textAlign: 'right' }}>Max Priority</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody>
                 {summary.column_health_matrix.map((col) => (
-                  <tr key={col.column_name} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 font-mono font-medium text-white">{col.column_name}</td>
-                    <td className="py-3 px-3 font-mono text-slate-400">{col.data_type}</td>
-                    <td className="py-3 px-3">
+                  <tr key={col.column_name}>
+                    <td className="column-name-code" style={{ fontSize: '0.85rem' }}>{col.column_name}</td>
+                    <td>
+                      <span className="dtype-badge dtype-object" style={{ fontSize: '0.7rem' }}>
+                        {col.data_type}
+                      </span>
+                    </td>
+                    <td>
                       {col.quality_status === 'VIOLATION' ? (
-                        <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/30 font-medium">
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: '600',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            background: 'rgba(244, 63, 94, 0.15)',
+                            color: '#f43f5e',
+                            border: '1px solid rgba(244, 63, 94, 0.3)',
+                          }}
+                        >
                           {col.quality_issues_count} Violation(s)
                         </span>
                       ) : (
-                        <span className="text-slate-500">Clean</span>
+                        <span className="text-muted" style={{ fontSize: '0.78rem' }}>Clean</span>
                       )}
                     </td>
-                    <td className="py-3 px-3">
-                      <span className="text-slate-300 font-medium">{col.domain}</span>{' '}
-                      <span className="text-[11px] font-mono text-slate-500">({col.risk_score.toFixed(0)})</span>
+                    <td>
+                      <span style={{ color: 'var(--text-primary)', fontWeight: '500', fontSize: '0.82rem' }}>{col.domain}</span>{' '}
+                      <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>({col.risk_score.toFixed(0)})</span>
                     </td>
-                    <td className="py-3 px-3">
+                    <td>
                       {col.anomaly_detected ? (
-                        <span className={`px-2 py-0.5 rounded font-medium border ${getSeverityBadge(col.anomaly_severity)}`}>
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: '700',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            background: getSeverityBadge(col.anomaly_severity).bg,
+                            color: getSeverityBadge(col.anomaly_severity).color,
+                            border: `1px solid ${getSeverityBadge(col.anomaly_severity).border}`,
+                          }}
+                        >
                           {col.anomaly_severity}
                         </span>
                       ) : (
-                        <span className="text-slate-500">None</span>
+                        <span className="text-muted" style={{ fontSize: '0.78rem' }}>None</span>
                       )}
                     </td>
-                    <td className="py-3 px-3">
+                    <td>
                       {col.pii_detected ? (
-                        <span className="px-2 py-0.5 rounded bg-blue-500/15 text-blue-300 border border-blue-500/30 font-medium">
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: '600',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            background: 'rgba(56, 189, 248, 0.15)',
+                            color: '#38bdf8',
+                            border: '1px solid rgba(56, 189, 248, 0.3)',
+                          }}
+                        >
                           {col.pii_entities.join(', ')}
                         </span>
                       ) : (
-                        <span className="text-slate-500">None</span>
+                        <span className="text-muted" style={{ fontSize: '0.78rem' }}>None</span>
                       )}
                     </td>
-                    <td className="py-3 px-3">
+                    <td>
                       {col.cross_signal_count > 1 ? (
-                        <span className="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold border border-indigo-500/30">
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: '700',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            background: 'rgba(99, 102, 241, 0.15)',
+                            color: '#a5b4fc',
+                            border: '1px solid rgba(99, 102, 241, 0.3)',
+                          }}
+                        >
                           {col.cross_signal_count} Subsystems
                         </span>
                       ) : col.cross_signal_count === 1 ? (
-                        <span className="text-slate-400 font-mono">1 Subsystem</span>
+                        <span className="text-muted" style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>1 Subsystem</span>
                       ) : (
-                        <span className="text-slate-600 font-mono">0</span>
+                        <span className="text-muted" style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>0</span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-right font-mono font-bold text-cyan-400">
+                    <td style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#38bdf8' }}>
                       {col.highest_priority > 0 ? col.highest_priority.toFixed(1) : '—'}
                     </td>
                   </tr>
@@ -573,216 +777,331 @@ export default function Issues() {
       )}
 
       {/* 5. Prioritized Issue Table */}
-      <div className="bg-slate-900/70 p-6 rounded-2xl border border-slate-800 backdrop-blur-xl shadow-xl space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="glass-card" style={{ padding: '20px', marginBottom: '28px', background: 'var(--bg-card)' }}>
+        <div className="flex-row justify-between align-center" style={{ marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <h2 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span>📑</span> Prioritized Issue Backlog
+            <h2 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+              📑 Prioritized Issue Backlog
             </h2>
-            <p className="text-slate-400 text-xs mt-0.5">
+            <p className="text-muted" style={{ margin: '3px 0 0 0', fontSize: '0.8rem' }}>
               Ranked by deterministic multi-factor priority score: Severity (30%), Data Impact (25%), Sensitivity (20%), Confidence (15%), Evidence (10%).
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex-row align-center" style={{ gap: '10px', flexWrap: 'wrap' }}>
             {/* Search Input */}
             <input
               type="text"
               placeholder="Filter by column..."
               value={searchColumn}
               onChange={(e) => setSearchColumn(e.target.value)}
-              className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="form-input"
+              style={{ width: '160px', padding: '6px 10px', fontSize: '0.8rem' }}
             />
 
             {/* Severity Filter */}
-            <div className="flex items-center gap-1 bg-slate-800/80 p-1 rounded-lg border border-slate-700">
-              {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setSeverityFilter(s)}
-                  className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
-                    severityFilter === s
-                      ? 'bg-cyan-500 text-white shadow'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
+            <div className="flex-row align-center" style={{ gap: '2px', background: 'rgba(0,0,0,0.25)', padding: '2px', borderRadius: '6px', border: '1px solid var(--border-subtle)' }}>
+              {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map((s) => {
+                const active = severityFilter === s;
+                return (
+                  <button
+                    key={s}
+                    onClick={() => setSeverityFilter(s)}
+                    style={{
+                      background: active ? 'var(--bg-card-hover)' : 'transparent',
+                      color: active ? '#38bdf8' : 'var(--text-muted)',
+                      border: 'none',
+                      padding: '3px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.72rem',
+                      fontWeight: active ? '700' : '500',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {s}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Source Filter */}
-            <div className="flex items-center gap-1 bg-slate-800/80 p-1 rounded-lg border border-slate-700">
-              {['ALL', 'QUALITY', 'PII', 'RISK', 'ANOMALY'].map((src) => (
-                <button
-                  key={src}
-                  onClick={() => setSourceFilter(src)}
-                  className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
-                    sourceFilter === src
-                      ? 'bg-cyan-500 text-white shadow'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {src}
-                </button>
-              ))}
+            <div className="flex-row align-center" style={{ gap: '2px', background: 'rgba(0,0,0,0.25)', padding: '2px', borderRadius: '6px', border: '1px solid var(--border-subtle)' }}>
+              {['ALL', 'QUALITY', 'PII', 'RISK', 'ANOMALY'].map((src) => {
+                const active = sourceFilter === src;
+                return (
+                  <button
+                    key={src}
+                    onClick={() => setSourceFilter(src)}
+                    style={{
+                      background: active ? 'var(--bg-card-hover)' : 'transparent',
+                      color: active ? '#38bdf8' : 'var(--text-muted)',
+                      border: 'none',
+                      padding: '3px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.72rem',
+                      fontWeight: active ? '700' : '500',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {src}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
 
         {/* Issue Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300 border-collapse">
-            <thead>
-              <tr className="border-b border-slate-800 text-slate-400 font-semibold uppercase text-xs tracking-wider">
-                <th className="py-3 px-4">Priority</th>
-                <th className="py-3 px-3">Severity</th>
-                <th className="py-3 px-4">Issue</th>
-                <th className="py-3 px-4">Column / Scope</th>
-                <th className="py-3 px-3">Source</th>
-                <th className="py-3 px-3">Affected Data</th>
-                <th className="py-3 px-4">Remediation Action</th>
-                <th className="py-3 px-4 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {filteredIssues.length === 0 ? (
+        <div className="results-table-card" style={{ border: 'none', boxShadow: 'none' }}>
+          <div className="table-responsive">
+            <table className="data-table" style={{ width: '100%' }}>
+              <thead>
                 <tr>
-                  <td colSpan={8} className="py-8 text-center text-slate-500 text-sm">
-                    No issues match the selected filter criteria.
-                  </td>
+                  <th style={{ minWidth: '90px' }}>Priority</th>
+                  <th style={{ minWidth: '100px' }}>Severity</th>
+                  <th style={{ minWidth: '220px' }}>Issue Title</th>
+                  <th style={{ minWidth: '130px' }}>Column / Scope</th>
+                  <th style={{ minWidth: '90px' }}>Source</th>
+                  <th style={{ minWidth: '120px' }}>Affected Data</th>
+                  <th style={{ minWidth: '220px' }}>Remediation Action</th>
+                  <th style={{ minWidth: '90px', textAlign: 'right' }}>Action</th>
                 </tr>
-              ) : (
-                filteredIssues.map((iss) => (
-                  <tr
-                    key={iss.id}
-                    onClick={() => setSelectedIssue(iss)}
-                    className="hover:bg-slate-800/40 cursor-pointer transition-colors group"
-                  >
-                    {/* Priority Score prominent numeric badge */}
-                    <td className="py-3.5 px-4 font-mono font-extrabold text-cyan-400">
-                      <span className="px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-bold text-xs">
-                        {iss.priority_score.toFixed(1)}
-                      </span>
-                    </td>
-
-                    {/* Severity Badge */}
-                    <td className="py-3.5 px-3">
-                      <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getSeverityBadge(iss.severity)}`}>
-                        {iss.severity}
-                      </span>
-                    </td>
-
-                    {/* Issue Title */}
-                    <td className="py-3.5 px-4 font-medium text-slate-200 group-hover:text-cyan-300 transition-colors">
-                      {iss.title}
-                    </td>
-
-                    {/* Column / Scope */}
-                    <td className="py-3.5 px-4 font-mono text-white font-medium text-xs">
-                      {iss.column_name || <span className="text-slate-500 italic">Dataset-wide</span>}
-                    </td>
-
-                    {/* Source Tag */}
-                    <td className="py-3.5 px-3">
-                      <span className={`px-2 py-0.5 rounded text-xs font-semibold border ${getSourceBadge(iss.source)}`}>
-                        {iss.source}
-                      </span>
-                    </td>
-
-                    {/* Affected Data */}
-                    <td className="py-3.5 px-3 font-mono text-slate-400 text-xs">
-                      {iss.affected_percentage.toFixed(1)}% <span className="text-slate-500">({iss.affected_rows}r)</span>
-                    </td>
-
-                    {/* Remediation Action Summary */}
-                    <td className="py-3.5 px-4 text-xs text-slate-400 max-w-xs truncate">
-                      {iss.recommendation?.summary || 'Investigate issue details'}
-                    </td>
-
-                    {/* Action button */}
-                    <td className="py-3.5 px-4 text-right">
-                      <button className="px-3 py-1 rounded-lg bg-slate-800 group-hover:bg-cyan-600 text-xs font-medium text-slate-300 group-hover:text-white transition-colors border border-slate-700">
-                        Inspect →
-                      </button>
+              </thead>
+              <tbody>
+                {filteredIssues.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} style={{ padding: '36px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                      No issues match the selected filter criteria.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  filteredIssues.map((iss) => {
+                    const sBadge = getSeverityBadge(iss.severity);
+                    const srcBadge = getSourceBadge(iss.source);
+                    return (
+                      <tr
+                        key={iss.id}
+                        onClick={() => setSelectedIssue(iss)}
+                        style={{ cursor: 'pointer', transition: 'background 0.15s ease' }}
+                      >
+                        {/* Priority Score prominent numeric badge */}
+                        <td>
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontWeight: '800',
+                              fontSize: '0.82rem',
+                              padding: '2px 8px',
+                              borderRadius: '6px',
+                              background: 'rgba(6, 182, 212, 0.15)',
+                              color: '#38bdf8',
+                              border: '1px solid rgba(6, 182, 212, 0.35)',
+                            }}
+                          >
+                            {iss.priority_score.toFixed(1)}
+                          </span>
+                        </td>
+
+                        {/* Severity Badge */}
+                        <td>
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              fontWeight: '700',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              background: sBadge.bg,
+                              color: sBadge.color,
+                              border: `1px solid ${sBadge.border}`,
+                            }}
+                          >
+                            {iss.severity}
+                          </span>
+                        </td>
+
+                        {/* Issue Title */}
+                        <td>
+                          <span style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.85rem' }}>
+                            {iss.title}
+                          </span>
+                        </td>
+
+                        {/* Column / Scope */}
+                        <td>
+                          <span className="column-name-code" style={{ fontSize: '0.82rem' }}>
+                            {iss.column_name || <span className="text-muted" style={{ fontStyle: 'italic' }}>Dataset-wide</span>}
+                          </span>
+                        </td>
+
+                        {/* Source Tag */}
+                        <td>
+                          <span
+                            style={{
+                              fontSize: '0.7rem',
+                              fontWeight: '600',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              background: srcBadge.bg,
+                              color: srcBadge.color,
+                              border: `1px solid ${srcBadge.border}`,
+                            }}
+                          >
+                            {iss.source}
+                          </span>
+                        </td>
+
+                        {/* Affected Data */}
+                        <td>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                            {iss.affected_percentage.toFixed(1)}% <span className="text-muted">({iss.affected_rows}r)</span>
+                          </span>
+                        </td>
+
+                        {/* Remediation Action Summary */}
+                        <td style={{ maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          {iss.recommendation?.summary || 'Investigate issue details'}
+                        </td>
+
+                        {/* Action button */}
+                        <td style={{ textAlign: 'right' }}>
+                          <button className="btn btn--sm btn--secondary">
+                            Inspect →
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       {/* 6. Slide-Out Issue Detail Drawer */}
       {selectedIssue && (
         <div
-          className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-fade-in"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            background: 'rgba(0, 0, 0, 0.65)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
           onClick={() => setSelectedIssue(null)}
         >
           <div
-            className="w-full max-w-2xl bg-slate-900 border-l border-slate-800 h-full p-6 overflow-y-auto space-y-6 shadow-2xl flex flex-col justify-between"
+            style={{
+              width: '100%',
+              maxWidth: '680px',
+              height: '100%',
+              background: 'var(--bg-secondary)',
+              borderLeft: '1px solid var(--border-medium)',
+              boxShadow: 'var(--shadow-lg)',
+              padding: '24px',
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: '20px',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="space-y-6">
+            <div className="flex-col" style={{ gap: '20px' }}>
               {/* Drawer Header */}
-              <div className="flex items-start justify-between border-b border-slate-800 pb-4">
+              <div className="flex-row justify-between align-center" style={{ borderBottom: '1px solid var(--border-subtle)', paddingBottom: '16px' }}>
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getSeverityBadge(selectedIssue.severity)}`}>
+                  <div className="flex-row align-center" style={{ gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        background: getSeverityBadge(selectedIssue.severity).bg,
+                        color: getSeverityBadge(selectedIssue.severity).color,
+                        border: `1px solid ${getSeverityBadge(selectedIssue.severity).border}`,
+                      }}
+                    >
                       {selectedIssue.severity} Severity
                     </span>
-                    <span className={`px-2.5 py-1 rounded-md text-xs font-semibold border ${getSourceBadge(selectedIssue.source)}`}>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        background: getSourceBadge(selectedIssue.source).bg,
+                        color: getSourceBadge(selectedIssue.source).color,
+                        border: `1px solid ${getSourceBadge(selectedIssue.source).border}`,
+                      }}
+                    >
                       {selectedIssue.source} Signal
                     </span>
-                    <span className="font-mono text-xs text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.75rem',
+                        color: '#38bdf8',
+                        background: 'rgba(6, 182, 212, 0.15)',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        border: '1px solid rgba(6, 182, 212, 0.35)',
+                      }}
+                    >
                       Priority: {selectedIssue.priority_score.toFixed(1)} / 100
                     </span>
                   </div>
-                  <h2 className="text-xl font-bold text-white">{selectedIssue.title}</h2>
-                  <p className="text-xs text-slate-400 font-mono mt-1">
+                  <h2 style={{ margin: 0, fontSize: '1.3rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                    {selectedIssue.title}
+                  </h2>
+                  <p className="text-muted" style={{ margin: '4px 0 0 0', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
                     Target: {selectedIssue.column_name || 'Dataset-Wide'} • Category: {selectedIssue.issue_type}
                   </p>
                 </div>
                 <button
                   onClick={() => setSelectedIssue(null)}
-                  className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="btn btn--sm btn--secondary"
+                  style={{ fontSize: '1rem', padding: '6px 12px' }}
                 >
                   ✕
                 </button>
               </div>
 
               {/* 1. Issue Overview & Affected Data */}
-              <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-2">
-                <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
+              <div className="glass-card" style={{ padding: '16px', background: 'var(--bg-card)' }}>
+                <span className="stat-label" style={{ display: 'block', marginBottom: '6px' }}>
                   Issue Overview & Impact
                 </span>
-                <p className="text-sm text-slate-200 leading-relaxed font-medium">
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-primary)', lineHeight: '1.6', margin: 0 }}>
                   {selectedIssue.description}
                 </p>
-                <div className="flex items-center gap-4 text-xs font-mono text-slate-400 pt-1">
-                  <span>Affected Rows: {selectedIssue.affected_rows}</span>
+                <div className="flex-row align-center" style={{ gap: '12px', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed var(--border-subtle)' }}>
+                  <span>Affected Rows: <strong style={{ color: 'var(--text-primary)' }}>{selectedIssue.affected_rows}</strong></span>
                   <span>•</span>
-                  <span>Affected Data: {selectedIssue.affected_percentage.toFixed(2)}%</span>
+                  <span>Affected Data: <strong style={{ color: 'var(--text-primary)' }}>{selectedIssue.affected_percentage.toFixed(2)}%</strong></span>
                 </div>
               </div>
 
               {/* 2. Priority Score Component Breakdown with Visual Progress Bars */}
-              <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-3">
-                <span className="text-xs font-semibold uppercase text-cyan-400 tracking-wider">
+              <div style={{ padding: '16px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                <span className="stat-label" style={{ display: 'block', marginBottom: '12px', color: '#38bdf8' }}>
                   Priority Score Component Breakdown
                 </span>
-                <div className="space-y-2.5 text-xs">
+                <div className="flex-col" style={{ gap: '10px' }}>
                   {/* Severity Factor */}
                   <div>
-                    <div className="flex justify-between text-slate-300 mb-1">
+                    <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '3px' }}>
                       <span>Severity (30% weight)</span>
-                      <span className="font-mono font-bold text-white">{selectedIssue.severity}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-primary)' }}>{selectedIssue.severity}</span>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div style={{ width: '100%', height: '5px', background: 'var(--bg-input)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div
-                        className="bg-rose-500 h-full rounded-full"
                         style={{
+                          height: '100%',
+                          background: '#f43f5e',
                           width: `${
                             selectedIssue.severity === 'CRITICAL'
                               ? 100
@@ -799,56 +1118,68 @@ export default function Issues() {
 
                   {/* Affected Data */}
                   <div>
-                    <div className="flex justify-between text-slate-300 mb-1">
+                    <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '3px' }}>
                       <span>Affected Data Impact (25% weight)</span>
-                      <span className="font-mono font-bold text-white">{selectedIssue.affected_percentage.toFixed(1)}%</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-primary)' }}>{selectedIssue.affected_percentage.toFixed(1)}%</span>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div style={{ width: '100%', height: '5px', background: 'var(--bg-input)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div
-                        className="bg-orange-500 h-full rounded-full"
-                        style={{ width: `${Math.min(100, selectedIssue.affected_percentage)}%` }}
+                        style={{
+                          height: '100%',
+                          background: '#f97316',
+                          width: `${Math.min(100, selectedIssue.affected_percentage)}%`,
+                        }}
                       />
                     </div>
                   </div>
 
                   {/* Sensitivity */}
                   <div>
-                    <div className="flex justify-between text-slate-300 mb-1">
+                    <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '3px' }}>
                       <span>Data Sensitivity Heuristic (20% weight)</span>
-                      <span className="font-mono font-bold text-white">{selectedIssue.sensitivity_score.toFixed(1)} / 100</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-primary)' }}>{selectedIssue.sensitivity_score.toFixed(1)} / 100</span>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div style={{ width: '100%', height: '5px', background: 'var(--bg-input)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div
-                        className="bg-amber-500 h-full rounded-full"
-                        style={{ width: `${selectedIssue.sensitivity_score}%` }}
+                        style={{
+                          height: '100%',
+                          background: '#fbbf24',
+                          width: `${selectedIssue.sensitivity_score}%`,
+                        }}
                       />
                     </div>
                   </div>
 
                   {/* Confidence */}
                   <div>
-                    <div className="flex justify-between text-slate-300 mb-1">
+                    <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '3px' }}>
                       <span>Confidence Heuristic (15% weight)</span>
-                      <span className="font-mono font-bold text-white">{selectedIssue.confidence_score.toFixed(1)} / 100</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-primary)' }}>{selectedIssue.confidence_score.toFixed(1)} / 100</span>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div style={{ width: '100%', height: '5px', background: 'var(--bg-input)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div
-                        className="bg-cyan-500 h-full rounded-full"
-                        style={{ width: `${selectedIssue.confidence_score}%` }}
+                        style={{
+                          height: '100%',
+                          background: '#38bdf8',
+                          width: `${selectedIssue.confidence_score}%`,
+                        }}
                       />
                     </div>
                   </div>
 
                   {/* Cross-Signal Evidence */}
                   <div>
-                    <div className="flex justify-between text-slate-300 mb-1">
+                    <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginBottom: '3px' }}>
                       <span>Cross-Signal Evidence Score (10% weight)</span>
-                      <span className="font-mono font-bold text-white">{selectedIssue.evidence_score.toFixed(1)} / 100</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-primary)' }}>{selectedIssue.evidence_score.toFixed(1)} / 100</span>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div style={{ width: '100%', height: '5px', background: 'var(--bg-input)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div
-                        className="bg-indigo-500 h-full rounded-full"
-                        style={{ width: `${selectedIssue.evidence_score}%` }}
+                        style={{
+                          height: '100%',
+                          background: '#818cf8',
+                          width: `${selectedIssue.evidence_score}%`,
+                        }}
                       />
                     </div>
                   </div>
@@ -857,51 +1188,54 @@ export default function Issues() {
 
               {/* 3. Actionable Remediation Guidance */}
               {selectedIssue.recommendation && (
-                <div className="bg-gradient-to-br from-slate-950 to-cyan-950/30 p-5 rounded-xl border border-cyan-500/30 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🛠️</span>
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wide">
+                <div
+                  style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    background: 'rgba(6, 182, 212, 0.06)',
+                    border: '1px solid rgba(6, 182, 212, 0.25)',
+                  }}
+                >
+                  <div className="flex-row align-center" style={{ gap: '8px', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '1.1rem' }}>🛠️</span>
+                    <h3 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '700', color: '#38bdf8', textTransform: 'uppercase' }}>
                       Recommended Remediation Plan
                     </h3>
                   </div>
 
                   {/* Why this matters */}
-                  <div>
-                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">
+                  <div style={{ marginBottom: '12px' }}>
+                    <span className="stat-label" style={{ display: 'block', marginBottom: '4px' }}>
                       Why This Matters:
                     </span>
-                    <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-primary)', margin: 0, lineHeight: '1.5' }}>
                       {selectedIssue.recommendation.summary}
                     </p>
                   </div>
 
-                  {/* Recommended Action: Investigation Steps */}
+                  {/* Investigation Steps */}
                   {selectedIssue.recommendation.investigation_steps?.length > 0 && (
-                    <div>
-                      <span className="text-xs font-semibold text-cyan-300 uppercase tracking-wider block mb-2">
+                    <div style={{ marginBottom: '12px' }}>
+                      <span className="stat-label" style={{ display: 'block', marginBottom: '4px', color: '#38bdf8' }}>
                         Recommended Investigation Steps:
                       </span>
-                      <ul className="space-y-1.5 text-xs text-slate-300 list-disc list-inside">
+                      <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                         {selectedIssue.recommendation.investigation_steps.map((step, idx) => (
-                          <li key={idx} className="leading-relaxed">
-                            {step}
-                          </li>
+                          <li key={idx}>{step}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
-                  {/* Recommended Action: Preventive Measures */}
+                  {/* Preventive Measures */}
                   {selectedIssue.recommendation.preventive_measures?.length > 0 && (
-                    <div>
-                      <span className="text-xs font-semibold text-cyan-300 uppercase tracking-wider block mb-2">
+                    <div style={{ marginBottom: '12px' }}>
+                      <span className="stat-label" style={{ display: 'block', marginBottom: '4px', color: '#38bdf8' }}>
                         Preventive & Safeguard Measures:
                       </span>
-                      <ul className="space-y-1.5 text-xs text-slate-300 list-disc list-inside">
+                      <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                         {selectedIssue.recommendation.preventive_measures.map((prev, idx) => (
-                          <li key={idx} className="leading-relaxed">
-                            {prev}
-                          </li>
+                          <li key={idx}>{prev}</li>
                         ))}
                       </ul>
                     </div>
@@ -909,9 +1243,21 @@ export default function Issues() {
 
                   {/* Caution Warning Box */}
                   {selectedIssue.recommendation.caution_note && (
-                    <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200 flex items-start gap-2">
-                      <span className="text-base">⚠️</span>
-                      <span className="leading-relaxed">{selectedIssue.recommendation.caution_note}</span>
+                    <div
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: '6px',
+                        background: 'rgba(245, 158, 11, 0.1)',
+                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                        fontSize: '0.78rem',
+                        color: '#fde68a',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '6px',
+                      }}
+                    >
+                      <span>⚠️</span>
+                      <span style={{ lineHeight: '1.5' }}>{selectedIssue.recommendation.caution_note}</span>
                     </div>
                   )}
                 </div>
@@ -919,19 +1265,30 @@ export default function Issues() {
 
               {/* 4. Diagnostic Evidence Details */}
               {selectedIssue.evidence && Object.keys(selectedIssue.evidence).length > 0 && (
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
-                      Underlying Diagnostic Evidence
-                    </span>
+                <div style={{ padding: '14px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="flex-row justify-between align-center" style={{ marginBottom: '8px' }}>
+                    <span className="stat-label">Underlying Diagnostic Evidence</span>
                     <button
                       onClick={() => copyToClipboard(JSON.stringify(selectedIssue.evidence, null, 2), 'evidence')}
-                      className="text-xs text-cyan-400 hover:text-cyan-300 font-medium"
+                      className="btn btn--sm btn--secondary"
+                      style={{ fontSize: '0.75rem' }}
                     >
                       {copiedKey === 'evidence' ? '✓ Copied' : 'Copy Evidence JSON'}
                     </button>
                   </div>
-                  <pre className="text-xs font-mono text-slate-400 bg-slate-900 p-3 rounded-lg overflow-x-auto max-h-40 border border-slate-800">
+                  <pre
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.78rem',
+                      color: 'var(--text-muted)',
+                      background: 'rgba(0,0,0,0.3)',
+                      padding: '10px',
+                      borderRadius: '6px',
+                      overflowX: 'auto',
+                      maxHeight: '160px',
+                      margin: 0,
+                    }}
+                  >
                     {JSON.stringify(selectedIssue.evidence, null, 2)}
                   </pre>
                 </div>
@@ -939,10 +1296,11 @@ export default function Issues() {
             </div>
 
             {/* Drawer Footer */}
-            <div className="pt-4 border-t border-slate-800 flex justify-end">
+            <div className="flex-row justify-between align-center" style={{ paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' }}>
+              <span className="text-muted" style={{ fontSize: '0.78rem' }}>DataGuard AI Prioritization Engine</span>
               <button
                 onClick={() => setSelectedIssue(null)}
-                className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white transition-colors"
+                className="btn btn--primary"
               >
                 Close Inspector
               </button>

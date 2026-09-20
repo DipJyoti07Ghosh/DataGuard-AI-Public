@@ -1,9 +1,9 @@
 /**
  * DataGuard AI — Anomaly & Outlier Detection Dashboard (Phase 8)
  *
- * Enterprise Data Observability & Statistical Anomaly Dashboard
+ * Enterprise Data Observability & Statistical Anomaly Dashboard.
  * Displays multi-method statistical (IQR, Z-Score), ML (Isolation Forest),
- * and categorical frequency anomaly findings with rich explainability.
+ * and categorical frequency anomaly findings matching the DataGuard AI design language.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -56,42 +56,46 @@ export default function Anomalies() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  // Severity styling tokens
+  // Severity styling tokens matching DataGuard AI palette
   const getSeverityBadge = (sev) => {
     switch (sev?.toUpperCase()) {
       case 'CRITICAL':
         return {
-          bg: 'bg-rose-500/15 text-rose-300 border-rose-500/40 shadow-rose-950/30',
-          dot: 'bg-rose-400',
-          badgeText: 'text-rose-300',
+          bg: 'rgba(244, 63, 94, 0.15)',
+          color: '#f43f5e',
+          border: 'rgba(244, 63, 94, 0.35)',
+          dot: '#f43f5e',
         };
       case 'HIGH':
         return {
-          bg: 'bg-orange-500/15 text-orange-300 border-orange-500/40 shadow-orange-950/30',
-          dot: 'bg-orange-400',
-          badgeText: 'text-orange-300',
+          bg: 'rgba(249, 115, 22, 0.15)',
+          color: '#f97316',
+          border: 'rgba(249, 115, 22, 0.35)',
+          dot: '#f97316',
         };
       case 'MEDIUM':
         return {
-          bg: 'bg-amber-500/15 text-amber-300 border-amber-500/40 shadow-amber-950/30',
-          dot: 'bg-amber-400',
-          badgeText: 'text-amber-300',
+          bg: 'rgba(245, 158, 11, 0.15)',
+          color: '#f59e0b',
+          border: 'rgba(245, 158, 11, 0.35)',
+          dot: '#f59e0b',
         };
       case 'LOW':
       default:
         return {
-          bg: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-emerald-950/30',
-          dot: 'bg-emerald-400',
-          badgeText: 'text-emerald-300',
+          bg: 'rgba(16, 185, 129, 0.15)',
+          color: '#10b981',
+          border: 'rgba(16, 185, 129, 0.35)',
+          dot: '#10b981',
         };
     }
   };
 
   const getScoreColor = (score) => {
-    if (score >= 75) return 'text-rose-400 from-rose-500 to-red-600';
-    if (score >= 50) return 'text-orange-400 from-orange-500 to-amber-600';
-    if (score >= 25) return 'text-amber-400 from-amber-500 to-yellow-600';
-    return 'text-emerald-400 from-emerald-500 to-teal-600';
+    if (score >= 75) return '#f43f5e';
+    if (score >= 50) return '#f97316';
+    if (score >= 25) return '#f59e0b';
+    return '#10b981';
   };
 
   // Filtered findings
@@ -118,29 +122,34 @@ export default function Anomalies() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="w-12 h-12 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin" />
-        <p className="text-slate-400 font-medium animate-pulse">
-          Running statistical & ML anomaly detection engine...
-        </p>
+      <div className="page-container flex-center" style={{ minHeight: '60vh' }}>
+        <div className="glass-card flex-col flex-center" style={{ padding: '48px', maxWidth: '480px', textAlign: 'center' }}>
+          <div className="spinner" style={{ width: '40px', height: '40px', marginBottom: '20px' }}></div>
+          <h2 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Running Anomaly Detection Engine...</h2>
+          <p className="text-muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+            Evaluating multi-method statistical (IQR, Z-Score), ML Isolation Forest, and rare categorical distributions.
+          </p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto my-12 p-8 bg-rose-500/10 border border-rose-500/30 rounded-2xl text-center space-y-4">
-        <div className="w-16 h-16 mx-auto bg-rose-500/20 text-rose-400 rounded-full flex items-center justify-center text-3xl font-bold">
-          !
+      <div className="page-container flex-center" style={{ minHeight: '60vh' }}>
+        <div className="glass-card flex-col flex-center" style={{ padding: '40px', maxWidth: '500px', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>⚠️</div>
+          <h2 style={{ margin: '0 0 8px 0', color: 'var(--danger-color, #ef4444)' }}>Anomaly Detection Failed</h2>
+          <p className="text-muted" style={{ marginBottom: '24px' }}>{error}</p>
+          <div className="flex-row" style={{ gap: '12px' }}>
+            <button className="btn btn-primary" onClick={() => fetchAnomalies(true)}>
+              Retry Anomaly Detection
+            </button>
+            <Link to="/datasets" className="btn btn-secondary">
+              Back to Datasets
+            </Link>
+          </div>
         </div>
-        <h2 className="text-xl font-bold text-rose-200">Anomaly Detection Failed</h2>
-        <p className="text-slate-400 max-w-lg mx-auto">{error}</p>
-        <button
-          onClick={() => fetchAnomalies(true)}
-          className="px-6 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-medium transition shadow-lg shadow-rose-600/30"
-        >
-          Try Again
-        </button>
       </div>
     );
   }
@@ -149,57 +158,52 @@ export default function Anomalies() {
   const totalRowsAnalyzed = data?.total_rows || data?.total_rows_analyzed || (findings.length > 0 ? findings[0].explanation?.phase7_context?.total_rows : null) || 0;
 
   return (
-    <div className="space-y-8 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* 1. Header & Breadcrumb Context */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4 border-b border-slate-800 pb-5">
+    <div className="page-container" style={{ paddingBottom: '60px' }}>
+      {/* 1. Header & Navigation Context */}
+      <div className="flex-row justify-between align-center" style={{ marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div className="flex items-center space-x-3 text-xs text-slate-400 mb-1.5">
-            <Link
-              to="/datasets"
-              className="hover:text-cyan-400 transition flex items-center gap-1 font-medium"
-            >
+          <div className="flex-row align-center" style={{ gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
+            <Link to="/datasets" className="text-muted" style={{ fontSize: '0.88rem', textDecoration: 'none' }}>
               ← Datasets
             </Link>
-            <span className="text-slate-600">/</span>
-            <span className="text-slate-200 font-semibold">{data?.dataset_name || 'Dataset'}</span>
-            <span className="px-2 py-0.5 text-xs font-mono rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            <span className="text-muted" style={{ opacity: 0.6 }}>/</span>
+            <span style={{ fontWeight: '600', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+              {data?.dataset_name || 'Dataset'}
+            </span>
+            <span className="badge badge-primary" style={{ fontSize: '0.8rem', padding: '3px 8px' }}>
               V{data?.version_number}
             </span>
-            <span className="text-slate-600">•</span>
-            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Statistical & ML Engine Active
+            <span style={{ fontSize: '0.75rem', color: '#10b981', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.25)', padding: '2px 8px', borderRadius: '12px', fontWeight: '600' }}>
+              ● Statistical & ML Engine Active
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">⚠️</span>
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-400 via-orange-300 to-yellow-200 bg-clip-text text-transparent">
-                Anomaly Detection
-              </h1>
-              <p className="text-slate-400 text-sm mt-0.5">
-                Identify statistically unusual patterns across your dataset.
-              </p>
-            </div>
+          <div className="flex-row align-center" style={{ gap: '10px' }}>
+            <h1 style={{ margin: 0, fontSize: '1.75rem', fontWeight: '700' }}>
+              ⚠️ Anomaly & Outlier Detection
+            </h1>
           </div>
+          <p className="text-muted" style={{ margin: '4px 0 0 0', fontSize: '0.92rem' }}>
+            Identify statistically unusual patterns and multi-method outliers across your dataset.
+          </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex-row align-center" style={{ gap: '10px' }}>
           <button
+            className="btn btn-secondary flex-row align-center"
+            style={{ gap: '8px' }}
             onClick={() => fetchAnomalies(true)}
             disabled={recomputing}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-medium text-sm shadow-lg shadow-amber-500/20 transition-all duration-200 disabled:opacity-50"
           >
             {recomputing ? (
               <>
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                <div className="spinner-sm"></div>
                 <span>Re-analyzing...</span>
               </>
             ) : (
               <>
-                <span>⚡</span>
+                <span>🔄</span>
                 <span>Re-run Detection</span>
               </>
             )}
@@ -208,208 +212,277 @@ export default function Anomalies() {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
+      <div className="flex-row align-center" style={{ gap: '8px', marginBottom: '24px', flexWrap: 'wrap', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px' }}>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/profile`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          📊 Profiling
+          <span>📊</span>
+          <span>Profile</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/quality`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          ✅ Data Quality
+          <span>🛡</span>
+          <span>Quality</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/pii`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          🔒 PII Scan
+          <span>🔐</span>
+          <span>PII Scan</span>
         </Link>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/risk`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem' }}
         >
-          🧠 ML Risk
+          <span>🤖</span>
+          <span>ML Risk</span>
         </Link>
-        <span className="px-4 py-2 rounded-lg text-sm font-semibold text-amber-300 bg-amber-950/60 border border-amber-500/40 shadow-sm">
-          ⚠️ Anomalies
+        <span
+          className="btn btn-secondary flex-row align-center"
+          style={{
+            gap: '6px',
+            fontSize: '0.85rem',
+            borderColor: 'rgba(245, 158, 11, 0.5)',
+            color: '#fbbf24',
+            background: 'rgba(245, 158, 11, 0.12)',
+            fontWeight: '700',
+          }}
+        >
+          <span>⚠️</span>
+          <span>Anomalies</span>
         </span>
         <Link
           to={`/datasets/${datasetId}/versions/${versionId}/issues`}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-cyan-300 hover:text-white hover:bg-slate-800/50 transition-colors border border-cyan-500/30"
+          className="btn btn-secondary flex-row align-center"
+          style={{ gap: '6px', fontSize: '0.85rem', borderColor: 'rgba(6, 182, 212, 0.4)', color: '#38bdf8' }}
         >
-          🎯 Prioritization / Health
+          <span>🎯</span>
+          <span>Prioritization</span>
+        </Link>
+        <Link to="/datasets" className="btn btn-secondary" style={{ fontSize: '0.85rem' }}>
+          📁 Datasets
         </Link>
       </div>
 
       {/* 2. Top KPI Section: 4 Compact Aligned Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {/* Card 1: Anomalies Detected */}
-        <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-xl shadow-lg flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Anomalies Detected
+        <div className="stat-card">
+          <div className="flex-col" style={{ width: '100%' }}>
+            <div className="flex-row justify-between align-center" style={{ marginBottom: '4px' }}>
+              <span className="stat-label">Anomalies Detected</span>
+              <span style={{ fontSize: '1.2rem' }}>🔍</span>
+            </div>
+            <div className="stat-value" style={{ color: '#f1f5f9' }}>
+              {data?.total_anomalies || 0}
+            </div>
+            <span className="text-muted" style={{ fontSize: '0.78rem', marginTop: '2px' }}>
+              Across all analyzed columns
             </span>
-            <span className="text-xl">🔍</span>
           </div>
-          <div className="my-2 text-3xl font-extrabold text-white">
-            {data?.total_anomalies || 0}
-          </div>
-          <span className="text-xs text-slate-500">Across all analyzed columns</span>
         </div>
 
         {/* Card 2: Columns Affected */}
-        <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-xl shadow-lg flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-              Columns Affected
+        <div className="stat-card">
+          <div className="flex-col" style={{ width: '100%' }}>
+            <div className="flex-row justify-between align-center" style={{ marginBottom: '4px' }}>
+              <span className="stat-label" style={{ color: '#fbbf24' }}>Columns Affected</span>
+              <span style={{ fontSize: '1.2rem' }}>📐</span>
+            </div>
+            <div className="stat-value" style={{ color: '#fbbf24' }}>
+              {data?.columns_with_anomalies || 0}
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 'normal', marginLeft: '4px' }}>
+                / {data?.total_columns_analyzed || 0}
+              </span>
+            </div>
+            <span className="text-muted" style={{ fontSize: '0.78rem', marginTop: '2px' }}>
+              Columns with outlier observations
             </span>
-            <span className="text-xl">📐</span>
           </div>
-          <div className="my-2 text-3xl font-extrabold text-amber-300">
-            {data?.columns_with_anomalies || 0}
-            <span className="text-sm font-normal text-slate-500 ml-1">
-              / {data?.total_columns_analyzed || 0}
-            </span>
-          </div>
-          <span className="text-xs text-slate-500">Columns with outlier observations</span>
         </div>
 
         {/* Card 3: Rows Analyzed */}
-        <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-xl shadow-lg flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-cyan-400">
-              Rows Analyzed
+        <div className="stat-card">
+          <div className="flex-col" style={{ width: '100%' }}>
+            <div className="flex-row justify-between align-center" style={{ marginBottom: '4px' }}>
+              <span className="stat-label" style={{ color: '#38bdf8' }}>Rows Analyzed</span>
+              <span style={{ fontSize: '1.2rem' }}>📊</span>
+            </div>
+            <div className="stat-value" style={{ color: '#38bdf8' }}>
+              {totalRowsAnalyzed ? totalRowsAnalyzed.toLocaleString() : '100%'}
+            </div>
+            <span className="text-muted" style={{ fontSize: '0.78rem', marginTop: '2px' }}>
+              Dataset population evaluated
             </span>
-            <span className="text-xl">📊</span>
           </div>
-          <div className="my-2 text-3xl font-extrabold text-cyan-300">
-            {totalRowsAnalyzed ? totalRowsAnalyzed.toLocaleString() : '100%'}
-          </div>
-          <span className="text-xs text-slate-500">Dataset population evaluated</span>
         </div>
 
         {/* Card 4: Dataset Anomaly Score */}
-        <div className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-xl shadow-lg flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Dataset Anomaly Score
-            </span>
-            <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full border ${scoreBadge.bg}`}>
-              {data?.overall_severity || 'LOW'}
+        <div className="stat-card" style={{ borderLeft: `4px solid ${scoreBadge.color}` }}>
+          <div className="flex-col" style={{ width: '100%' }}>
+            <div className="flex-row justify-between align-center" style={{ marginBottom: '4px' }}>
+              <span className="stat-label">Anomaly Score</span>
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: '700',
+                  padding: '2px 8px',
+                  borderRadius: '6px',
+                  background: scoreBadge.bg,
+                  color: scoreBadge.color,
+                  border: `1px solid ${scoreBadge.border}`,
+                }}
+              >
+                {data?.overall_severity || 'LOW'}
+              </span>
+            </div>
+            <div className="flex-row align-center" style={{ gap: '6px' }}>
+              <span className="stat-value" style={{ color: getScoreColor(data?.dataset_anomaly_score) }}>
+                {data?.dataset_anomaly_score?.toFixed(1) || '0.0'}
+              </span>
+              <span className="text-muted" style={{ fontSize: '0.85rem' }}>/ 100</span>
+            </div>
+            <span className="text-muted" style={{ fontSize: '0.78rem', marginTop: '2px' }}>
+              Composite anomaly index
             </span>
           </div>
-          <div className="my-2 flex items-baseline gap-1.5">
-            <span className={`text-3xl font-extrabold bg-gradient-to-r ${getScoreColor(data?.dataset_anomaly_score)} bg-clip-text text-transparent`}>
-              {data?.dataset_anomaly_score?.toFixed(1) || '0.0'}
-            </span>
-            <span className="text-slate-500 text-sm font-medium">/ 100</span>
-          </div>
-          <span className="text-xs text-slate-500">Composite anomaly index</span>
         </div>
       </div>
 
       {/* 3. Anomaly Overview & Severity Distribution */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Hero Card: Anomaly Score Meter */}
-        <div className="lg:col-span-4 p-6 rounded-2xl bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-800/50 border border-slate-800/80 backdrop-blur-xl shadow-xl flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 -mr-6 -mt-6 w-28 h-28 bg-amber-500/10 rounded-full blur-2xl" />
+      <div className="grid-responsive" style={{ gridTemplateColumns: 'minmax(280px, 1fr) 2fr', gap: '20px', marginBottom: '24px' }}>
+        {/* Left Hero Card: Composite Anomaly Score Meter */}
+        <div
+          className="glass-card flex-col justify-between"
+          style={{
+            padding: '24px',
+            borderLeft: `5px solid ${scoreBadge.color}`,
+            background: 'var(--bg-card)',
+          }}
+        >
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs uppercase font-bold tracking-wider text-slate-400">
-                Composite Anomaly Index
-              </span>
-              <span className={`px-2.5 py-1 text-xs font-bold rounded-full border shadow-sm ${scoreBadge.bg}`}>
-                <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${scoreBadge.dot}`} />
-                {data?.overall_severity}
+            <div className="flex-row justify-between align-center" style={{ marginBottom: '12px' }}>
+              <span className="stat-label">Composite Anomaly Index</span>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: '700',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  background: scoreBadge.bg,
+                  color: scoreBadge.color,
+                  border: `1px solid ${scoreBadge.border}`,
+                  letterSpacing: '0.05em',
+                }}
+              >
+                ● {data?.overall_severity}
               </span>
             </div>
 
-            <div className="my-3 flex items-baseline gap-2">
-              <span className={`text-5xl font-extrabold tracking-tight bg-gradient-to-r ${getScoreColor(data?.dataset_anomaly_score)} bg-clip-text text-transparent`}>
+            <div className="flex-row align-center" style={{ gap: '8px', margin: '12px 0' }}>
+              <span style={{ fontSize: '2.8rem', fontWeight: '800', color: getScoreColor(data?.dataset_anomaly_score), lineHeight: 1 }}>
                 {data?.dataset_anomaly_score?.toFixed(1) || '0.0'}
               </span>
-              <span className="text-slate-500 font-semibold text-lg">/ 100</span>
+              <span className="text-muted" style={{ fontSize: '1.1rem', fontWeight: '600' }}>/ 100</span>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed mt-2">
+            <p className="text-muted" style={{ fontSize: '0.85rem', lineHeight: '1.5', margin: '8px 0 0 0' }}>
               Consensus score weighted across multi-detector agreement (IQR, Z-Score, Isolation Forest), statistical excursion rates, and sensitive column context.
             </p>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+          <div
+            className="flex-row justify-between align-center"
+            style={{
+              marginTop: '20px',
+              paddingTop: '12px',
+              borderTop: '1px solid var(--border-subtle)',
+              fontSize: '0.8rem',
+              color: 'var(--text-muted)',
+            }}
+          >
             <span>Last Analyzed:</span>
-            <span className="font-mono text-slate-300">
-              {data?.analyzed_at ? new Date(data.analyzed_at).toLocaleTimeString() : 'Just now'}
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+              {data?.analyzed_at ? new Date(data.analyzed_at).toLocaleString() : 'Just now'}
             </span>
           </div>
         </div>
 
-        {/* Right Card: Severity Distribution & Consensus Breakdown */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-slate-900/70 border border-slate-800/80 backdrop-blur-xl shadow-xl flex flex-col justify-between space-y-5">
+        {/* Right Card: Severity Distribution & Multi-Method Consensus Note */}
+        <div className="glass-card flex-col justify-between" style={{ padding: '24px', background: 'var(--bg-card)' }}>
           <div>
-            <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <span>📊</span> Severity Distribution & Detector Consensus
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)' }}>
+              📊 Severity Distribution & Detector Consensus
             </h3>
 
             {/* Severity Bars */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-rose-500/20">
-                <div className="flex items-center justify-between text-xs text-rose-300 font-semibold">
+            <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(244, 63, 94, 0.08)', border: '1px solid rgba(244, 63, 94, 0.25)' }}>
+                <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: '#f43f5e', fontWeight: '700' }}>
                   <span>CRITICAL</span>
-                  <span className="font-mono font-bold">{data?.critical_count || 0}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)' }}>{data?.critical_count || 0}</span>
                 </div>
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                <div style={{ width: '100%', height: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
                   <div
-                    className="bg-rose-500 h-full rounded-full"
                     style={{
+                      height: '100%',
+                      background: '#f43f5e',
                       width: `${data?.total_anomalies ? ((data.critical_count || 0) / data.total_anomalies) * 100 : 0}%`,
                     }}
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-orange-500/20">
-                <div className="flex items-center justify-between text-xs text-orange-300 font-semibold">
+              <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(249, 115, 22, 0.08)', border: '1px solid rgba(249, 115, 22, 0.25)' }}>
+                <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: '#f97316', fontWeight: '700' }}>
                   <span>HIGH</span>
-                  <span className="font-mono font-bold">{data?.high_count || 0}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)' }}>{data?.high_count || 0}</span>
                 </div>
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                <div style={{ width: '100%', height: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
                   <div
-                    className="bg-orange-500 h-full rounded-full"
                     style={{
+                      height: '100%',
+                      background: '#f97316',
                       width: `${data?.total_anomalies ? ((data.high_count || 0) / data.total_anomalies) * 100 : 0}%`,
                     }}
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-amber-500/20">
-                <div className="flex items-center justify-between text-xs text-amber-300 font-semibold">
+              <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.25)' }}>
+                <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: '#fbbf24', fontWeight: '700' }}>
                   <span>MEDIUM</span>
-                  <span className="font-mono font-bold">{data?.medium_count || 0}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)' }}>{data?.medium_count || 0}</span>
                 </div>
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                <div style={{ width: '100%', height: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
                   <div
-                    className="bg-amber-500 h-full rounded-full"
                     style={{
+                      height: '100%',
+                      background: '#f59e0b',
                       width: `${data?.total_anomalies ? ((data.medium_count || 0) / data.total_anomalies) * 100 : 0}%`,
                     }}
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-emerald-500/20">
-                <div className="flex items-center justify-between text-xs text-emerald-300 font-semibold">
+              <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
+                <div className="flex-row justify-between align-center" style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: '700' }}>
                   <span>LOW</span>
-                  <span className="font-mono font-bold">{data?.low_count || 0}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)' }}>{data?.low_count || 0}</span>
                 </div>
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                <div style={{ width: '100%', height: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '3px', marginTop: '8px', overflow: 'hidden' }}>
                   <div
-                    className="bg-emerald-500 h-full rounded-full"
                     style={{
+                      height: '100%',
+                      background: '#10b981',
                       width: `${data?.total_anomalies ? ((data.low_count || 0) / data.total_anomalies) * 100 : 0}%`,
                     }}
                   />
@@ -418,22 +491,29 @@ export default function Anomalies() {
             </div>
 
             {/* Explanatory note */}
-            <div className="p-3.5 rounded-xl bg-indigo-950/30 border border-indigo-500/20 text-xs text-slate-300 flex items-start gap-2.5">
-              <span className="text-base">💡</span>
-              <span className="leading-relaxed">
-                <strong className="text-indigo-300 font-semibold">Multi-Method Consensus:</strong> High-confidence anomalies trigger multiple independent detectors (IQR + Z-Score + ML Isolation Forest). Single-detector anomalies indicate potential tail events or skewed distributions.
-              </span>
+            <div
+              style={{
+                padding: '12px 14px',
+                borderRadius: '8px',
+                background: 'rgba(99, 102, 241, 0.08)',
+                border: '1px solid rgba(99, 102, 241, 0.25)',
+                fontSize: '0.82rem',
+                color: 'var(--text-secondary)',
+                lineHeight: 1.5,
+              }}
+            >
+              <strong style={{ color: '#a5b4fc' }}>💡 Multi-Method Consensus:</strong> High-confidence anomalies trigger multiple independent detectors (IQR + Z-Score + ML Isolation Forest). Single-detector anomalies indicate potential tail events or skewed distributions.
             </div>
           </div>
         </div>
       </div>
 
       {/* 4. Filter & Search Controls */}
-      <div className="space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="glass-card" style={{ padding: '18px 20px', marginBottom: '20px' }}>
+        <div className="flex-row justify-between align-center" style={{ flexWrap: 'wrap', gap: '14px' }}>
           {/* Method Filter Chips */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-slate-400 font-semibold mr-1">Method:</span>
+          <div className="flex-row align-center" style={{ gap: '6px', flexWrap: 'wrap' }}>
+            <span className="stat-label" style={{ marginRight: '4px' }}>Method:</span>
             {[
               { id: 'ALL', label: 'All Methods' },
               { id: 'MULTI_METHOD_CONSENSUS', label: 'Consensus (2+)' },
@@ -441,52 +521,77 @@ export default function Anomalies() {
               { id: 'Z_SCORE', label: 'Z-Score (|z|≥3)' },
               { id: 'ISOLATION_FOREST', label: 'Isolation Forest (ML)' },
               { id: 'CATEGORICAL_FREQUENCY', label: 'Rare Categories' },
-            ].map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setSelectedMethod(m.id)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition border ${
-                  selectedMethod === m.id
-                    ? 'bg-amber-500 text-white border-amber-400 shadow-md shadow-amber-500/20'
-                    : 'bg-slate-900/70 text-slate-400 border-slate-800 hover:text-slate-200 hover:bg-slate-800/60'
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
+            ].map((m) => {
+              const active = selectedMethod === m.id;
+              return (
+                <button
+                  key={m.id}
+                  onClick={() => setSelectedMethod(m.id)}
+                  className="btn btn--sm"
+                  style={{
+                    background: active ? 'rgba(245, 158, 11, 0.2)' : 'var(--bg-glass)',
+                    color: active ? '#fbbf24' : 'var(--text-secondary)',
+                    border: active ? '1px solid rgba(245, 158, 11, 0.5)' : '1px solid var(--border-subtle)',
+                    fontWeight: active ? '700' : '500',
+                  }}
+                >
+                  {m.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Severity Filters */}
-          <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
-            {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map((s) => (
-              <button
-                key={s}
-                onClick={() => setSelectedSeverity(s)}
-                className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition ${
-                  selectedSeverity === s
-                    ? 'bg-slate-800 text-white shadow'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+          <div className="flex-row align-center" style={{ gap: '4px', background: 'rgba(0, 0, 0, 0.25)', padding: '3px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+            {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map((s) => {
+              const active = selectedSeverity === s;
+              return (
+                <button
+                  key={s}
+                  onClick={() => setSelectedSeverity(s)}
+                  style={{
+                    background: active ? 'var(--bg-card-hover)' : 'transparent',
+                    color: active ? 'var(--text-primary)' : 'var(--text-muted)',
+                    border: 'none',
+                    padding: '4px 10px',
+                    borderRadius: '6px',
+                    fontSize: '0.78rem',
+                    fontWeight: active ? '700' : '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {s}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Search Bar */}
-        <div className="relative">
+        <div style={{ marginTop: '14px', position: 'relative' }}>
           <input
             type="text"
             value={searchCol}
             onChange={(e) => setSearchCol(e.target.value)}
             placeholder="Search column names..."
-            className="w-full bg-slate-900/80 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition"
+            className="form-input"
+            style={{ paddingRight: '60px' }}
           />
           {searchCol && (
             <button
               onClick={() => setSearchCol('')}
-              className="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-200"
+              style={{
+                position: 'absolute',
+                right: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+                fontSize: '0.78rem',
+              }}
             >
               Clear
             </button>
@@ -495,23 +600,23 @@ export default function Anomalies() {
       </div>
 
       {/* 5. Anomaly Findings Table */}
-      <div className="bg-slate-900/70 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl backdrop-blur-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300 border-collapse">
-            <thead className="bg-slate-800/60 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800">
+      <div className="results-table-card" style={{ marginBottom: '28px' }}>
+        <div className="table-responsive">
+          <table className="data-table" style={{ width: '100%' }}>
+            <thead>
               <tr>
-                <th className="px-6 py-4 font-semibold">Column & Phase 7 Context</th>
-                <th className="px-6 py-4 font-semibold">Detection Methods</th>
-                <th className="px-6 py-4 font-semibold">Anomalies Detected</th>
-                <th className="px-6 py-4 font-semibold">Severity</th>
-                <th className="px-6 py-4 font-semibold">Anomaly Score</th>
-                <th className="px-6 py-4 font-semibold text-right">Inspection</th>
+                <th style={{ minWidth: '200px' }}>Column & ML Context</th>
+                <th style={{ minWidth: '220px' }}>Detection Methods</th>
+                <th style={{ minWidth: '160px' }}>Anomalies Detected</th>
+                <th style={{ minWidth: '120px' }}>Severity</th>
+                <th style={{ minWidth: '110px' }}>Score</th>
+                <th style={{ minWidth: '100px', textAlign: 'right' }}>Inspection</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody>
               {filteredFindings.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan="6" style={{ padding: '36px', textAlign: 'center', color: 'var(--text-muted)' }}>
                     No anomaly findings match the selected filter criteria.
                   </td>
                 </tr>
@@ -524,22 +629,41 @@ export default function Anomalies() {
                   return (
                     <tr
                       key={f.id}
-                      className="hover:bg-slate-800/40 transition cursor-pointer group"
                       onClick={() => setSelectedFinding(f)}
+                      style={{ cursor: 'pointer', transition: 'background 0.15s ease' }}
                     >
                       {/* Column Name & Phase 7 info */}
-                      <td className="px-6 py-4">
-                        <div className="font-mono font-semibold text-white text-sm group-hover:text-amber-300 transition-colors">
+                      <td>
+                        <div className="column-name-code" style={{ fontSize: '0.9rem' }}>
                           {f.column_name}
                         </div>
-                        <div className="mt-1 flex items-center gap-2">
+                        <div className="flex-row align-center" style={{ gap: '6px', marginTop: '4px' }}>
                           {p7Context?.predicted_domain && (
-                            <span className="px-2 py-0.5 text-[11px] rounded bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+                            <span
+                              style={{
+                                fontSize: '0.72rem',
+                                padding: '1px 6px',
+                                borderRadius: '4px',
+                                background: 'rgba(99, 102, 241, 0.15)',
+                                color: '#a5b4fc',
+                                border: '1px solid rgba(99, 102, 241, 0.3)',
+                              }}
+                            >
                               {p7Context.predicted_domain}
                             </span>
                           )}
                           {p7Context?.risk_level && (
-                            <span className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-800 text-slate-400 border border-slate-700">
+                            <span
+                              style={{
+                                fontSize: '0.7rem',
+                                fontFamily: 'var(--font-mono)',
+                                padding: '1px 5px',
+                                borderRadius: '4px',
+                                background: 'var(--bg-glass)',
+                                color: 'var(--text-muted)',
+                                border: '1px solid var(--border-subtle)',
+                              }}
+                            >
                               Risk: {p7Context.risk_level}
                             </span>
                           )}
@@ -547,22 +671,40 @@ export default function Anomalies() {
                       </td>
 
                       {/* Active Methods */}
-                      <td className="px-6 py-4">
-                        <div className="flex flex-wrap gap-1.5">
+                      <td>
+                        <div className="flex-row" style={{ gap: '4px', flexWrap: 'wrap' }}>
                           {activeMethods.length === 0 ? (
-                            <span className="text-xs text-slate-500 italic">None (Clean)</span>
+                            <span className="text-muted" style={{ fontSize: '0.78rem', fontStyle: 'italic' }}>None (Clean)</span>
                           ) : (
                             activeMethods.map((m) => (
                               <span
                                 key={m}
-                                className="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-800 text-slate-300 border border-slate-700"
+                                style={{
+                                  fontSize: '0.72rem',
+                                  fontWeight: '600',
+                                  padding: '2px 6px',
+                                  borderRadius: '4px',
+                                  background: 'var(--bg-glass)',
+                                  color: 'var(--text-secondary)',
+                                  border: '1px solid var(--border-subtle)',
+                                }}
                               >
                                 {m}
                               </span>
                             ))
                           )}
                           {f.detection_method === 'MULTI_METHOD_CONSENSUS' && (
-                            <span className="px-2 py-0.5 text-[11px] font-bold rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                            <span
+                              style={{
+                                fontSize: '0.72rem',
+                                fontWeight: '700',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                background: 'rgba(245, 158, 11, 0.15)',
+                                color: '#fbbf24',
+                                border: '1px solid rgba(245, 158, 11, 0.35)',
+                              }}
+                            >
                               ★ Consensus
                             </span>
                           )}
@@ -570,44 +712,59 @@ export default function Anomalies() {
                       </td>
 
                       {/* Anomaly Count & Rate */}
-                      <td className="px-6 py-4">
-                        <div className="font-semibold text-white">
+                      <td>
+                        <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
                           {f.anomaly_count}{' '}
-                          <span className="text-xs font-normal text-slate-400">
+                          <span className="text-muted" style={{ fontSize: '0.78rem', fontWeight: 'normal' }}>
                             ({f.anomaly_rate}%)
                           </span>
                         </div>
-                        <div className="w-24 bg-slate-800 rounded-full h-1.5 mt-1.5 overflow-hidden">
+                        <div style={{ width: '100px', height: '4px', background: 'rgba(0,0,0,0.3)', borderRadius: '2px', marginTop: '6px', overflow: 'hidden' }}>
                           <div
-                            className={`h-full rounded-full bg-gradient-to-r ${getScoreColor(f.score)}`}
-                            style={{ width: `${Math.min(100, f.anomaly_rate * 5)}%` }}
+                            style={{
+                              height: '100%',
+                              background: getScoreColor(f.score),
+                              width: `${Math.min(100, f.anomaly_rate * 5)}%`,
+                            }}
                           />
                         </div>
                       </td>
 
                       {/* Severity */}
-                      <td className="px-6 py-4">
-                        <span className={`px-2.5 py-1 text-xs font-bold rounded-full border inline-flex items-center gap-1.5 ${sBadge.bg}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${sBadge.dot}`} />
-                          {f.severity}
+                      <td>
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            fontWeight: '700',
+                            padding: '3px 8px',
+                            borderRadius: '12px',
+                            background: sBadge.bg,
+                            color: sBadge.color,
+                            border: `1px solid ${sBadge.border}`,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          ● {f.severity}
                         </span>
                       </td>
 
                       {/* Score Meter */}
-                      <td className="px-6 py-4">
-                        <span className={`font-mono font-bold text-sm ${getScoreColor(f.score).split(' ')[0]}`}>
+                      <td>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', fontSize: '0.9rem', color: getScoreColor(f.score) }}>
                           {f.score.toFixed(1)}
                         </span>
                       </td>
 
                       {/* Inspection button */}
-                      <td className="px-6 py-4 text-right">
+                      <td style={{ textAlign: 'right' }}>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedFinding(f);
                           }}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 group-hover:bg-amber-600 text-slate-200 group-hover:text-white transition border border-slate-700"
+                          className="btn btn--sm btn--secondary"
                         >
                           Inspect →
                         </button>
@@ -621,199 +778,309 @@ export default function Anomalies() {
         </div>
       </div>
 
-      {/* 6. Detail Panel / Drawer */}
+      {/* 6. Detail Panel / Slide-out Drawer */}
       {selectedFinding && (
         <div
-          className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm flex justify-end animate-fade-in"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            background: 'rgba(0, 0, 0, 0.65)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
           onClick={() => setSelectedFinding(null)}
         >
           <div
-            className="w-full max-w-2xl bg-slate-900 border-l border-slate-800 shadow-2xl p-6 overflow-y-auto space-y-6 flex flex-col justify-between"
+            style={{
+              width: '100%',
+              maxWidth: '680px',
+              height: '100%',
+              background: 'var(--bg-secondary)',
+              borderLeft: '1px solid var(--border-medium)',
+              boxShadow: 'var(--shadow-lg)',
+              padding: '24px',
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              gap: '20px',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="space-y-6">
+            <div className="flex-col" style={{ gap: '20px' }}>
               {/* Drawer Header */}
-              <div className="flex items-start justify-between border-b border-slate-800 pb-4">
+              <div className="flex-row justify-between align-center" style={{ borderBottom: '1px solid var(--border-subtle)', paddingBottom: '16px' }}>
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`px-2.5 py-1 text-xs font-bold rounded-full border ${getSeverityBadge(selectedFinding.severity).bg}`}>
+                  <div className="flex-row align-center" style={{ gap: '8px', marginBottom: '8px' }}>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        padding: '2px 8px',
+                        borderRadius: '10px',
+                        background: getSeverityBadge(selectedFinding.severity).bg,
+                        color: getSeverityBadge(selectedFinding.severity).color,
+                        border: `1px solid ${getSeverityBadge(selectedFinding.severity).border}`,
+                      }}
+                    >
                       {selectedFinding.severity} Severity
                     </span>
-                    <span className="font-mono text-xs text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-500/30">
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.75rem',
+                        color: '#fbbf24',
+                        background: 'rgba(245, 158, 11, 0.15)',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                      }}
+                    >
                       Score: {selectedFinding.score.toFixed(1)} / 100
                     </span>
                   </div>
-                  <h2 className="text-xl font-mono font-bold text-white">
+                  <h2 style={{ margin: 0, fontSize: '1.35rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-primary)' }}>
                     {selectedFinding.column_name}
                   </h2>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Detection Method: <span className="font-mono text-slate-300">{selectedFinding.detection_method}</span>
+                  <p className="text-muted" style={{ margin: '4px 0 0 0', fontSize: '0.8rem' }}>
+                    Detection Method: <strong style={{ color: 'var(--text-secondary)' }}>{selectedFinding.detection_method}</strong>
                   </p>
                 </div>
                 <button
                   onClick={() => setSelectedFinding(null)}
-                  className="p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800/60 hover:bg-slate-800 transition"
+                  className="btn btn--sm btn--secondary"
+                  style={{ fontSize: '1rem', padding: '6px 12px' }}
                 >
                   ✕
                 </button>
               </div>
 
               {/* 1. Overview */}
-              <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
-                <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
+              <div className="glass-card" style={{ padding: '16px', background: 'var(--bg-card)' }}>
+                <span className="stat-label" style={{ display: 'block', marginBottom: '6px' }}>
                   Finding Summary
                 </span>
-                <p className="text-sm text-slate-200 leading-relaxed font-medium">
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-primary)', lineHeight: '1.6', margin: 0 }}>
                   {selectedFinding.explanation?.summary || 'No summary available.'}
                 </p>
-                <div className="flex items-center gap-4 text-xs font-mono text-slate-400 pt-1">
-                  <span>Anomalies: {selectedFinding.anomaly_count} rows</span>
+                <div className="flex-row align-center" style={{ gap: '12px', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed var(--border-subtle)' }}>
+                  <span>Anomalies: <strong style={{ color: 'var(--text-primary)' }}>{selectedFinding.anomaly_count}</strong> rows</span>
                   <span>•</span>
-                  <span>Anomaly Rate: {selectedFinding.anomaly_rate}%</span>
+                  <span>Anomaly Rate: <strong style={{ color: 'var(--text-primary)' }}>{selectedFinding.anomaly_rate}%</strong></span>
                 </div>
               </div>
 
               {/* 2. Detection Evidence / Outlier Drivers */}
-              <div className="space-y-3">
-                <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+              <div>
+                <span className="stat-label" style={{ display: 'block', marginBottom: '8px', color: '#fbbf24' }}>
                   Identified Outlier Drivers
                 </span>
-                <div className="space-y-2">
+                <div className="flex-col" style={{ gap: '8px' }}>
                   {selectedFinding.explanation?.drivers?.length > 0 ? (
                     selectedFinding.explanation.drivers.map((d, i) => (
-                      <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200">
-                        <span className="text-amber-400 font-bold">•</span>
-                        <span className="leading-relaxed">{d}</span>
+                      <div
+                        key={i}
+                        className="flex-row align-center"
+                        style={{
+                          gap: '8px',
+                          padding: '10px 14px',
+                          borderRadius: '8px',
+                          background: 'rgba(245, 158, 11, 0.08)',
+                          border: '1px solid rgba(245, 158, 11, 0.25)',
+                          fontSize: '0.82rem',
+                          color: '#fde68a',
+                        }}
+                      >
+                        <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>•</span>
+                        <span>{d}</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs text-slate-500 italic">No specific driver conditions flagged.</p>
+                    <p className="text-muted" style={{ fontSize: '0.82rem', fontStyle: 'italic', margin: 0 }}>
+                      No specific driver conditions flagged.
+                    </p>
                   )}
                 </div>
               </div>
 
               {/* 3. Detector Results Grid */}
-              <div className="space-y-3">
-                <span className="text-xs font-semibold uppercase tracking-wider text-cyan-400">
+              <div>
+                <span className="stat-label" style={{ display: 'block', marginBottom: '8px', color: '#38bdf8' }}>
                   Detector Results & Evidence Breakdown
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="grid-responsive" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
                   {/* IQR Card */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-200">IQR Detector</span>
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
-                        selectedFinding.evidence?.iqr?.detected ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-800 text-slate-400'
-                      }`}>
+                  <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                    <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                      <span style={{ fontWeight: '600', fontSize: '0.85rem' }}>IQR Detector</span>
+                      <span
+                        style={{
+                          fontSize: '0.68rem',
+                          fontWeight: '700',
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          background: selectedFinding.evidence?.iqr?.detected ? 'rgba(245, 158, 11, 0.2)' : 'var(--bg-glass)',
+                          color: selectedFinding.evidence?.iqr?.detected ? '#fbbf24' : 'var(--text-muted)',
+                        }}
+                      >
                         {selectedFinding.evidence?.iqr?.detected ? 'DETECTED' : 'CLEAN'}
                       </span>
                     </div>
                     {selectedFinding.evidence?.iqr?.executed ? (
-                      <div className="text-[11px] text-slate-400 space-y-0.5 font-mono">
+                      <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div>Bounds: [{selectedFinding.evidence.iqr.lower_bound}, {selectedFinding.evidence.iqr.upper_bound}]</div>
                         <div>Q1: {selectedFinding.evidence.iqr.q1} | Q3: {selectedFinding.evidence.iqr.q3}</div>
                         <div>Outliers: {selectedFinding.evidence.iqr.anomaly_count} ({selectedFinding.evidence.iqr.anomaly_rate}%)</div>
                       </div>
                     ) : (
-                      <div className="text-[11px] text-slate-500 italic">{selectedFinding.evidence?.iqr?.reason || 'Not executed'}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                        {selectedFinding.evidence?.iqr?.reason || 'Not executed'}
+                      </div>
                     )}
                   </div>
 
                   {/* Z-Score Card */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-200">Z-Score (|z|≥3)</span>
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
-                        selectedFinding.evidence?.zscore?.detected ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-800 text-slate-400'
-                      }`}>
+                  <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                    <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                      <span style={{ fontWeight: '600', fontSize: '0.85rem' }}>Z-Score (|z|≥3)</span>
+                      <span
+                        style={{
+                          fontSize: '0.68rem',
+                          fontWeight: '700',
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          background: selectedFinding.evidence?.zscore?.detected ? 'rgba(245, 158, 11, 0.2)' : 'var(--bg-glass)',
+                          color: selectedFinding.evidence?.zscore?.detected ? '#fbbf24' : 'var(--text-muted)',
+                        }}
+                      >
                         {selectedFinding.evidence?.zscore?.detected ? 'DETECTED' : 'CLEAN'}
                       </span>
                     </div>
                     {selectedFinding.evidence?.zscore?.executed ? (
-                      <div className="text-[11px] text-slate-400 space-y-0.5 font-mono">
+                      <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div>Mean: {selectedFinding.evidence.zscore.mean} | Std: {selectedFinding.evidence.zscore.std}</div>
                         <div>Max |z|: {selectedFinding.evidence.zscore.max_abs_zscore}</div>
                         <div>Outliers: {selectedFinding.evidence.zscore.anomaly_count} ({selectedFinding.evidence.zscore.anomaly_rate}%)</div>
                       </div>
                     ) : (
-                      <div className="text-[11px] text-slate-500 italic">{selectedFinding.evidence?.zscore?.reason || 'Not executed'}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                        {selectedFinding.evidence?.zscore?.reason || 'Not executed'}
+                      </div>
                     )}
                   </div>
 
                   {/* Isolation Forest Card */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-200">Isolation Forest (ML)</span>
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
-                        selectedFinding.evidence?.isolation_forest?.detected ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-800 text-slate-400'
-                      }`}>
+                  <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                    <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                      <span style={{ fontWeight: '600', fontSize: '0.85rem' }}>Isolation Forest (ML)</span>
+                      <span
+                        style={{
+                          fontSize: '0.68rem',
+                          fontWeight: '700',
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          background: selectedFinding.evidence?.isolation_forest?.detected ? 'rgba(245, 158, 11, 0.2)' : 'var(--bg-glass)',
+                          color: selectedFinding.evidence?.isolation_forest?.detected ? '#fbbf24' : 'var(--text-muted)',
+                        }}
+                      >
                         {selectedFinding.evidence?.isolation_forest?.detected ? 'DETECTED' : 'CLEAN'}
                       </span>
                     </div>
                     {selectedFinding.evidence?.isolation_forest?.executed ? (
-                      <div className="text-[11px] text-slate-400 space-y-0.5 font-mono">
+                      <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div>Strategy: {selectedFinding.evidence.isolation_forest.sampling_strategy}</div>
                         <div>Outliers: {selectedFinding.evidence.isolation_forest.anomaly_count} ({selectedFinding.evidence.isolation_forest.anomaly_rate}%)</div>
                         <div>Min Score: {selectedFinding.evidence.isolation_forest.min_decision_score}</div>
                       </div>
                     ) : (
-                      <div className="text-[11px] text-slate-500 italic">{selectedFinding.evidence?.isolation_forest?.reason || 'Not executed'}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                        {selectedFinding.evidence?.isolation_forest?.reason || 'Not executed'}
+                      </div>
                     )}
                   </div>
 
                   {/* Categorical Frequency Card */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-200">Rare Categories (&lt;1%)</span>
-                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
-                        selectedFinding.evidence?.categorical_frequency?.detected ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-800 text-slate-400'
-                      }`}>
+                  <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                    <div className="flex-row justify-between align-center" style={{ marginBottom: '6px' }}>
+                      <span style={{ fontWeight: '600', fontSize: '0.85rem' }}>Rare Categories (&lt;1%)</span>
+                      <span
+                        style={{
+                          fontSize: '0.68rem',
+                          fontWeight: '700',
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          background: selectedFinding.evidence?.categorical_frequency?.detected ? 'rgba(245, 158, 11, 0.2)' : 'var(--bg-glass)',
+                          color: selectedFinding.evidence?.categorical_frequency?.detected ? '#fbbf24' : 'var(--text-muted)',
+                        }}
+                      >
                         {selectedFinding.evidence?.categorical_frequency?.detected ? 'DETECTED' : 'CLEAN'}
                       </span>
                     </div>
                     {selectedFinding.evidence?.categorical_frequency?.executed ? (
-                      <div className="text-[11px] text-slate-400 space-y-0.5 font-mono">
+                      <div style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div>Unique: {selectedFinding.evidence.categorical_frequency.unique_categories_count}</div>
                         <div>Rare Count: {selectedFinding.evidence.categorical_frequency.rare_category_count}</div>
                         <div>Rare Rate: {selectedFinding.evidence.categorical_frequency.rare_category_rate}%</div>
                       </div>
                     ) : (
-                      <div className="text-[11px] text-slate-500 italic">{selectedFinding.evidence?.categorical_frequency?.reason || 'Not executed'}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                        {selectedFinding.evidence?.categorical_frequency?.reason || 'Not executed'}
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* 4. Interpretation & Privacy Protection Callouts */}
-              <div className="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30 space-y-2">
-                <span className="text-xs font-semibold uppercase text-indigo-300 flex items-center gap-1.5">
-                  <span>🛡️</span> Statistical Interpretation & Privacy Guard
+              <div
+                style={{
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  background: 'rgba(99, 102, 241, 0.08)',
+                  border: '1px solid rgba(99, 102, 241, 0.25)',
+                }}
+              >
+                <span className="stat-label" style={{ color: '#a5b4fc', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                  🛡️ Statistical Interpretation & Privacy Guard
                 </span>
-                <ul className="text-xs text-slate-300 list-disc list-inside space-y-1 leading-relaxed">
+                <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                   <li>
-                    <strong className="text-white">Interpretation Notice:</strong> An anomaly indicates a statistically unusual pattern; it does not automatically mean the data is incorrect.
+                    <strong style={{ color: 'var(--text-primary)' }}>Interpretation Notice:</strong> An anomaly indicates a statistically unusual pattern; it does not automatically mean the data is incorrect.
                   </li>
                   <li>
-                    <strong className="text-white">Privacy Guarantee:</strong> Zero raw PII values are stored in anomaly records. Only safe statistical distribution metrics are preserved.
+                    <strong style={{ color: 'var(--text-primary)' }}>Privacy Guarantee:</strong> Zero raw PII values are stored in anomaly records. Only safe statistical distribution metrics are preserved.
                   </li>
                 </ul>
               </div>
 
               {/* Raw Evidence JSON Snippet */}
               {selectedFinding.evidence && (
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
-                      Detector Evidence Payload
-                    </span>
+                <div style={{ padding: '14px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="flex-row justify-between align-center" style={{ marginBottom: '8px' }}>
+                    <span className="stat-label">Detector Evidence Payload</span>
                     <button
                       onClick={() => copyToClipboard(JSON.stringify(selectedFinding.evidence, null, 2), 'evidence')}
-                      className="text-xs text-cyan-400 hover:text-cyan-300 font-medium"
+                      className="btn btn--sm btn--secondary"
+                      style={{ fontSize: '0.75rem' }}
                     >
                       {copiedKey === 'evidence' ? '✓ Copied' : 'Copy JSON'}
                     </button>
                   </div>
-                  <pre className="text-xs font-mono text-slate-400 bg-slate-900 p-3 rounded-lg overflow-x-auto max-h-40 border border-slate-800">
+                  <pre
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.78rem',
+                      color: 'var(--text-muted)',
+                      background: 'rgba(0,0,0,0.3)',
+                      padding: '10px',
+                      borderRadius: '6px',
+                      overflowX: 'auto',
+                      maxHeight: '160px',
+                      margin: 0,
+                    }}
+                  >
                     {JSON.stringify(selectedFinding.evidence, null, 2)}
                   </pre>
                 </div>
@@ -821,10 +1088,11 @@ export default function Anomalies() {
             </div>
 
             {/* Footer */}
-            <div className="pt-4 border-t border-slate-800 flex justify-end">
+            <div className="flex-row justify-between align-center" style={{ paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' }}>
+              <span className="text-muted" style={{ fontSize: '0.78rem' }}>DataGuard AI Anomaly Engine</span>
               <button
                 onClick={() => setSelectedFinding(null)}
-                className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-medium text-xs transition"
+                className="btn btn--primary"
               >
                 Close Drawer
               </button>
