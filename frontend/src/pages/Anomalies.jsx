@@ -168,6 +168,12 @@ export default function Anomalies() {
           <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">
             ⚠ Anomalies
           </span>
+          <Link
+            to={`/datasets/${datasetId}/versions/${versionId}/issues`}
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800/60 hover:bg-gray-700/60 text-cyan-300 transition border border-cyan-500/40"
+          >
+            🎯 Prioritization / Health
+          </Link>
           <button
             onClick={() => fetchAnomalies(true)}
             disabled={recomputing}

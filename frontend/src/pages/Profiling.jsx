@@ -203,6 +203,13 @@ export default function Profiling() {
           >
             ⚠ Anomalies
           </Link>
+          <Link
+            to={`/datasets/${datasetId}/versions/${versionId}/issues`}
+            className="btn btn--primary"
+            style={{ background: 'linear-gradient(135deg, #06b6d4, #3b82f6)' }}
+          >
+            🎯 Prioritization / Health
+          </Link>
           <Link to="/datasets" className="btn btn--secondary">
             🗃️ All Datasets
           </Link>

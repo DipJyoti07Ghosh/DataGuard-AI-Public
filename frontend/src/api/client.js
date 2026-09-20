@@ -315,6 +315,58 @@ export async function getAnomalyDetails(datasetId, versionId, params = {}) {
   return request(`/datasets/${datasetId}/versions/${versionId}/anomalies/details${qs}`);
 }
 
+// ---------------------------------------------------------------------------
+// Dataset Health & Issue Prioritization Endpoints (Phase 9)
+// ---------------------------------------------------------------------------
+
+/**
+ * Trigger dataset health analysis and issue prioritization for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {boolean} [force=false] - Whether to force recomputation.
+ * @returns {Promise<Object>} DatasetHealthSummaryResponse object.
+ */
+export async function analyzeIssues(datasetId, versionId, force = false) {
+  return request(
+    `/datasets/${datasetId}/versions/${versionId}/issues/analyze?force_recompute=${force}`,
+    { method: 'POST' }
+  );
+}
+
+/**
+ * Retrieve cached dataset health summary for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @returns {Promise<Object>} DatasetHealthSummaryResponse object.
+ */
+export async function getIssuesSummary(datasetId, versionId) {
+  return request(`/datasets/${datasetId}/versions/${versionId}/issues/summary`);
+}
+
+/**
+ * Retrieve prioritized data quality issues with optional query filters.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {Object} [params={}] - Filter params { severity, source, issue_type, column, min_priority }.
+ * @returns {Promise<Object>} IssueListResponse object.
+ */
+export async function getIssues(datasetId, versionId, params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const qs = query ? `?${query}` : '';
+  return request(`/datasets/${datasetId}/versions/${versionId}/issues${qs}`);
+}
+
+/**
+ * Retrieve detailed explanation and remediation advice for a single issue.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {string} issueId - Issue UUID.
+ * @returns {Promise<Object>} DataQualityIssueResponse object.
+ */
+export async function getIssueDetail(datasetId, versionId, issueId) {
+  return request(`/datasets/${datasetId}/versions/${versionId}/issues/${issueId}`);
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -336,6 +388,10 @@ export default {
   detectAnomalies,
   getAnomalies,
   getAnomalyDetails,
+  analyzeIssues,
+  getIssuesSummary,
+  getIssues,
+  getIssueDetail,
 };
 
 

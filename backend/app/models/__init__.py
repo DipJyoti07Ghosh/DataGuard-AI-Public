@@ -8,6 +8,7 @@ from app.models.quality import QualityValidationResult, QualityExpectationResult
 from app.models.pii import PIIScanResult, PIIFinding
 from app.models.risk import ColumnRiskPrediction
 from app.models.anomaly import AnomalyDetectionResult, AnomalyFinding
+from app.models.issues import DatasetHealthResult, DataQualityIssue
 
 __all__ = [
     "Dataset",
@@ -20,5 +21,7 @@ __all__ = [
     "ColumnRiskPrediction",
     "AnomalyDetectionResult",
     "AnomalyFinding",
+    "DatasetHealthResult",
+    "DataQualityIssue",
 ]
 
