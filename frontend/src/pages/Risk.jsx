@@ -226,6 +226,10 @@ export default function Risk() {
             <span>🔐</span>
             <span>PII Scan</span>
           </Link>
+          <Link to={`/datasets/${datasetId}/versions/${versionId}/anomalies`} className="btn btn-secondary flex-row align-center" style={{ gap: '8px', borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}>
+            <span>⚠</span>
+            <span>Anomalies</span>
+          </Link>
           <Link to="/datasets" className="btn btn-secondary">
             📁 Datasets
           </Link>

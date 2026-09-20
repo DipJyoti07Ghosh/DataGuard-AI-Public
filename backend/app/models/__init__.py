@@ -7,6 +7,7 @@ from app.models.profiling import ProfilingResult
 from app.models.quality import QualityValidationResult, QualityExpectationResult
 from app.models.pii import PIIScanResult, PIIFinding
 from app.models.risk import ColumnRiskPrediction
+from app.models.anomaly import AnomalyDetectionResult, AnomalyFinding
 
 __all__ = [
     "Dataset",
@@ -17,5 +18,7 @@ __all__ = [
     "PIIScanResult",
     "PIIFinding",
     "ColumnRiskPrediction",
+    "AnomalyDetectionResult",
+    "AnomalyFinding",
 ]
 

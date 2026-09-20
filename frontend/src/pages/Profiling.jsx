@@ -196,6 +196,13 @@ export default function Profiling() {
           >
             🤖 ML Risk
           </Link>
+          <Link
+            to={`/datasets/${datasetId}/versions/${versionId}/anomalies`}
+            className="btn btn--secondary"
+            style={{ borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
+          >
+            ⚠ Anomalies
+          </Link>
           <Link to="/datasets" className="btn btn--secondary">
             🗃️ All Datasets
           </Link>

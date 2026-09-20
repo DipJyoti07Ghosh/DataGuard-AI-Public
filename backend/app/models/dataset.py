@@ -194,6 +194,13 @@ class DatasetVersion(Base):
         lazy="selectin",
         order_by="ColumnRiskPrediction.risk_score.desc(), ColumnRiskPrediction.column_name.asc()",
     )
+    anomaly_result = relationship(
+        "AnomalyDetectionResult",
+        back_populates="version",
+        uselist=False,
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
     __table_args__ = (
         UniqueConstraint(

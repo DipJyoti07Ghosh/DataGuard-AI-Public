@@ -274,6 +274,47 @@ export async function getRiskDetails(datasetId, versionId, params = {}) {
   return request(`/datasets/${datasetId}/versions/${versionId}/risk/details${qs}`);
 }
 
+// ---------------------------------------------------------------------------
+// Anomaly Detection Endpoints (Phase 8)
+// ---------------------------------------------------------------------------
+
+/**
+ * Trigger anomaly and outlier detection for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {boolean} [force=false] - Whether to force re-computation.
+ * @returns {Promise<Object>} DatasetAnomalySummaryResponse object.
+ */
+export async function detectAnomalies(datasetId, versionId, force = false) {
+  return request(
+    `/datasets/${datasetId}/versions/${versionId}/anomalies/detect?force_recompute=${force}`,
+    { method: 'POST' }
+  );
+}
+
+/**
+ * Retrieve cached anomaly scorecard for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @returns {Promise<Object>} DatasetAnomalySummaryResponse object.
+ */
+export async function getAnomalies(datasetId, versionId) {
+  return request(`/datasets/${datasetId}/versions/${versionId}/anomalies`);
+}
+
+/**
+ * Retrieve detailed column anomaly findings with optional query filters.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {Object} [params={}] - Filter params { severity, method, column_name }.
+ * @returns {Promise<Object>} AnomalyDetailsResponse object.
+ */
+export async function getAnomalyDetails(datasetId, versionId, params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const qs = query ? `?${query}` : '';
+  return request(`/datasets/${datasetId}/versions/${versionId}/anomalies/details${qs}`);
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -292,6 +333,10 @@ export default {
   predictRisk,
   getRiskPredictions,
   getRiskDetails,
+  detectAnomalies,
+  getAnomalies,
+  getAnomalyDetails,
 };
+
 
 

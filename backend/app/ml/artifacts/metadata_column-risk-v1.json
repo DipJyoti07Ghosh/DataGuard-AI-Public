@@ -2,7 +2,7 @@
   "model_version": "column-risk-v1",
   "feature_schema_version": "1.0.0",
   "sklearn_version": "1.9.1",
-  "trained_at": "2026-09-20T10:12:24.135093+00:00",
+  "trained_at": "2026-09-20T11:09:03.467852+00:00",
   "random_state": 42,
   "total_samples": 1200,
   "samples_per_domain": 100,

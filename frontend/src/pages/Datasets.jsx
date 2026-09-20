@@ -323,6 +323,14 @@ export default function Datasets() {
                                       >
                                         🤖 Risk
                                       </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/anomalies`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-anomalies-${v.id}`}
+                                        style={{ borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
+                                      >
+                                        ⚠ Anomalies
+                                      </Link>
                                     </div>
                                 </td>
                               </tr>

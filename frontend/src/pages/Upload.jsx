@@ -366,6 +366,14 @@ export default function Upload() {
                   🛡 Run Quality Check
                 </Link>
                 <Link
+                  to={`/datasets/${metadata.dataset_id}/versions/${metadata.version_id}/anomalies`}
+                  className="btn btn--secondary btn--sm"
+                  id="view-anomalies-btn"
+                  style={{ borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
+                >
+                  ⚠ Anomalies
+                </Link>
+                <Link
                   to="/datasets"
                   className="btn btn--secondary btn--sm"
                 >
