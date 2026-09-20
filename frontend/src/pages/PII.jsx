@@ -219,6 +219,10 @@ export default function PII() {
             <span>🛡</span>
             <span>Quality Check</span>
           </Link>
+          <Link to={`/datasets/${datasetId}/versions/${versionId}/risk`} className="btn btn-secondary flex-row align-center" style={{ gap: '8px', borderColor: 'rgba(16, 185, 129, 0.4)' }}>
+            <span>🤖</span>
+            <span>ML Risk</span>
+          </Link>
           <Link to="/datasets" className="btn btn-secondary">
             📁 Datasets
           </Link>

@@ -12,6 +12,7 @@ import Datasets from './pages/Datasets';
 import Profiling from './pages/Profiling';
 import Quality from './pages/Quality';
 import PII from './pages/PII';
+import Risk from './pages/Risk';
 import Assistant from './pages/Assistant';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/datasets/:datasetId/versions/:versionId/profile" element={<Profiling />} />
           <Route path="/datasets/:datasetId/versions/:versionId/quality" element={<Quality />} />
           <Route path="/datasets/:datasetId/versions/:versionId/pii" element={<PII />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/risk" element={<Risk />} />
           <Route path="/assistant" element={<Assistant />} />
         </Route>
       </Routes>

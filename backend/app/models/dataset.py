@@ -187,6 +187,13 @@ class DatasetVersion(Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    risk_predictions = relationship(
+        "ColumnRiskPrediction",
+        back_populates="version",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+        order_by="ColumnRiskPrediction.risk_score.desc(), ColumnRiskPrediction.column_name.asc()",
+    )
 
     __table_args__ = (
         UniqueConstraint(

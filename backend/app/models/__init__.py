@@ -6,6 +6,7 @@ from app.models.dataset import Dataset, DatasetVersion
 from app.models.profiling import ProfilingResult
 from app.models.quality import QualityValidationResult, QualityExpectationResult
 from app.models.pii import PIIScanResult, PIIFinding
+from app.models.risk import ColumnRiskPrediction
 
 __all__ = [
     "Dataset",
@@ -15,5 +16,6 @@ __all__ = [
     "QualityExpectationResult",
     "PIIScanResult",
     "PIIFinding",
+    "ColumnRiskPrediction",
 ]
 

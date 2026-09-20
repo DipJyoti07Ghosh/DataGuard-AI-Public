@@ -233,6 +233,47 @@ export async function getPIIDetails(datasetId, versionId, params = {}) {
   return request(`/datasets/${datasetId}/versions/${versionId}/pii/details${qs}`);
 }
 
+// ---------------------------------------------------------------------------
+// ML Column Risk Classification Endpoints (Phase 7)
+// ---------------------------------------------------------------------------
+
+/**
+ * Trigger ML column classification and risk scoring for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {boolean} [force=false] - Whether to force re-prediction.
+ * @returns {Promise<Object>} DatasetRiskSummaryResponse object.
+ */
+export async function predictRisk(datasetId, versionId, force = false) {
+  return request(
+    `/datasets/${datasetId}/versions/${versionId}/risk/predict?force_recompute=${force}`,
+    { method: 'POST' }
+  );
+}
+
+/**
+ * Retrieve cached ML column risk predictions for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @returns {Promise<Object>} DatasetRiskSummaryResponse object.
+ */
+export async function getRiskPredictions(datasetId, versionId) {
+  return request(`/datasets/${datasetId}/versions/${versionId}/risk`);
+}
+
+/**
+ * Retrieve detailed column risk predictions with optional query filters.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {Object} [params={}] - Filter params { risk_level, domain, column_name }.
+ * @returns {Promise<Object>} RiskDetailsResponse object.
+ */
+export async function getRiskDetails(datasetId, versionId, params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const qs = query ? `?${query}` : '';
+  return request(`/datasets/${datasetId}/versions/${versionId}/risk/details${qs}`);
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -248,5 +289,9 @@ export default {
   scanPII,
   getPIIScan,
   getPIIDetails,
+  predictRisk,
+  getRiskPredictions,
+  getRiskDetails,
 };
+
 

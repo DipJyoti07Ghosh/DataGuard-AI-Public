@@ -189,6 +189,13 @@ export default function Profiling() {
           >
             🔐 Scan for PII
           </Link>
+          <Link
+            to={`/datasets/${datasetId}/versions/${versionId}/risk`}
+            className="btn btn--primary"
+            style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}
+          >
+            🤖 ML Risk
+          </Link>
           <Link to="/datasets" className="btn btn--secondary">
             🗃️ All Datasets
           </Link>

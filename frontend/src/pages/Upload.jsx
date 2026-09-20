@@ -167,6 +167,14 @@ export default function Upload() {
                 >
                   🔐 Scan for PII
                 </Link>
+                <Link
+                  to={`/datasets/${metadata.dataset_id}/versions/${metadata.version_id}/risk`}
+                  className="btn btn--primary"
+                  id="view-risk-btn"
+                  style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}
+                >
+                  🤖 ML Risk
+                </Link>
               </>
             )}
             <Link to="/datasets" className="btn btn--secondary" id="view-datasets-btn">

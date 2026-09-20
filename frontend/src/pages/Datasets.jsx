@@ -315,6 +315,14 @@ export default function Datasets() {
                                       >
                                         🔐 PII
                                       </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/risk`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-risk-${v.id}`}
+                                        style={{ borderColor: 'rgba(16, 185, 129, 0.4)' }}
+                                      >
+                                        🤖 Risk
+                                      </Link>
                                     </div>
                                 </td>
                               </tr>
