@@ -25,8 +25,12 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/datasets/:datasetId/dashboard" element={<Dashboard />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/datasets" element={<Datasets />} />
+
           <Route path="/datasets/:datasetId/versions/:versionId/profile" element={<Profiling />} />
           <Route path="/datasets/:datasetId/versions/:versionId/quality" element={<Quality />} />
           <Route path="/datasets/:datasetId/versions/:versionId/pii" element={<PII />} />

@@ -1,0 +1,706 @@
+/* ===========================================================
+   DataGuard AI — Phase 13 Data Quality Dashboard Styles
+   =========================================================== */
+
+.dq-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* -----------------------------------------------------------
+   Dashboard Header & Toolbar
+   ----------------------------------------------------------- */
+.dq-header {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.dq-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.dq-header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.dq-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  letter-spacing: -0.02em;
+}
+
+.dq-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.dq-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.dq-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.dq-btn-primary {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+.dq-btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.dq-btn-secondary {
+  background: rgba(30, 41, 59, 0.7);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.dq-btn-secondary:hover {
+  background: rgba(51, 65, 85, 0.8);
+  border-color: var(--text-secondary);
+}
+
+.dq-header-selectors {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.dq-selector-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.dq-selector-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.dq-select {
+  background: var(--bg-input);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  min-width: 160px;
+  transition: border-color var(--transition-fast);
+}
+
+.dq-select:focus {
+  border-color: var(--accent-primary);
+}
+
+.dq-header-meta {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* -----------------------------------------------------------
+   Grounded Key Insights Bar
+   ----------------------------------------------------------- */
+.dq-insights-bar {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.dq-insights-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dq-insights-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.dq-insight-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.dq-insight-chip--HIGH, .dq-insight-chip--CRITICAL {
+  background: var(--error-bg);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.dq-insight-chip--MEDIUM {
+  background: var(--warning-bg);
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.dq-insight-chip--LOW, .dq-insight-chip--INFO {
+  background: var(--info-bg);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* -----------------------------------------------------------
+   Dataset Health Overview Section
+   ----------------------------------------------------------- */
+.dq-health-card {
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(30, 41, 59, 0.8));
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+  box-shadow: var(--shadow-md);
+}
+
+.dq-health-primary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border-right: 1px solid var(--border-subtle);
+  padding-right: var(--space-xl);
+}
+
+.dq-health-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.dq-health-score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.dq-health-score-val {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dq-health-score-max {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.dq-grade-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.dq-grade--EXCELLENT {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.dq-grade--GOOD {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.dq-grade--NEEDS_ATTENTION, .dq-grade--NEEDS\ ATTENTION {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.dq-grade--POOR {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
+
+.dq-grade--CRITICAL {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.dq-grade--UNKNOWN, .dq-grade--NOT_EVALUATED {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* Component Health Bars */
+.dq-health-components {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+.dq-comp-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dq-comp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.dq-comp-title {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.dq-comp-val {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dq-progress-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(51, 65, 85, 0.5);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dq-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width var(--transition-slow);
+}
+
+.dq-fill-quality { background: linear-gradient(90deg, #6366f1, #818cf8); }
+.dq-fill-risk { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.dq-fill-anomaly { background: linear-gradient(90deg, #ec4899, #f472b6); }
+.dq-fill-privacy { background: linear-gradient(90deg, #10b981, #34d399); }
+
+/* -----------------------------------------------------------
+   Grid Layout Sections
+   ----------------------------------------------------------- */
+.dq-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xl);
+}
+
+.dq-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+.dq-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.dq-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.dq-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-sm);
+}
+
+.dq-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dq-card-action {
+  font-size: 0.8rem;
+  color: var(--accent-hover);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dq-card-action:hover {
+  text-decoration: underline;
+}
+
+/* Stat Banner in Card */
+.dq-stat-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: var(--space-sm);
+  background: rgba(15, 23, 42, 0.4);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+}
+
+.dq-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dq-stat-box-num {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.dq-stat-box-lbl {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Informational Callout */
+.dq-info-banner {
+  background: rgba(30, 41, 59, 0.5);
+  border-left: 3px solid var(--info);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dq-warning-banner {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.85rem;
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* -----------------------------------------------------------
+   Tables
+   ----------------------------------------------------------- */
+.dq-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.dq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  text-align: left;
+}
+
+.dq-table th {
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dq-table td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.dq-table tr:last-child td {
+  border-bottom: none;
+}
+
+.dq-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dq-col-name {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+}
+
+/* -----------------------------------------------------------
+   Status & Severity Pills
+   ----------------------------------------------------------- */
+.dq-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.dq-pill--CRITICAL, .dq-pill--HIGH {
+  background: var(--error-bg);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.dq-pill--MEDIUM, .dq-pill--MODERATE {
+  background: var(--warning-bg);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.dq-pill--LOW, .dq-pill--NO_DRIFT {
+  background: var(--success-bg);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.dq-pill--FAILED {
+  background: var(--error-bg);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.dq-pill--PASSED {
+  background: var(--success-bg);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.dq-pill--NEUTRAL {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border: 1px solid var(--border-subtle);
+}
+
+/* -----------------------------------------------------------
+   Empty & Error States
+   ----------------------------------------------------------- */
+.dq-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  color: var(--text-muted);
+  gap: var(--space-xs);
+  min-height: 140px;
+}
+
+.dq-empty-icon {
+  font-size: 1.8rem;
+  opacity: 0.6;
+}
+
+.dq-empty-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.dq-empty-desc {
+  font-size: 0.8rem;
+  max-width: 320px;
+}
+
+.dq-error-box {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  color: #f87171;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* -----------------------------------------------------------
+   Custom Recharts Tooltip
+   ----------------------------------------------------------- */
+.dq-chart-tooltip {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.8rem;
+  box-shadow: var(--shadow-md);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  backdrop-filter: blur(8px);
+}
+
+.dq-chart-tooltip-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.dq-chart-tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   Skeleton Loader
+   ----------------------------------------------------------- */
+.dq-skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+  background-size: 200% 100%;
+  animation: dq-skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes dq-skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* -----------------------------------------------------------
+   Responsive Breakpoints
+   ----------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .dq-health-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .dq-health-primary {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-right: 0;
+    padding-bottom: var(--space-lg);
+  }
+  .dq-grid-2, .dq-grid-3, .dq-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dq-health-components {
+    grid-template-columns: 1fr;
+  }
+  .dq-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .dq-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .dq-header-selectors {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .dq-header-meta {
+    margin-left: 0;
+  }
+}

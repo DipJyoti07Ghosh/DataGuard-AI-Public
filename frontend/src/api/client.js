@@ -539,13 +539,23 @@ export async function askAssistant(datasetId, askRequest) {
   });
 }
 
-/**
- * Check Ollama connection and configured model health status.
- * @returns {Promise<Object>} AssistantHealthResponse object.
- */
 export async function getAssistantHealth() {
   return request(`/assistant/health`);
 }
+
+/**
+ * Get aggregated dashboard overview metrics for a dataset version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} [versionId] - Optional Dataset Version UUID.
+ * @returns {Promise<Object>} DashboardResponse object.
+ */
+export async function getDashboard(datasetId, versionId = null) {
+  if (versionId) {
+    return request(`/datasets/${datasetId}/versions/${versionId}/dashboard`);
+  }
+  return request(`/datasets/${datasetId}/dashboard`);
+}
+
 
 export default {
   checkHealth,
@@ -585,7 +595,9 @@ export default {
   purgeRAGDocuments,
   askAssistant,
   getAssistantHealth,
+  getDashboard,
 };
+
 
 
 
