@@ -98,6 +98,12 @@ class DatasetComparison(Base):
         order_by="ColumnDriftResult.column_name",
         lazy="selectin",
     )
+    rag_documents = relationship(
+        "RAGDocument",
+        back_populates="comparison",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
     __table_args__ = (
         UniqueConstraint(

@@ -206,6 +206,15 @@ export default function Datasets() {
                   </div>
 
                   <div className="dataset-card-actions">
+                    <Link
+                      to={`/datasets/${ds.id}/rag`}
+                      className="btn btn--secondary btn--sm"
+                      onClick={(e) => e.stopPropagation()}
+                      id={`rag-dataset-${ds.id}`}
+                      style={{ borderColor: 'rgba(56, 189, 248, 0.4)', color: '#38bdf8' }}
+                    >
+                      🧠 RAG Knowledge
+                    </Link>
                     {ds.version_count >= 2 && (
                       <Link
                         to={`/datasets/${ds.id}/compare`}
@@ -367,6 +376,14 @@ export default function Datasets() {
                                         style={{ borderColor: 'rgba(139, 92, 246, 0.4)', color: '#a78bfa' }}
                                       >
                                         ⚖️ Compare
+                                      </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/rag`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-rag-${v.id}`}
+                                        style={{ borderColor: 'rgba(56, 189, 248, 0.4)', color: '#38bdf8' }}
+                                      >
+                                        🧠 RAG
                                       </Link>
                                     </div>
                                 </td>

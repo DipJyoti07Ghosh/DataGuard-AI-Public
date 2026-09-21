@@ -70,6 +70,12 @@ class Dataset(Base):
         order_by="desc(DatasetVersion.version_number)",
         lazy="selectin",
     )
+    rag_documents = relationship(
+        "RAGDocument",
+        back_populates="dataset",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
         return f"<Dataset id={self.id} name='{self.name}'>"
@@ -205,6 +211,12 @@ class DatasetVersion(Base):
         "DatasetHealthResult",
         back_populates="version",
         uselist=False,
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+    rag_documents = relationship(
+        "RAGDocument",
+        back_populates="version",
         cascade="all, delete-orphan",
         lazy="selectin",
     )

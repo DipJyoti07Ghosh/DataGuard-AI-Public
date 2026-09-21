@@ -8,6 +8,7 @@ const navItems = [
   { path: '/', label: 'Dashboard', icon: '📊' },
   { path: '/upload', label: 'Upload', icon: '📁' },
   { path: '/datasets', label: 'Datasets', icon: '🗃️' },
+  { path: '/rag', label: 'RAG Knowledge', icon: '🧠' },
   { path: '/assistant', label: 'AI Assistant', icon: '🤖' },
 ];
 

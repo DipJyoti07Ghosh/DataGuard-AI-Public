@@ -16,6 +16,7 @@ import Risk from './pages/Risk';
 import Anomalies from './pages/Anomalies';
 import Issues from './pages/Issues';
 import Compare from './pages/Compare';
+import RAGExplorer from './pages/RAGExplorer';
 import Assistant from './pages/Assistant';
 
 export default function App() {
@@ -34,9 +35,13 @@ export default function App() {
           <Route path="/datasets/:datasetId/versions/:versionId/issues" element={<Issues />} />
           <Route path="/datasets/:datasetId/compare" element={<Compare />} />
           <Route path="/datasets/:datasetId/versions/:versionId/compare" element={<Compare />} />
+          <Route path="/rag" element={<RAGExplorer />} />
+          <Route path="/datasets/:datasetId/rag" element={<RAGExplorer />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/rag" element={<RAGExplorer />} />
           <Route path="/assistant" element={<Assistant />} />
         </Route>
       </Routes>
     </BrowserRouter>
   );
 }
+

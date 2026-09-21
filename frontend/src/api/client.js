@@ -427,6 +427,101 @@ export async function getColumnDriftDetail(datasetId, comparisonId, columnName) 
   return request(`/datasets/${datasetId}/comparisons/${comparisonId}/columns/${encodeURIComponent(columnName)}`);
 }
 
+// ---------------------------------------------------------------------------
+// RAG Knowledge & Retrieval Endpoints (Phase 11)
+// ---------------------------------------------------------------------------
+
+/**
+ * Index stored analytical results for a specific dataset version into RAG.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {boolean} [forceReindex=false] - Whether to bypass content hash and force re-embedding.
+ * @returns {Promise<Object>} RAGIndexResponse object.
+ */
+export async function indexVersionRAG(datasetId, versionId, forceReindex = false) {
+  return request(`/datasets/${datasetId}/versions/${versionId}/rag/index`, {
+    method: 'POST',
+    body: JSON.stringify({ force_reindex: forceReindex }),
+  });
+}
+
+/**
+ * Index all versions and comparisons for a dataset into RAG.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {boolean} [forceReindex=false] - Whether to force reindex.
+ * @returns {Promise<Object>} RAGIndexResponse object.
+ */
+export async function indexDatasetRAG(datasetId, forceReindex = false) {
+  return request(`/datasets/${datasetId}/rag/index`, {
+    method: 'POST',
+    body: JSON.stringify({ force_reindex: forceReindex }),
+  });
+}
+
+/**
+ * Index stored version comparison results into RAG.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} comparisonId - Comparison UUID.
+ * @param {boolean} [forceReindex=false] - Whether to force reindex.
+ * @returns {Promise<Object>} RAGIndexResponse object.
+ */
+export async function indexComparisonRAG(datasetId, comparisonId, forceReindex = false) {
+  return request(`/datasets/${datasetId}/comparisons/${comparisonId}/rag/index`, {
+    method: 'POST',
+    body: JSON.stringify({ force_reindex: forceReindex }),
+  });
+}
+
+/**
+ * Execute semantic vector search and assemble grounded factual context.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {Object} retrieveRequest - { query, scope, version_id, comparison_id, top_k, phases, include_comparisons }
+ * @returns {Promise<Object>} GroundedContextResponse object.
+ */
+export async function retrieveRAG(datasetId, retrieveRequest) {
+  return request(`/datasets/${datasetId}/rag/retrieve`, {
+    method: 'POST',
+    body: JSON.stringify(retrieveRequest),
+  });
+}
+
+/**
+ * List indexed RAG documents for a dataset.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {Object} [params={}] - Optional query params (version_id, source_phase, document_type).
+ * @returns {Promise<Object>} RAGDocumentListResponse.
+ */
+export async function getRAGDocuments(datasetId, params = {}) {
+  const query = new URLSearchParams();
+  if (params.version_id) query.append('version_id', params.version_id);
+  if (params.source_phase) query.append('source_phase', params.source_phase);
+  if (params.document_type) query.append('document_type', params.document_type);
+  const qStr = query.toString() ? `?${query.toString()}` : '';
+  return request(`/datasets/${datasetId}/rag/documents${qStr}`);
+}
+
+/**
+ * List indexed RAG documents for a specific version.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} versionId - Version UUID.
+ * @param {Object} [params={}] - Optional query params (source_phase).
+ * @returns {Promise<Object>} RAGDocumentListResponse.
+ */
+export async function getVersionRAGDocuments(datasetId, versionId, params = {}) {
+  const query = new URLSearchParams();
+  if (params.source_phase) query.append('source_phase', params.source_phase);
+  const qStr = query.toString() ? `?${query.toString()}` : '';
+  return request(`/datasets/${datasetId}/versions/${versionId}/rag/documents${qStr}`);
+}
+
+/**
+ * Purge RAG documents for a dataset.
+ * @param {string} datasetId - Dataset UUID.
+ */
+export async function purgeRAGDocuments(datasetId) {
+  return request(`/datasets/${datasetId}/rag/documents`, { method: 'DELETE' });
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -456,7 +551,15 @@ export default {
   getDatasetComparison,
   getDatasetComparisons,
   getColumnDriftDetail,
+  indexVersionRAG,
+  indexDatasetRAG,
+  indexComparisonRAG,
+  retrieveRAG,
+  getRAGDocuments,
+  getVersionRAGDocuments,
+  purgeRAGDocuments,
 };
+
 
 
 
