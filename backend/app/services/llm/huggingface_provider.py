@@ -44,7 +44,7 @@ class HuggingFaceProvider(BaseLLMProvider):
         if hasattr(target_token, "huggingface_api_token"):
             cfg = target_token
             self.api_token = (cfg.huggingface_api_token or "").strip()
-            self.model_name = (model_name or cfg.huggingface_model or "Qwen/Qwen2.5-72B-Instruct").strip()
+            self.model_name = (model_name or cfg.huggingface_model or "meta-llama/Llama-3.3-70B-Instruct").strip()
             self.timeout = timeout or cfg.huggingface_timeout_seconds
         else:
             cfg = settings
@@ -55,7 +55,7 @@ class HuggingFaceProvider(BaseLLMProvider):
             ).strip()
             self.model_name = (
                 model_name
-                or getattr(cfg, "huggingface_model", "Qwen/Qwen2.5-72B-Instruct")
+                or getattr(cfg, "huggingface_model", "meta-llama/Llama-3.3-70B-Instruct")
             ).strip()
             self.timeout = timeout or getattr(cfg, "huggingface_timeout_seconds", 60.0)
 

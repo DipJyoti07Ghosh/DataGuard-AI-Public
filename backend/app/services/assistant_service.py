@@ -61,6 +61,14 @@ CRITICAL OPERATIONAL RULES:
 
 6. EVIDENCE CITATIONS:
    - Ground your factual statements by citing the corresponding source numbers where helpful (e.g. "[Source 1]", "[Source 2]").
+
+7. PROFESSIONAL ENTERPRISE RESPONSE STRUCTURE:
+   - Format answers cleanly with Markdown headings (e.g. ## Overview, ## Findings, ## Recommendations).
+   - Whenever discussing 3 or more columns, attributes, or risk levels, present them in a clean Markdown table (e.g. | Column | Semantic Domain | Risk | Details |).
+   - Use bullet points and numbered lists for readability; do not output dense uninterrupted walls of text.
+   - For limitations or unavailable data (such as missing column relationships or missing metrics), format as a distinct blockquote or callout:
+     > **Limitation / Evidence Note:** The available dataset analysis does not contain verified relationship information between these columns.
+   - Always keep recommendations and suggested investigations visually separated from factual findings.
 """
 
 
