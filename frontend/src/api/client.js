@@ -557,6 +557,94 @@ export async function getDashboard(datasetId, versionId = null) {
 }
 
 
+// ---------------------------------------------------------------------------
+// Chat & Conversational Intelligence Endpoints (Phase 14)
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a new persistent chat session scoped to dataset, version, or comparison.
+ * @param {string} datasetId - Dataset UUID
+ * @param {Object} sessionData - { scope, version_id, comparison_id, title }
+ * @returns {Promise<Object>} Created ChatSessionResponse
+ */
+export async function createChatSession(datasetId, sessionData = {}) {
+  return request(`/datasets/${datasetId}/chat/sessions`, {
+    method: 'POST',
+    body: JSON.stringify(sessionData),
+  });
+}
+
+/**
+ * List all chat sessions for a dataset.
+ * @param {string} datasetId - Dataset UUID
+ * @returns {Promise<Array>} List of ChatSessionResponse objects
+ */
+export async function getChatSessions(datasetId) {
+  return request(`/datasets/${datasetId}/chat/sessions`);
+}
+
+/**
+ * Get chat session details with full chronological message history.
+ * @param {string} datasetId - Dataset UUID
+ * @param {string} sessionId - Chat session UUID
+ * @returns {Promise<Object>} ChatSessionDetailResponse
+ */
+export async function getChatSession(datasetId, sessionId) {
+  return request(`/datasets/${datasetId}/chat/sessions/${sessionId}`);
+}
+
+/**
+ * Update chat session title.
+ * @param {string} datasetId - Dataset UUID
+ * @param {string} sessionId - Chat session UUID
+ * @param {Object} updateData - { title }
+ * @returns {Promise<Object>} Updated ChatSessionResponse
+ */
+export async function updateChatSession(datasetId, sessionId, updateData) {
+  return request(`/datasets/${datasetId}/chat/sessions/${sessionId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(updateData),
+  });
+}
+
+/**
+ * Delete a chat session and cascade delete all child messages.
+ * @param {string} datasetId - Dataset UUID
+ * @param {string} sessionId - Chat session UUID
+ * @returns {Promise<null>}
+ */
+export async function deleteChatSession(datasetId, sessionId) {
+  return request(`/datasets/${datasetId}/chat/sessions/${sessionId}`, {
+    method: 'DELETE',
+  });
+}
+
+/**
+ * Send a user message in a chat session and get a grounded assistant response.
+ * @param {string} datasetId - Dataset UUID
+ * @param {string} sessionId - Chat session UUID
+ * @param {string} content - User prompt text (max 8000 chars)
+ * @returns {Promise<Object>} ChatMessageResponse
+ */
+export async function sendChatMessage(datasetId, sessionId, content) {
+  return request(`/datasets/${datasetId}/chat/sessions/${sessionId}/messages`, {
+    method: 'POST',
+    body: JSON.stringify({ content }),
+  });
+}
+
+/**
+ * Retry generation for the latest user message without duplicating the user message.
+ * @param {string} datasetId - Dataset UUID
+ * @param {string} sessionId - Chat session UUID
+ * @returns {Promise<Object>} ChatMessageResponse
+ */
+export async function retryChatMessage(datasetId, sessionId) {
+  return request(`/datasets/${datasetId}/chat/sessions/${sessionId}/retry`, {
+    method: 'POST',
+  });
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -596,6 +684,13 @@ export default {
   askAssistant,
   getAssistantHealth,
   getDashboard,
+  createChatSession,
+  getChatSessions,
+  getChatSession,
+  updateChatSession,
+  deleteChatSession,
+  sendChatMessage,
+  retryChatMessage,
 };
 
 

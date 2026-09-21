@@ -76,6 +76,13 @@ class Dataset(Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    chat_sessions = relationship(
+        "ChatSession",
+        back_populates="dataset",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+        passive_deletes=True,
+    )
 
     def __repr__(self) -> str:
         return f"<Dataset id={self.id} name='{self.name}'>"

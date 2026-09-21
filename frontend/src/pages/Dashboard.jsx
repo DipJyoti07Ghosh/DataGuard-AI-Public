@@ -275,10 +275,17 @@ export default function Dashboard() {
             </Link>
 
             <Link
-              to={`/datasets/${currentDatasetId}/versions/${currentVersionId}/assistant`}
+              to={`/datasets/${currentDatasetId}/chat?scope=VERSION&versionId=${currentVersionId}`}
               className="dq-btn dq-btn-primary"
             >
-              <span>🤖</span> Ask AI Assistant
+              <span>💬</span> AI Chat
+            </Link>
+
+            <Link
+              to={`/datasets/${currentDatasetId}/versions/${currentVersionId}/assistant`}
+              className="dq-btn dq-btn-secondary"
+            >
+              <span>🤖</span> AI Assistant
             </Link>
           </div>
         </div>

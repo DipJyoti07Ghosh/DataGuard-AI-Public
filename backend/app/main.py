@@ -22,6 +22,7 @@ from app.api.comparison import router as comparison_router
 from app.api.rag import router as rag_router
 from app.api.assistant import router as assistant_router
 from app.api.dashboard import router as dashboard_router
+from app.api.chat import router as chat_router
 
 
 
@@ -125,6 +126,7 @@ app.include_router(comparison_router, prefix="/api/datasets")
 app.include_router(rag_router)
 app.include_router(assistant_router, prefix="/api")
 app.include_router(dashboard_router, prefix="/api/datasets")
+app.include_router(chat_router, prefix="/api")
 
 
 

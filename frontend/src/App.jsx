@@ -18,6 +18,7 @@ import Issues from './pages/Issues';
 import Compare from './pages/Compare';
 import RAGExplorer from './pages/RAGExplorer';
 import Assistant from './pages/Assistant';
+import Chat from './pages/Chat';
 
 export default function App() {
   return (
@@ -45,6 +46,9 @@ export default function App() {
           <Route path="/assistant" element={<Assistant />} />
           <Route path="/datasets/:datasetId/assistant" element={<Assistant />} />
           <Route path="/datasets/:datasetId/versions/:versionId/assistant" element={<Assistant />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/datasets/:datasetId/chat" element={<Chat />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/chat" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>

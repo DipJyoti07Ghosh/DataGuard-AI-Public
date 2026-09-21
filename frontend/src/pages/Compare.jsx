@@ -258,6 +258,16 @@ export default function Compare() {
           >
             🔄 Recompute
           </button>
+
+          {comparison?.id && (
+            <Link
+              to={`/datasets/${datasetId}/chat?scope=COMPARISON&comparisonId=${comparison.id}&initialQuery=Explain the main changes between these versions`}
+              className="btn btn--primary btn--sm flex-row align-center"
+              style={{ textDecoration: 'none', gap: '4px' }}
+            >
+              <span>💬</span> Ask AI
+            </Link>
+          )}
         </div>
       </div>
 

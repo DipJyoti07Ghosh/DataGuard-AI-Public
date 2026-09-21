@@ -288,6 +288,14 @@ export default function Issues() {
               </>
             )}
           </button>
+          <Link
+            to={`/datasets/${datasetId}/chat?scope=VERSION&versionId=${versionId}&initialQuery=Explain the highest-priority issues in this version`}
+            className="btn btn-primary flex-row align-center"
+            style={{ gap: '8px', textDecoration: 'none' }}
+          >
+            <span>💬</span>
+            <span>Ask AI About Issues</span>
+          </Link>
         </div>
       </div>
 
