@@ -44,14 +44,14 @@ class Settings(BaseSettings):
 
     # Hugging Face (Secondary Hosted Serverless Provider)
     huggingface_api_token: Optional[str] = Field(default=None)
-    huggingface_model: str = Field(default="meta-llama/Llama-3.3-70B-Instruct")
+    huggingface_model: str = Field(default="Qwen/Qwen2.5-7B-Instruct")
     huggingface_timeout_seconds: float = Field(default=60.0)
 
     # Ollama (Fallback Local Provider)
     ollama_base_url: str = Field(default="http://localhost:11434")
     ollama_model: str = Field(default="llama3.2:1b")
     ollama_temperature: float = Field(default=0.1)
-    ollama_timeout_seconds: float = Field(default=60.0)
+    ollama_timeout_seconds: float = Field(default=120.0)
     ollama_max_tokens: int = Field(default=1024)
 
     # RAG (Phase 11+) & Assistant

@@ -166,7 +166,51 @@ def ask_assistant(
 
     # 4. Filter by Minimum Relevance Threshold
     relevant_docs = [doc for doc in retrieved_docs if doc.get("similarity", 0.0) >= min_sim]
-    
+
+    # Just-In-Time Auto-Indexing: If 0 RAG documents exist for this version, auto-profile & index on-the-fly
+    if not relevant_docs and request.scope == AssistantScope.VERSION and request.version_id:
+        from app.models.rag import RAGDocument
+        rag_doc_count = db.execute(
+            select(func.count(RAGDocument.id)).where(
+                RAGDocument.dataset_id == dataset_id,
+                RAGDocument.version_id == request.version_id,
+            )
+        ).scalar() or 0
+
+        if rag_doc_count == 0:
+            try:
+                v_entity = db.execute(
+                    select(DatasetVersion).where(
+                        DatasetVersion.id == request.version_id,
+                        DatasetVersion.dataset_id == dataset_id,
+                    )
+                ).scalar_one_or_none()
+
+                if v_entity:
+                    if v_entity.profiling_result is None:
+                        from app.services.profiling_service import generate_profile_for_version
+                        logger.info(f"Just-In-Time computing profile for unindexed version {request.version_id}...")
+                        generate_profile_for_version(db=db, dataset_id=dataset_id, version_id=request.version_id)
+
+                    from app.services.rag_index_service import index_version_rag
+                    logger.info(f"Just-In-Time indexing RAG documents for version {request.version_id}...")
+                    index_version_rag(dataset_id, request.version_id, db)
+
+                    # Re-run retrieval with newly indexed documents
+                    retrieved_docs = retrieve_rag_documents(
+                        dataset_id=dataset_id,
+                        query=request.question,
+                        scope=rag_scope,
+                        db=db,
+                        version_id=request.version_id,
+                        comparison_id=request.comparison_id,
+                        top_k=request.top_k,
+                        phases=request.phase_filters,
+                    )
+                    relevant_docs = [doc for doc in retrieved_docs if doc.get("similarity", 0.0) >= min_sim]
+            except Exception as e:
+                logger.warning(f"Just-In-Time auto-indexing encountered an issue in assistant: {e}")
+
     # 5. Assemble Grounded Context Object
     grounded_context = build_grounded_context(
         query=request.question,
