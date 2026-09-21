@@ -879,7 +879,30 @@ export default function Issues() {
                 {filteredIssues.length === 0 ? (
                   <tr>
                     <td colSpan={8} style={{ padding: '36px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                      No issues match the selected filter criteria.
+                      {issues.length === 0 ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '1.4rem' }}>✨</span>
+                          <span style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.95rem' }}>No Issues Detected</span>
+                          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                            This dataset version is healthy with zero data quality violations, sensitive PII exposures, or high-risk anomalies.
+                          </span>
+                        </div>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                          <span>No issues match the selected filter criteria.</span>
+                          <button
+                            onClick={() => {
+                              setSeverityFilter('ALL');
+                              setSourceFilter('ALL');
+                              setSearchColumn('');
+                            }}
+                            className="btn btn-secondary"
+                            style={{ padding: '4px 10px', fontSize: '0.75rem', marginTop: '4px' }}
+                          >
+                            Reset Filters
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ) : (

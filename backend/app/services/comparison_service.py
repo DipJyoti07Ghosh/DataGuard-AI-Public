@@ -22,6 +22,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 from sqlalchemy import select, and_
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -862,8 +863,20 @@ def compare_dataset_versions(
         )
         db.add(cdr)
 
-    db.commit()
-    db.refresh(comp_record)
-    logger.info(f"Phase 10 Comparison complete for dataset {dataset_id} (V{baseline_version.version_number} → V{current_version.version_number}): Status={overall_drift_status}")
-
-    return comp_record
+    try:
+        db.commit()
+        db.refresh(comp_record)
+        logger.info(f"Phase 10 Comparison complete for dataset {dataset_id} (V{baseline_version.version_number} → V{current_version.version_number}): Status={overall_drift_status}")
+        return comp_record
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent comparison write detected for dataset {dataset_id} between {baseline_version_id} and {current_version_id}; fetching existing record.")
+        stmt_existing = select(DatasetComparison).where(
+            DatasetComparison.dataset_id == dataset_id,
+            DatasetComparison.baseline_version_id == baseline_version_id,
+            DatasetComparison.current_version_id == current_version_id,
+        )
+        existing = db.scalar(stmt_existing)
+        if existing:
+            return existing
+        raise

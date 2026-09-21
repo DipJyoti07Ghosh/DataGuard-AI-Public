@@ -12,6 +12,7 @@ from uuid import UUID
 from datetime import datetime, timezone
 import pandas as pd
 import numpy as np
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -584,13 +585,25 @@ def generate_quality_for_version(
         )
         db.add(exp_record)
 
-    db.commit()
-    db.refresh(quality_record)
-
-    logger.info(
-        f"Saved QualityValidationResult (id={quality_record.id}, score={quality_record.overall_score}) "
-        f"for DatasetVersion V{version.version_number}"
-    )
+    try:
+        db.commit()
+        db.refresh(quality_record)
+        logger.info(
+            f"Saved QualityValidationResult (id={quality_record.id}, score={quality_record.overall_score}) "
+            f"for DatasetVersion V{version.version_number}"
+        )
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent quality validation write detected for version {version_id}; fetching existing record.")
+        existing_result = (
+            db.query(QualityValidationResult)
+            .filter(QualityValidationResult.dataset_version_id == version_id)
+            .first()
+        )
+        if existing_result:
+            quality_record = existing_result
+        else:
+            raise
 
     return _build_quality_response(quality_record, dataset, version)
 

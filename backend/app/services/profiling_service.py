@@ -16,6 +16,7 @@ from uuid import UUID
 import numpy as np
 import pandas as pd
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -397,9 +398,25 @@ def generate_profile_for_version(
         )
         db.add(profile_entity)
 
-    db.commit()
-    db.refresh(profile_entity)
-    logger.info(f"Saved ProfilingResult (id={profile_entity.id}) for DatasetVersion V{version.version_number}")
+    try:
+        db.commit()
+        db.refresh(profile_entity)
+        logger.info(f"Saved ProfilingResult (id={profile_entity.id}) for DatasetVersion V{version.version_number}")
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent profiling write detected for version {version_id}; fetching existing record.")
+        existing = db.scalar(
+            select(ProfilingResult).where(ProfilingResult.dataset_version_id == version_id)
+        )
+        if existing:
+            if force_recompute:
+                for k, v in profile_data.items():
+                    setattr(existing, k, v)
+                db.commit()
+                db.refresh(existing)
+            profile_entity = existing
+        else:
+            raise
 
     return _to_profiling_response(profile_entity, version)
 

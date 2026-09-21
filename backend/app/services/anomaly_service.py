@@ -17,6 +17,7 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sqlalchemy import select, delete
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.dataset import Dataset, DatasetVersion
@@ -840,13 +841,24 @@ def analyze_dataset_anomalies_for_version(
     )
 
     db.add(result_entity)
-    db.commit()
-    db.refresh(result_entity)
-
-    logger.info(
-        f"Saved AnomalyDetectionResult (id={result_entity.id}, score={dataset_anomaly_score}, anomalies={total_anomalies_count}) for '{version.dataset.name}' V{version.version_number}"
-    )
-    return result_entity
+    try:
+        db.commit()
+        db.refresh(result_entity)
+        logger.info(
+            f"Saved AnomalyDetectionResult (id={result_entity.id}, score={dataset_anomaly_score}, anomalies={total_anomalies_count}) for '{version.dataset.name}' V{version.version_number}"
+        )
+        return result_entity
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent anomaly detection write detected for version {version.id}; fetching existing record.")
+        stmt_existing = (
+            select(AnomalyDetectionResult)
+            .where(AnomalyDetectionResult.dataset_version_id == version.id)
+        )
+        existing_result = db.scalar(stmt_existing)
+        if existing_result:
+            return existing_result
+        raise
 
 
 def get_anomaly_detection_result_for_version(

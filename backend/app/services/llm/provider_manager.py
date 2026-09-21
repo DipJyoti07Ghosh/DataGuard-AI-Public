@@ -26,6 +26,7 @@ from app.services.llm.base import (
     LLMModelNotFoundError,
 )
 from app.services.llm.gemini_provider import GeminiProvider
+from app.services.llm.groq_provider import GroqProvider
 from app.services.llm.huggingface_provider import HuggingFaceProvider
 from app.services.llm.ollama_provider import OllamaProvider
 
@@ -39,6 +40,7 @@ class ProviderManager:
         self,
         settings_instance: Optional[Any] = None,
         gemini_provider: Optional[BaseLLMProvider] = None,
+        groq_provider: Optional[BaseLLMProvider] = None,
         huggingface_provider: Optional[BaseLLMProvider] = None,
         ollama_provider: Optional[BaseLLMProvider] = None,
         provider_order: Optional[List[str]] = None,
@@ -51,10 +53,12 @@ class ProviderManager:
             self._order_override = provider_order or [p.provider_name.lower() for p in providers_override]
         else:
             self._gemini = gemini_provider or GeminiProvider(self._settings)
+            self._groq = groq_provider or GroqProvider(self._settings)
             self._huggingface = huggingface_provider or HuggingFaceProvider(self._settings)
             self._ollama = ollama_provider or OllamaProvider(self._settings)
             self._providers_map = {
                 "gemini": self._gemini,
+                "groq": self._groq,
                 "huggingface": self._huggingface,
                 "ollama": self._ollama,
             }

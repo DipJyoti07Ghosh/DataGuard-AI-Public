@@ -21,6 +21,7 @@ import uuid
 from typing import Dict, List, Any, Optional, Tuple
 from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
+from sqlalchemy.exc import IntegrityError
 
 from app.models.dataset import DatasetVersion
 from app.models.profiling import ProfilingResult
@@ -939,16 +940,23 @@ def synthesize_dataset_health_and_issues(
 
     for issue in generated_issues:
         issue.dataset_health_result_id = health_result.id
-        db.add(issue)
-
-    db.commit()
-    db.refresh(health_result)
-
-    logger.info(
-        f"Phase 9 Health & Prioritization complete for Version {version.id}: "
-        f"Score={health_score:.1f} ({health_grade}), Issues={len(generated_issues)}"
-    )
-    return health_result
+    try:
+        db.commit()
+        db.refresh(health_result)
+        logger.info(
+            f"Phase 9 Health & Prioritization complete for Version {version.id}: "
+            f"Score={health_score:.1f} ({health_grade}), Issues={len(generated_issues)}"
+        )
+        return health_result
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent health analysis write detected for version {version.id}; fetching existing record.")
+        existing = db.scalar(
+            select(DatasetHealthResult).where(DatasetHealthResult.dataset_version_id == version.id)
+        )
+        if existing:
+            return existing
+        raise
 
 
 def analyze_and_save_dataset_health(

@@ -14,6 +14,7 @@ from app.services.llm.base import (
     LLMModelNotFoundError,
 )
 from app.services.llm.gemini_provider import GeminiProvider
+from app.services.llm.groq_provider import GroqProvider
 from app.services.llm.huggingface_provider import HuggingFaceProvider
 from app.services.llm.ollama_provider import OllamaProvider
 from app.services.llm.provider_manager import (
@@ -33,6 +34,7 @@ __all__ = [
     "LLMRateLimitError",
     "LLMModelNotFoundError",
     "GeminiProvider",
+    "GroqProvider",
     "HuggingFaceProvider",
     "OllamaProvider",
     "ProviderManager",

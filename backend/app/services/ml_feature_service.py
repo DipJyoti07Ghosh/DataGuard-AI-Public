@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from uuid import UUID
 
 from sqlalchemy import select, delete
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.dataset import Dataset, DatasetVersion
@@ -369,14 +370,26 @@ def generate_risk_predictions_for_version(
         db.add(pred_entity)
         new_prediction_entities.append(pred_entity)
 
-    db.commit()
-    for entity in new_prediction_entities:
-        db.refresh(entity)
-
-    logger.info(
-        f"Generated & saved {len(new_prediction_entities)} ColumnRiskPredictions for '{version.dataset.name}' V{version.version_number}"
-    )
-    return new_prediction_entities
+    try:
+        db.commit()
+        for entity in new_prediction_entities:
+            db.refresh(entity)
+        logger.info(
+            f"Generated & saved {len(new_prediction_entities)} ColumnRiskPredictions for '{version.dataset.name}' V{version.version_number}"
+        )
+        return new_prediction_entities
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent risk prediction write detected for version {version.id}; fetching existing records.")
+        stmt_existing = (
+            select(ColumnRiskPrediction)
+            .where(ColumnRiskPrediction.dataset_version_id == version.id)
+            .order_by(ColumnRiskPrediction.risk_score.desc(), ColumnRiskPrediction.column_name.asc())
+        )
+        existing_preds = db.scalars(stmt_existing).all()
+        if existing_preds:
+            return existing_preds
+        raise
 
 
 def get_risk_predictions_for_version(

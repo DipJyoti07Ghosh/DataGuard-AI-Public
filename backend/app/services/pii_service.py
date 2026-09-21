@@ -19,6 +19,7 @@ from uuid import UUID
 
 import pandas as pd
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -583,13 +584,22 @@ def generate_pii_for_version(
         )
         db.add(finding_entity)
 
-    db.commit()
-    db.refresh(scan_entity)
-
-    logger.info(
-        f"Saved PIIScanResult (id={scan_entity.id}) with {len(findings_data)} findings for V{version.version_number}"
-    )
-    return scan_entity
+    try:
+        db.commit()
+        db.refresh(scan_entity)
+        logger.info(
+            f"Saved PIIScanResult (id={scan_entity.id}) with {len(findings_data)} findings for V{version.version_number}"
+        )
+        return scan_entity
+    except IntegrityError:
+        db.rollback()
+        logger.info(f"Concurrent PII scan write detected for version {version.id}; fetching existing record.")
+        existing = db.scalar(
+            select(PIIScanResult).where(PIIScanResult.dataset_version_id == version.id)
+        )
+        if existing:
+            return existing
+        raise
 
 
 def get_pii_for_version(
