@@ -18,6 +18,7 @@ from app.api.pii import router as pii_router
 from app.api.risk import router as risk_router
 from app.api.anomaly import router as anomaly_router
 from app.api.issues import router as issues_router
+from app.api.comparison import router as comparison_router
 
 
 # ---------------------------------------------------------------------------
@@ -116,6 +117,7 @@ app.include_router(pii_router, prefix="/api/datasets")
 app.include_router(risk_router, prefix="/api/datasets")
 app.include_router(anomaly_router, prefix="/api/datasets")
 app.include_router(issues_router, prefix="/api/datasets")
+app.include_router(comparison_router, prefix="/api/datasets")
 
 
 # ---------------------------------------------------------------------------

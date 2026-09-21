@@ -206,6 +206,17 @@ export default function Datasets() {
                   </div>
 
                   <div className="dataset-card-actions">
+                    {ds.version_count >= 2 && (
+                      <Link
+                        to={`/datasets/${ds.id}/compare`}
+                        className="btn btn--primary btn--sm"
+                        onClick={(e) => e.stopPropagation()}
+                        id={`compare-dataset-${ds.id}`}
+                        style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
+                      >
+                        ⚖️ Compare Drift
+                      </Link>
+                    )}
                     <button
                       className="btn btn--secondary btn--sm"
                       onClick={(e) => {
@@ -235,12 +246,22 @@ export default function Datasets() {
                       <h4 className="drawer-title">
                         📜 Snapshot Version History ({details?.versions?.length || ds.version_count})
                       </h4>
-                      <Link
-                        to={`/upload?dataset=${encodeURIComponent(ds.name)}`}
-                        className="btn btn--primary btn--sm"
-                      >
-                        ➕ Upload V{(ds.latest_version_number || 0) + 1}
-                      </Link>
+                      <div className="flex-row" style={{ gap: '8px' }}>
+                        {details?.versions?.length >= 2 && (
+                          <Link
+                            to={`/datasets/${ds.id}/compare`}
+                            className="btn btn--secondary btn--sm"
+                          >
+                            ⚖️ Compare Versions
+                          </Link>
+                        )}
+                        <Link
+                          to={`/upload?dataset=${encodeURIComponent(ds.name)}`}
+                          className="btn btn--primary btn--sm"
+                        >
+                          ➕ Upload V{(ds.latest_version_number || 0) + 1}
+                        </Link>
+                      </div>
                     </div>
 
                     {loadingDetailId === ds.id ? (
@@ -291,7 +312,7 @@ export default function Datasets() {
                                   {new Date(v.uploaded_at).toLocaleString()}
                                 </td>
                                 <td>
-                                    <div className="flex-row" style={{ gap: '8px' }}>
+                                    <div className="flex-row" style={{ gap: '6px', flexWrap: 'wrap' }}>
                                       <Link
                                         to={`/datasets/${ds.id}/versions/${v.id}/profile`}
                                         className="btn btn--secondary btn--sm"
@@ -330,6 +351,22 @@ export default function Datasets() {
                                         style={{ borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
                                       >
                                         ⚠ Anomalies
+                                      </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/issues`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-health-${v.id}`}
+                                        style={{ borderColor: 'rgba(56, 189, 248, 0.4)', color: '#38bdf8' }}
+                                      >
+                                        🩺 Health
+                                      </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/compare`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-compare-${v.id}`}
+                                        style={{ borderColor: 'rgba(139, 92, 246, 0.4)', color: '#a78bfa' }}
+                                      >
+                                        ⚖️ Compare
                                       </Link>
                                     </div>
                                 </td>

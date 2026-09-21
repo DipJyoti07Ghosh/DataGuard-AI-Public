@@ -9,6 +9,7 @@ from app.models.pii import PIIScanResult, PIIFinding
 from app.models.risk import ColumnRiskPrediction
 from app.models.anomaly import AnomalyDetectionResult, AnomalyFinding
 from app.models.issues import DatasetHealthResult, DataQualityIssue
+from app.models.comparison import DatasetComparison, ColumnDriftResult
 
 __all__ = [
     "Dataset",
@@ -23,5 +24,7 @@ __all__ = [
     "AnomalyFinding",
     "DatasetHealthResult",
     "DataQualityIssue",
+    "DatasetComparison",
+    "ColumnDriftResult",
 ]
 

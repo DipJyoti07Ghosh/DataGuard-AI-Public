@@ -367,6 +367,66 @@ export async function getIssueDetail(datasetId, versionId, issueId) {
   return request(`/datasets/${datasetId}/versions/${versionId}/issues/${issueId}`);
 }
 
+// ---------------------------------------------------------------------------
+// Comparison & Drift Detection Endpoints (Phase 10)
+// ---------------------------------------------------------------------------
+
+/**
+ * Compare two snapshot versions of the same dataset.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} baselineVersionId - Reference baseline version UUID.
+ * @param {string} currentVersionId - Target current version UUID.
+ * @param {boolean} [forceRecompute=false] - Force recompute drift analysis.
+ * @returns {Promise<Object>} DatasetComparisonResponse object.
+ */
+export async function compareDatasetVersions(datasetId, baselineVersionId, currentVersionId, forceRecompute = false) {
+  return request(`/datasets/${datasetId}/compare`, {
+    method: 'POST',
+    body: JSON.stringify({
+      baseline_version_id: baselineVersionId,
+      current_version_id: currentVersionId,
+      force_recompute: forceRecompute,
+    }),
+  });
+}
+
+/**
+ * Retrieve an existing dataset comparison by its comparison ID.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} comparisonId - Comparison UUID.
+ * @returns {Promise<Object>} DatasetComparisonResponse object.
+ */
+export async function getDatasetComparison(datasetId, comparisonId) {
+  return request(`/datasets/${datasetId}/comparisons/${comparisonId}`);
+}
+
+/**
+ * List past comparisons for a dataset with optional version filters.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} [baselineVersionId=null] - Optional baseline version UUID.
+ * @param {string} [currentVersionId=null] - Optional current version UUID.
+ * @returns {Promise<Array>} List of ComparisonListItemResponse objects.
+ */
+export async function getDatasetComparisons(datasetId, baselineVersionId = null, currentVersionId = null) {
+  const params = {};
+  if (baselineVersionId) params.baseline_version_id = baselineVersionId;
+  if (currentVersionId) params.current_version_id = currentVersionId;
+  const query = new URLSearchParams(params).toString();
+  const qs = query ? `?${query}` : '';
+  return request(`/datasets/${datasetId}/comparisons${qs}`);
+}
+
+/**
+ * Retrieve single column drift details from a comparison.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {string} comparisonId - Comparison UUID.
+ * @param {string} columnName - Column name.
+ * @returns {Promise<Object>} ColumnDriftResponse object.
+ */
+export async function getColumnDriftDetail(datasetId, comparisonId, columnName) {
+  return request(`/datasets/${datasetId}/comparisons/${comparisonId}/columns/${encodeURIComponent(columnName)}`);
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -392,7 +452,12 @@ export default {
   getIssuesSummary,
   getIssues,
   getIssueDetail,
+  compareDatasetVersions,
+  getDatasetComparison,
+  getDatasetComparisons,
+  getColumnDriftDetail,
 };
+
 
 
 
