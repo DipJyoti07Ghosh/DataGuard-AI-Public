@@ -1996,3 +1996,82 @@ a:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===========================================================
+   Phase 12 — AI Assistant Custom Styles
+   =========================================================== */
+.quick-prompts {
+  margin-bottom: var(--space-md);
+}
+
+.quick-chip {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.quick-chip:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.phase-checkbox-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.phase-checkbox-chip.active {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.status-dot--healthy {
+  background: var(--success);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.status-dot--warning {
+  background: var(--warning);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+.status-dot--error {
+  background: var(--error);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.grid-responsive-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid-responsive-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.grid-responsive-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.assistant-answer-text p {
+  color: var(--text-primary);
+}
+

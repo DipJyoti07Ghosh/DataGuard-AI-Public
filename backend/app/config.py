@@ -35,14 +35,19 @@ class Settings(BaseSettings):
 
     # Ollama (Phase 12+)
     ollama_base_url: str = Field(default="http://localhost:11434")
-    ollama_model: str = Field(default="llama3.1:8b")
+    ollama_model: str = Field(default="llama3.2:1b")
+    ollama_temperature: float = Field(default=0.1)
+    ollama_timeout_seconds: float = Field(default=60.0)
+    ollama_max_tokens: int = Field(default=1024)
 
-    # RAG (Phase 11+)
-    embedding_model: str = Field(default="nomic-embed-text")
-    embedding_dimension: int = Field(default=768)
+    # RAG (Phase 11+) & Assistant
+    embedding_model: str = Field(default="BAAI/bge-small-en-v1.5")
+    embedding_dimension: int = Field(default=384)
     rag_chunk_size: int = Field(default=500)
     rag_chunk_overlap: int = Field(default=50)
-    rag_top_k: int = Field(default=5)
+    rag_top_k: int = Field(default=8)
+    rag_min_similarity: float = Field(default=0.35)
+    assistant_default_top_k: int = Field(default=8)
 
     model_config = {
         "env_file": ".env",
@@ -70,3 +75,9 @@ class Settings(BaseSettings):
 
 # Singleton settings instance
 settings = Settings()
+
+
+def get_settings() -> Settings:
+    """Return the global settings instance."""
+    return settings
+

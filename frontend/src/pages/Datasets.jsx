@@ -256,6 +256,13 @@ export default function Datasets() {
                         📜 Snapshot Version History ({details?.versions?.length || ds.version_count})
                       </h4>
                       <div className="flex-row" style={{ gap: '8px' }}>
+                        <Link
+                          to={`/datasets/${ds.id}/assistant`}
+                          className="btn btn--secondary btn--sm"
+                          style={{ borderColor: 'rgba(99, 102, 241, 0.4)', color: '#818cf8' }}
+                        >
+                          🤖 Ask AI
+                        </Link>
                         {details?.versions?.length >= 2 && (
                           <Link
                             to={`/datasets/${ds.id}/compare`}
@@ -384,6 +391,14 @@ export default function Datasets() {
                                         style={{ borderColor: 'rgba(56, 189, 248, 0.4)', color: '#38bdf8' }}
                                       >
                                         🧠 RAG
+                                      </Link>
+                                      <Link
+                                        to={`/datasets/${ds.id}/versions/${v.id}/assistant`}
+                                        className="btn btn--secondary btn--sm"
+                                        id={`view-assistant-${v.id}`}
+                                        style={{ borderColor: 'rgba(99, 102, 241, 0.4)', color: '#818cf8' }}
+                                      >
+                                        🤖 Ask AI
                                       </Link>
                                     </div>
                                 </td>

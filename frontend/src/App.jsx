@@ -39,6 +39,8 @@ export default function App() {
           <Route path="/datasets/:datasetId/rag" element={<RAGExplorer />} />
           <Route path="/datasets/:datasetId/versions/:versionId/rag" element={<RAGExplorer />} />
           <Route path="/assistant" element={<Assistant />} />
+          <Route path="/datasets/:datasetId/assistant" element={<Assistant />} />
+          <Route path="/datasets/:datasetId/versions/:versionId/assistant" element={<Assistant />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -522,6 +522,31 @@ export async function purgeRAGDocuments(datasetId) {
   return request(`/datasets/${datasetId}/rag/documents`, { method: 'DELETE' });
 }
 
+// ---------------------------------------------------------------------------
+// AI Assistant Endpoints (Phase 12)
+// ---------------------------------------------------------------------------
+
+/**
+ * Ask the AI Assistant a grounded analytical question.
+ * @param {string} datasetId - Dataset UUID.
+ * @param {Object} askRequest - { question, scope, version_id, comparison_id, top_k, phases, min_similarity }
+ * @returns {Promise<Object>} AssistantAskResponse object.
+ */
+export async function askAssistant(datasetId, askRequest) {
+  return request(`/datasets/${datasetId}/assistant/ask`, {
+    method: 'POST',
+    body: JSON.stringify(askRequest),
+  });
+}
+
+/**
+ * Check Ollama connection and configured model health status.
+ * @returns {Promise<Object>} AssistantHealthResponse object.
+ */
+export async function getAssistantHealth() {
+  return request(`/assistant/health`);
+}
+
 export default {
   checkHealth,
   uploadDataset,
@@ -558,7 +583,10 @@ export default {
   getRAGDocuments,
   getVersionRAGDocuments,
   purgeRAGDocuments,
+  askAssistant,
+  getAssistantHealth,
 };
+
 
 
 
