@@ -2,18 +2,53 @@
  * DataGuard AI — Sidebar Navigation Component
  */
 
-import { NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
-  { path: '/', label: 'Dashboard', icon: '📊' },
-  { path: '/upload', label: 'Upload', icon: '📁' },
-  { path: '/datasets', label: 'Datasets', icon: '🗃️' },
-  { path: '/chat', label: 'AI Chat', icon: '💬' },
-  { path: '/rag', label: 'RAG Knowledge', icon: '🧠' },
-  { path: '/assistant', label: 'AI Assistant', icon: '🤖' },
+  { id: 'dashboard', path: '/', label: 'Dashboard', icon: '📊' },
+  { id: 'upload', path: '/upload', label: 'Upload', icon: '📁' },
+  { id: 'datasets', path: '/datasets', label: 'Datasets', icon: '🗃️' },
+  { id: 'chat', path: '/chat', label: 'AI Chat', icon: '💬' },
+  { id: 'rag', path: '/rag', label: 'RAG Knowledge', icon: '🧠' },
+  { id: 'assistant', path: '/assistant', label: 'AI Assistant', icon: '🤖' },
 ];
 
 export default function Sidebar() {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const isNavActive = (item) => {
+    if (item.id === 'dashboard') {
+      return pathname === '/' || pathname === '/dashboard' || pathname.endsWith('/dashboard');
+    }
+    if (item.id === 'upload') {
+      return pathname === '/upload' || pathname.startsWith('/upload/');
+    }
+    if (item.id === 'chat') {
+      return pathname === '/chat' || pathname.endsWith('/chat');
+    }
+    if (item.id === 'rag') {
+      return pathname === '/rag' || pathname.endsWith('/rag');
+    }
+    if (item.id === 'assistant') {
+      return pathname === '/assistant' || pathname.endsWith('/assistant');
+    }
+    if (item.id === 'datasets') {
+      if (pathname === '/datasets') return true;
+      if (
+        pathname.startsWith('/datasets') &&
+        !pathname.endsWith('/dashboard') &&
+        !pathname.endsWith('/chat') &&
+        !pathname.endsWith('/rag') &&
+        !pathname.endsWith('/assistant')
+      ) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -25,19 +60,19 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar-nav">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `sidebar-link ${isActive ? 'sidebar-link--active' : ''}`
-            }
-            end={item.path === '/'}
-          >
-            <span className="sidebar-link-icon">{item.icon}</span>
-            <span className="sidebar-link-label">{item.label}</span>
-          </NavLink>
-        ))}
+        {navItems.map((item) => {
+          const active = isNavActive(item);
+          return (
+            <Link
+              key={item.id}
+              to={item.path}
+              className={`sidebar-link ${active ? 'sidebar-link--active' : ''}`}
+            >
+              <span className="sidebar-link-icon">{item.icon}</span>
+              <span className="sidebar-link-label">{item.label}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="sidebar-footer">
