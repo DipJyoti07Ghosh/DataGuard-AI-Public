@@ -1,9 +1,9 @@
 """
-DataGuard AI — Phase 12 Assistant API Endpoints
+DataGuard AI — Phase 12A Assistant API Endpoints
 
 Provides REST endpoints for:
-- POST /api/datasets/{dataset_id}/assistant/ask: Grounded conversational QA using Phase 11 RAG & Ollama
-- GET  /api/assistant/health: Health check and status of the local Ollama LLM subsystem
+- POST /api/datasets/{dataset_id}/assistant/ask: Grounded conversational QA using Phase 11 RAG & Automatic Provider Fallback
+- GET  /api/assistant/health: Health check and status of the LLM provider subsystem (Gemini primary, Ollama fallback)
 """
 
 import logging
@@ -18,7 +18,7 @@ from app.schemas.assistant import (
     AssistantHealthResponse,
 )
 from app.services.assistant_service import ask_assistant
-from app.services.ollama_service import get_ollama_service
+from app.services.llm import get_provider_manager, LLMUnavailableError, LLMTimeoutError, LLMConfigurationError
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def ask_dataset_assistant(
 ) -> AssistantAskResponse:
     """
     Ask a natural-language question. Queries Phase 11 pgvector RAG, builds grounded context,
-    and returns a factual response from the local Ollama LLM with authoritative source attribution.
+    and returns a factual response from the primary/fallback LLM provider with authoritative source attribution.
     """
     try:
         return ask_assistant(dataset_id=dataset_id, request=request, db=db)
@@ -46,26 +46,20 @@ def ask_dataset_assistant(
         if "not found" in err_msg.lower():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err_msg)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err_msg)
-    except ConnectionError as e:
-        logger.warning(f"Ollama connection error during assistant query: {e}")
+    except (LLMUnavailableError, ConnectionError) as e:
+        logger.warning(f"LLM provider unavailable error during assistant query: {e}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=str(e),
+            detail="AI Assistant is temporarily unavailable. All configured LLM providers failed or are offline.",
         )
-    except TimeoutError as e:
-        logger.warning(f"Ollama timeout during assistant query: {e}")
+    except (LLMTimeoutError, TimeoutError) as e:
+        logger.warning(f"LLM provider timeout during assistant query: {e}")
         raise HTTPException(
             status_code=status.HTTP_504_GATEWAY_TIMEOUT,
-            detail=str(e),
-        )
-    except RuntimeError as e:
-        logger.error(f"Ollama runtime error during assistant query: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=str(e),
+            detail="Assistant request timed out. Please try again.",
         )
     except Exception as e:
-        logger.error(f"Unexpected error in assistant endpoint: {type(e).__name__}")
+        logger.error(f"Unexpected error in assistant endpoint: {type(e).__name__} - {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred while processing the assistant request.",
@@ -75,11 +69,12 @@ def ask_dataset_assistant(
 @router.get(
     "/assistant/health",
     response_model=AssistantHealthResponse,
-    summary="Check local Ollama service health and configured model availability",
+    summary="Check LLM provider health status (Gemini primary, Ollama fallback)",
 )
 def get_assistant_health() -> AssistantHealthResponse:
     """
-    Check if the local Ollama daemon is reachable and whether the configured model is ready.
+    Check availability of the configured LLM provider hierarchy without billable generation calls.
     """
-    ollama_svc = get_ollama_service()
-    return ollama_svc.check_health()
+    manager = get_provider_manager()
+    return manager.check_health()
+

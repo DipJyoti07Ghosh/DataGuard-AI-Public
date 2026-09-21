@@ -56,7 +56,7 @@ export default function Assistant() {
   const [selectedPhases, setSelectedPhases] = useState([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  // Ollama Health State
+  // Health State
   const [healthStatus, setHealthStatus] = useState(null);
   const [healthLoading, setHealthLoading] = useState(true);
 
@@ -66,13 +66,14 @@ export default function Assistant() {
   const [error, setError] = useState(null);
   const [indexing, setIndexing] = useState(false);
   const [indexMessage, setIndexMessage] = useState(null);
+  const [showEvidence, setShowEvidence] = useState(false);
 
   const responseRef = useRef(null);
 
   useEffect(() => {
     document.getElementById('page-title').textContent = 'AI Assistant';
     loadDatasets();
-    checkOllamaHealth();
+    checkAssistantHealthStatus();
   }, []);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function Assistant() {
     }
   }, [selectedDatasetId]);
 
-  async function checkOllamaHealth() {
+  async function checkAssistantHealthStatus() {
     try {
       setHealthLoading(true);
       const res = await getAssistantHealth();
@@ -90,9 +91,11 @@ export default function Assistant() {
     } catch (err) {
       setHealthStatus({
         status: 'UNAVAILABLE',
-        error_detail: err.message || 'Failed to connect to assistant service',
-        model_configured: 'llama3.1:8b',
-        model_available: false,
+        primary_provider: 'gemini',
+        active_fallback: null,
+        available_providers: [],
+        provider_details: {},
+        message: err.message || 'Failed to connect to assistant service',
       });
     } finally {
       setHealthLoading(false);
@@ -205,29 +208,37 @@ export default function Assistant() {
     }
   }
 
+  const formatProviderName = (provider) => {
+    if (!provider) return 'None';
+    if (provider === 'gemini') return 'Hosted Gemini API';
+    if (provider === 'huggingface') return 'Hosted Hugging Face API';
+    if (provider === 'ollama') return 'Local Ollama';
+    return provider;
+  };
+
   const versions = selectedDataset?.versions || [];
 
   return (
     <div className="assistant-page page-content">
       {/* Header Bar */}
-      <div className="page-header flex-between flex-wrap gap-md">
+      <div className="page-header flex-between flex-wrap gap-md mb-lg">
         <div>
           <h1 className="page-title flex-row items-center gap-sm">
-            <span style={{ fontSize: '1.8rem' }}>🤖</span> AI Data Quality Assistant
+            <span style={{ fontSize: '1.8rem' }}>🤖</span> AI Quality Assistant
           </h1>
           <p className="page-subtitle">
-            Local LLM analytical assistant grounded with pgvector semantic retrieval and privacy isolation.
+            Ground-truth conversational analytics over dataset quality profiles, sensitive data detections, drift metrics, and transformation rules.
           </p>
         </div>
 
         <div className="flex-row items-center gap-sm">
           <button
             className="btn btn--secondary btn--sm"
-            onClick={checkOllamaHealth}
+            onClick={checkAssistantHealthStatus}
             disabled={healthLoading}
-            title="Refresh Ollama status"
+            title="Refresh assistant provider status"
           >
-            {healthLoading ? 'Checking...' : '🔄 Check Ollama'}
+            {healthLoading ? 'Checking...' : '🔄 Provider Health'}
           </button>
           <button
             className="btn btn--secondary btn--sm"
@@ -245,42 +256,40 @@ export default function Assistant() {
         </div>
       </div>
 
-      {/* Ollama Health Banner */}
+      {/* LLM Provider Health Banner */}
       <div className="mb-lg">
         {healthLoading ? (
           <div className="alert-box alert-box--info" style={{ padding: '8px 16px' }}>
-            <span className="spinner-inline"></span> Checking Ollama LLM service health...
+            <span className="spinner-inline"></span> Checking AI Assistant provider health...
           </div>
         ) : healthStatus?.status === 'HEALTHY' ? (
           <div className="alert-box alert-box--success flex-between" style={{ padding: '10px 16px' }}>
             <div className="flex-row items-center gap-sm">
               <span className="status-dot status-dot--healthy"></span>
               <span>
-                <strong>Ollama Connected:</strong> Model <code>{healthStatus.model_configured}</code> is loaded and ready.
+                <strong>AI Assistant Available:</strong> Primary provider <code>{formatProviderName(healthStatus.primary_provider)}</code> is configured and ready.
               </span>
             </div>
             <span className="badge badge--success">Ready</span>
           </div>
-        ) : healthStatus?.status === 'MODEL_UNAVAILABLE' ? (
-          <div className="alert-box alert-box--warning" style={{ padding: '10px 16px' }}>
+        ) : healthStatus?.status === 'DEGRADED' ? (
+          <div className="alert-box alert-box--warning flex-between" style={{ padding: '10px 16px' }}>
             <div className="flex-row items-center gap-sm">
               <span className="status-dot status-dot--warning"></span>
               <div>
-                <strong>Model Unavailable:</strong> Ollama is running at <code>{healthStatus.base_url}</code>, but configured model <code>{healthStatus.model_configured}</code> is not pulled.
-                <div style={{ fontSize: '0.82rem', marginTop: '4px' }}>
-                  Run: <code>ollama pull {healthStatus.model_configured}</code>
-                </div>
+                <strong>AI Assistant Degraded:</strong> Primary provider (<code>{formatProviderName(healthStatus.primary_provider)}</code>) unavailable. Active fallback: <code>{formatProviderName(healthStatus.active_fallback)}</code>.
               </div>
             </div>
+            <span className="badge badge--warning">Fallback Active</span>
           </div>
         ) : (
           <div className="alert-box alert-box--error" style={{ padding: '10px 16px' }}>
             <div className="flex-row items-center gap-sm">
               <span className="status-dot status-dot--error"></span>
               <div>
-                <strong>Ollama Unavailable:</strong> Could not connect to Ollama at <code>{healthStatus?.base_url || 'http://localhost:11434'}</code>.
+                <strong>AI Assistant Unavailable:</strong> No configured LLM providers are currently accessible.
                 <div style={{ fontSize: '0.82rem', marginTop: '4px' }}>
-                  Ensure Ollama is running locally: <code>ollama serve</code>
+                  {healthStatus?.message || 'Set GEMINI_API_KEY / HUGGINGFACE_API_TOKEN in backend/.env or start Ollama locally via `ollama serve`.'}
                 </div>
               </div>
             </div>
@@ -558,14 +567,25 @@ export default function Assistant() {
                 <span style={{ fontSize: '1.4rem' }}>💡</span>
                 <div>
                   <h3 className="card-title">AI Assistant Analysis</h3>
-                  <div className="text-xs text-muted">
-                    Generated via <code>{response.model_name}</code> • Latency: {response.latency_ms.toFixed(0)} ms
+                  <div className="text-xs text-muted flex-row items-center gap-xs flex-wrap mt-xs">
+                    <span>Generated by:</span>
+                    <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+                      {formatProviderName(response.provider)}
+                    </span>
+                    {response.fallback_occurred && (
+                      <span className="badge badge--warning" style={{ fontSize: '0.7rem', padding: '1px 6px' }}>
+                        Fallback
+                      </span>
+                    )}
+                    <span className="font-mono">({response.model || response.model_name})</span>
+                    <span>•</span>
+                    <span>Latency: {(response.response_time_ms || response.latency_ms || 0).toFixed(0)} ms</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex-row items-center gap-xs">
-                {response.is_grounded ? (
+                {(response.grounded ?? response.is_grounded) ? (
                   <span className="badge badge--success flex-row items-center gap-xs">
                     <span>🎯</span> Grounded in Evidence
                   </span>
@@ -603,88 +623,101 @@ export default function Assistant() {
           </div>
 
           {/* Grounded Evidence Section (Authoritative Provenance) */}
-          <div className="evidence-section">
-            <div className="section-header flex-between mb-md">
-              <h3 className="section-title flex-row items-center gap-xs" style={{ fontSize: '1.15rem' }}>
-                <span>📑</span> Sanitized Grounded Evidence ({response.sources.length})
-              </h3>
-              <span className="text-xs text-muted">
-                Authoritative source chunks retrieved via pgvector cosine distance
-              </span>
+          <div className="evidence-section card p-md" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+            <div className="section-header flex-between flex-wrap gap-sm">
+              <div>
+                <h3 className="section-title flex-row items-center gap-xs" style={{ fontSize: '1.05rem', margin: 0 }}>
+                  <span>📑</span> Sanitized Grounded Context ({response.sources.length} sources)
+                </h3>
+                <span className="text-xs text-muted">
+                  Authoritative source chunks retrieved via pgvector cosine similarity
+                </span>
+              </div>
+              <button
+                type="button"
+                className="btn btn--secondary btn--sm"
+                onClick={() => setShowEvidence(!showEvidence)}
+              >
+                {showEvidence ? '▲ Collapse Evidence' : '▼ View Grounded Evidence'}
+              </button>
             </div>
 
-            {response.sources.length === 0 ? (
-              <div className="empty-evidence-card p-lg text-center bg-card rounded-md border-subtle">
-                <p className="text-muted">
-                  No retrieved documents met the similarity threshold (<code>&gt;= {minSimilarity.toFixed(2)}</code>).
-                </p>
-              </div>
-            ) : (
-              <div className="evidence-cards-list grid-responsive-1 gap-md">
-                {response.sources.map((src, idx) => (
-                  <div
-                    key={src.document_id || idx}
-                    className="evidence-card p-md rounded-md"
-                    style={{
-                      background: 'rgba(17, 24, 39, 0.85)',
-                      border: '1px solid var(--border-subtle)',
-                      borderLeft: '4px solid var(--accent-primary)',
-                    }}
-                  >
-                    <div className="evidence-card-header flex-between flex-wrap gap-xs mb-sm">
-                      <div className="flex-row items-center gap-xs flex-wrap">
-                        <span className="badge badge--primary">
-                          {src.source_phase.replace('PHASE_', 'P').replace('_', ' ')}
-                        </span>
-                        <span className="badge badge--neutral font-mono">
-                          {src.document_type}
-                        </span>
-                        {src.column_name && (
-                          <span className="badge badge--info font-mono">
-                            col: {src.column_name}
-                          </span>
-                        )}
-                        {src.version_number != null && (
-                          <span className="badge badge--warning">
-                            V{src.version_number}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="flex-row items-center gap-xs">
-                        <span className="text-xs text-muted font-mono">
-                          Sim: <strong style={{ color: 'var(--accent-hover)' }}>{src.similarity.toFixed(3)}</strong>
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Sanitized Evidence Snippet */}
-                    <div
-                      className="evidence-content-box p-sm rounded-sm font-mono text-sm mb-xs"
-                      style={{
-                        background: 'rgba(11, 15, 26, 0.7)',
-                        border: '1px solid rgba(148, 163, 184, 0.08)',
-                        whiteSpace: 'pre-wrap',
-                        color: 'var(--text-primary)',
-                        lineHeight: '1.5',
-                      }}
-                    >
-                      {src.content_snippet}
-                    </div>
-
-                    {/* Authoritative Metadata Footer */}
-                    <div className="evidence-card-footer flex-between text-xs text-muted mt-xs">
-                      <span className="font-mono">
-                        doc_id: <code>{src.document_id.slice(0, 12)}...</code>
-                      </span>
-                      {src.source_result_id && (
-                        <span className="font-mono">
-                          src_id: <code>{src.source_result_id.slice(0, 12)}...</code>
-                        </span>
-                      )}
-                    </div>
+            {showEvidence && (
+              <div className="mt-md">
+                {response.sources.length === 0 ? (
+                  <div className="empty-evidence-card p-lg text-center bg-secondary rounded-md border-subtle">
+                    <p className="text-muted">
+                      No retrieved documents met the similarity threshold (<code>&gt;= {minSimilarity.toFixed(2)}</code>).
+                    </p>
                   </div>
-                ))}
+                ) : (
+                  <div className="evidence-cards-list grid-responsive-1 gap-md">
+                    {response.sources.map((src, idx) => (
+                      <div
+                        key={src.document_id || idx}
+                        className="evidence-card p-md rounded-md"
+                        style={{
+                          background: 'rgba(17, 24, 39, 0.85)',
+                          border: '1px solid var(--border-subtle)',
+                          borderLeft: '4px solid var(--accent-primary)',
+                        }}
+                      >
+                        <div className="evidence-card-header flex-between flex-wrap gap-xs mb-sm">
+                          <div className="flex-row items-center gap-xs flex-wrap">
+                            <span className="badge badge--primary">
+                              {src.source_phase.replace('PHASE_', 'P').replace('_', ' ')}
+                            </span>
+                            <span className="badge badge--neutral font-mono">
+                              {src.document_type}
+                            </span>
+                            {src.column_name && (
+                              <span className="badge badge--info font-mono">
+                                col: {src.column_name}
+                              </span>
+                            )}
+                            {src.version_number != null && (
+                              <span className="badge badge--warning">
+                                V{src.version_number}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex-row items-center gap-xs">
+                            <span className="text-xs text-muted font-mono">
+                              Sim: <strong style={{ color: 'var(--accent-hover)' }}>{src.similarity.toFixed(3)}</strong>
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Sanitized Evidence Snippet */}
+                        <div
+                          className="evidence-content-box p-sm rounded-sm font-mono text-sm mb-xs"
+                          style={{
+                            background: 'rgba(11, 15, 26, 0.7)',
+                            border: '1px solid rgba(148, 163, 184, 0.08)',
+                            whiteSpace: 'pre-wrap',
+                            color: 'var(--text-primary)',
+                            lineHeight: '1.5',
+                          }}
+                        >
+                          {src.content_snippet}
+                        </div>
+
+                        {/* Authoritative Metadata Footer */}
+                        <div className="evidence-card-footer flex-between text-xs text-muted mt-xs">
+                          <span className="font-mono">
+                            doc_id: <code>{String(src.document_id).slice(0, 12)}...</code>
+                          </span>
+                          {src.source_result_id && (
+                            <span className="font-mono">
+                              src_id: <code>{String(src.source_result_id).slice(0, 12)}...</code>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>

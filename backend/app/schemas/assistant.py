@@ -71,17 +71,42 @@ class AssistantAskResponse(BaseModel):
     sources: List[AssistantSource] = Field(default_factory=list, description="Authoritative sources from Phase 11")
     warnings: List[str] = Field(default_factory=list, description="Diagnostic warnings (e.g. low evidence, missing phases)")
     grounded: bool = Field(default=True, description="True if answer is backed by retrieved evidence")
-    model: str = Field(..., description="Ollama LLM model name used for generation")
+    provider: str = Field(default="gemini", description="LLM provider that generated the response (e.g. 'gemini' or 'ollama')")
+    model: str = Field(..., description="LLM model name used for generation")
+    fallback_occurred: bool = Field(default=False, description="True if response was generated via fallback provider")
     response_time_ms: float = Field(..., description="Total processing time in milliseconds")
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Timestamp of generation")
 
+    # Backward compatibility aliases
+    model_name: Optional[str] = Field(default=None)
+    is_grounded: Optional[bool] = Field(default=None)
+    latency_ms: Optional[float] = Field(default=None)
+    retrieval_count: Optional[int] = Field(default=None)
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.model_name is None:
+            self.model_name = self.model
+        if self.is_grounded is None:
+            self.is_grounded = self.grounded
+        if self.latency_ms is None:
+            self.latency_ms = self.response_time_ms
+        if self.retrieval_count is None:
+            self.retrieval_count = len(self.sources)
+
 
 class AssistantHealthResponse(BaseModel):
-    """Health check and model status response for the Ollama inference subsystem."""
+    """Health check and status response for the automatic LLM provider subsystem."""
     status: str = Field(..., description="'HEALTHY', 'DEGRADED', or 'UNAVAILABLE'")
-    ollama_reachable: bool = Field(..., description="True if local Ollama daemon responded to ping")
-    ollama_base_url: str = Field(..., description="Configured Ollama base URL")
-    configured_model: str = Field(..., description="Model name configured in settings")
-    model_available: bool = Field(..., description="True if configured model is downloaded and ready in Ollama")
-    available_models: List[str] = Field(default_factory=list, description="List of locally installed model tags")
-    message: str = Field(..., description="Human-readable status or troubleshooting instruction")
+    primary_provider: str = Field(default="gemini", description="Configured primary provider (e.g. 'gemini')")
+    active_fallback: Optional[str] = Field(default=None, description="Active fallback provider if primary is unavailable")
+    available_providers: List[str] = Field(default_factory=list, description="List of currently usable providers")
+    provider_details: Dict[str, Any] = Field(default_factory=dict, description="Sanitized diagnostic status per provider")
+    message: str = Field(..., description="Human-readable status summary")
+
+    # Backward compatibility attributes for Phase 12 tests
+    ollama_reachable: Optional[bool] = Field(default=None)
+    ollama_base_url: Optional[str] = Field(default=None)
+    configured_model: Optional[str] = Field(default=None)
+    model_available: Optional[bool] = Field(default=None)
+    available_models: Optional[List[str]] = Field(default=None)
+

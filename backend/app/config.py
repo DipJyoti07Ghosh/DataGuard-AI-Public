@@ -6,6 +6,7 @@ Loads settings from environment variables with sensible defaults.
 
 import os
 from pathlib import Path
+from typing import Optional, List
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
@@ -33,7 +34,20 @@ class Settings(BaseSettings):
     upload_dir: str = Field(default="./uploads")
     max_upload_size_mb: int = Field(default=100)
 
-    # Ollama (Phase 12+)
+    # LLM Provider Architecture (Phase 12A)
+    llm_provider_order: str = Field(default="gemini,huggingface,ollama")
+
+    # Gemini (Primary Hosted Provider)
+    gemini_api_key: Optional[str] = Field(default=None)
+    gemini_model: str = Field(default="gemini-3.6-flash")
+    gemini_timeout_seconds: float = Field(default=60.0)
+
+    # Hugging Face (Secondary Hosted Serverless Provider)
+    huggingface_api_token: Optional[str] = Field(default=None)
+    huggingface_model: str = Field(default="Qwen/Qwen2.5-72B-Instruct")
+    huggingface_timeout_seconds: float = Field(default=60.0)
+
+    # Ollama (Fallback Local Provider)
     ollama_base_url: str = Field(default="http://localhost:11434")
     ollama_model: str = Field(default="llama3.2:1b")
     ollama_temperature: float = Field(default=0.1)
@@ -54,6 +68,20 @@ class Settings(BaseSettings):
         "env_file_encoding": "utf-8",
         "case_sensitive": False,
     }
+
+    @property
+    def llm_provider_order_list(self) -> list[str]:
+        """
+        Parse, normalize, deduplicate and validate configured provider order.
+        Supported providers: 'gemini', 'huggingface', 'ollama'.
+        """
+        supported = {"gemini", "huggingface", "ollama"}
+        order = []
+        for raw in self.llm_provider_order.split(","):
+            p = raw.strip().lower()
+            if p in supported and p not in order:
+                order.append(p)
+        return order or ["gemini", "huggingface", "ollama"]
 
     @property
     def cors_origin_list(self) -> list[str]:
