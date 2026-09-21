@@ -919,6 +919,14 @@ def synthesize_dataset_health_and_issues(
         "column_health_matrix": column_health_matrix,
     }
 
+    # Delete existing health result and its cascaded issues if present
+    existing_health = db.scalar(
+        select(DatasetHealthResult).where(DatasetHealthResult.dataset_version_id == version.id)
+    )
+    if existing_health:
+        db.delete(existing_health)
+        db.flush()
+
     health_result = DatasetHealthResult(
         dataset_version_id=version.id,
         health_score=health_score,
@@ -940,6 +948,8 @@ def synthesize_dataset_health_and_issues(
 
     for issue in generated_issues:
         issue.dataset_health_result_id = health_result.id
+        db.add(issue)
+
     try:
         db.commit()
         db.refresh(health_result)
@@ -966,11 +976,30 @@ def analyze_and_save_dataset_health(
 ) -> DatasetHealthResult:
     """
     Entrypoint to analyze dataset health and prioritized issues.
-    Honors caching unless force=True.
+    Honors caching unless force=True or upstream scans were populated after initial zero-issue cache.
     """
     if not force and version.health_result:
-        logger.info(f"Returning cached DatasetHealthResult for version {version.id}")
-        return version.health_result
+        # Check if cached health had 0 issues but upstream scans now have findings
+        has_pii = bool(version.pii_result and len(version.pii_result.findings or []) > 0)
+        has_qual_fail = bool(
+            version.quality_result
+            and any(not e.success for e in (version.quality_result.expectations or []))
+        )
+        has_anom = bool(version.anomaly_result and len(version.anomaly_result.findings or []) > 0)
+        has_high_risk = bool(
+            any(
+                p.risk_score >= 70.0 and p.risk_level in ["HIGH", "CRITICAL"]
+                for p in (version.risk_predictions or [])
+            )
+        )
+
+        if version.health_result.total_issues == 0 and (has_pii or has_qual_fail or has_anom or has_high_risk):
+            logger.info(
+                f"Cached DatasetHealthResult had 0 issues but new upstream signals detected. Re-synthesizing for version {version.id}..."
+            )
+        else:
+            logger.info(f"Returning cached DatasetHealthResult for version {version.id}")
+            return version.health_result
 
     if force and version.health_result:
         logger.info(f"force_recompute=True: Purging existing health result for version {version.id}")

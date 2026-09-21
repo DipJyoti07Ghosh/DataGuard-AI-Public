@@ -6,6 +6,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import Datasets from './pages/Datasets';
@@ -24,8 +25,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Landing / Home Page */}
+        <Route path="/" element={<Home />} />
+
+        {/* Core Platform Routes within Main Layout */}
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/datasets/:datasetId/dashboard" element={<Dashboard />} />
           <Route path="/datasets/:datasetId/versions/:versionId/dashboard" element={<Dashboard />} />

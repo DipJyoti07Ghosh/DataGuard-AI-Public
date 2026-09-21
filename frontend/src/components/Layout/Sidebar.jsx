@@ -5,7 +5,8 @@
 import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
-  { id: 'dashboard', path: '/', label: 'Dashboard', icon: '📊' },
+  { id: 'home', path: '/', label: 'Home', icon: '🏠' },
+  { id: 'dashboard', path: '/dashboard', label: 'Dashboard', icon: '📊' },
   { id: 'upload', path: '/upload', label: 'Upload', icon: '📁' },
   { id: 'datasets', path: '/datasets', label: 'Datasets', icon: '🗃️' },
   { id: 'chat', path: '/chat', label: 'AI Chat', icon: '💬' },
@@ -18,8 +19,11 @@ export default function Sidebar() {
   const pathname = location.pathname;
 
   const isNavActive = (item) => {
+    if (item.id === 'home') {
+      return pathname === '/';
+    }
     if (item.id === 'dashboard') {
-      return pathname === '/' || pathname === '/dashboard' || pathname.endsWith('/dashboard');
+      return pathname === '/dashboard' || pathname.endsWith('/dashboard');
     }
     if (item.id === 'upload') {
       return pathname === '/upload' || pathname.startsWith('/upload/');
@@ -51,13 +55,13 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">
+      <Link to="/" className="sidebar-brand" style={{ textDecoration: 'none', cursor: 'pointer' }} title="Return to Homepage">
         <div className="sidebar-logo">
           <span className="logo-icon">🛡️</span>
           <span className="logo-text">DataGuard AI</span>
         </div>
         <p className="sidebar-tagline">Data Quality Assistant</p>
-      </div>
+      </Link>
 
       <nav className="sidebar-nav">
         {navItems.map((item) => {
