@@ -80,7 +80,16 @@ def build_grounded_context(
         sources.append(source_obj)
 
         col_str = f" | Column: '{col_name}'" if col_name else ""
-        v_str = f" | Version: {v_id}" if v_id else (f" | Comparison: {c_id}" if c_id else "")
+        v_num = meta.get("version_number") or meta.get("current_version_number")
+        if v_num is not None:
+            v_str = f" | Version: V{v_num}"
+        elif v_id:
+            v_str = f" | Version: {v_id}"
+        elif c_id:
+            c_label = meta.get("comparison_label") or str(c_id)
+            v_str = f" | Comparison: {c_label}"
+        else:
+            v_str = ""
         block_header = f"### [Source {len(sources)}] {phase}{col_str}{v_str} (Relevance Score: {sim:.4f})"
         context_blocks.append(f"{block_header}\n{content}")
 

@@ -135,7 +135,38 @@ def build_conversation_aware_query(current_message: str, history_messages: List[
         unique_terms = list(dict.fromkeys(context_keywords))[:5]
         return f"{current_clean} ({' '.join(unique_terms)})"
 
-    return current_clean
+def check_out_of_scope_query(
+    content: str,
+    scope: str,
+    target_version_num: Optional[int],
+    dataset_name: str,
+) -> Optional[str]:
+    """
+    Validate if the user query asks for data, comparison, or versions outside
+    the locked session scope BEFORE Phase 11 RAG retrieval or LLM inference.
+    """
+    if scope == "VERSION" and target_version_num is not None:
+        # Match references to versions like 'v1', 'v3', 'version 1', 'version 3'
+        version_matches = re.findall(r"\b(?:v|version\s+)(\d+)\b", content, re.IGNORECASE)
+        for v_str in version_matches:
+            try:
+                v_num = int(v_str)
+                if v_num != target_version_num:
+                    return (
+                        f"This chat is scoped to Version V{target_version_num}. "
+                        f"A version comparison or data from Version V{v_num} is not available in the current chat context. "
+                        "Start a Comparison Chat or Dataset-level Chat to analyze changes between versions."
+                    )
+            except ValueError:
+                pass
+        # Match explicit cross-version comparison requests when in single-version scope
+        if re.search(r"\b(what\s+changed\s+(?:from|in|since)|compare\s+with\s+(?:previous|other|earlier|v\d+))\b", content, re.IGNORECASE):
+            return (
+                f"This chat is scoped to Version V{target_version_num}. "
+                "A version comparison is not available in the current chat context. "
+                "Start a Comparison Chat to analyze changes between versions."
+            )
+    return None
 
 
 def create_chat_session(
@@ -463,6 +494,55 @@ def send_chat_message(
             c_num = comp.current_version.version_number if comp.current_version else 2
             target_comp_label = f"V{b_num} ➔ V{c_num}"
 
+    # Resolve Provider Manager
+    mgr = provider_manager if provider_manager is not None else get_provider_manager()
+
+    # Pre-RAG Scope Validation Check (AUDIT 1): Intercept out-of-scope requests before RAG retrieval
+    out_of_scope_msg = check_out_of_scope_query(
+        content=content,
+        scope=session.scope,
+        target_version_num=target_version_num,
+        dataset_name=dataset.name,
+    )
+    if out_of_scope_msg:
+        primary_name = mgr.provider_order[0] if mgr.provider_order else "gemini"
+        prov = mgr.get_provider(primary_name)
+        model_name = getattr(prov, "model_name", "unknown")
+
+        assistant_msg = ChatMessage(
+            session_id=session_id,
+            role="assistant",
+            content=out_of_scope_msg,
+            provider=primary_name,
+            model=model_name,
+            fallback_occurred=False,
+            grounded=False,
+            sources=[],
+            warnings=["Query refers to a version or comparison outside the locked session scope."],
+            created_at=datetime.now(timezone.utc),
+        )
+        db.add(assistant_msg)
+        session.updated_at = datetime.now(timezone.utc)
+        db.commit()
+        db.refresh(assistant_msg)
+
+        latency_ms = int((time.time() - start_time) * 1000)
+        logger.info(f"Out-of-scope version query intercepted before RAG: '{content}' (Latency: {latency_ms}ms)")
+
+        return ChatMessageResponse(
+            id=assistant_msg.id,
+            session_id=session_id,
+            role="assistant",
+            content=assistant_msg.content,
+            provider=assistant_msg.provider,
+            model=assistant_msg.model,
+            fallback_occurred=assistant_msg.fallback_occurred,
+            grounded=assistant_msg.grounded,
+            sources=assistant_msg.sources or [],
+            warnings=assistant_msg.warnings or [],
+            created_at=assistant_msg.created_at,
+        )
+
     logger.info(
         f"Chat query executing Phase 11 RAG: Scope={session.scope}, Query='{retrieval_query}', "
         f"Dataset={dataset.name}, HistoryCount={len(bounded_history)}"
@@ -514,9 +594,6 @@ def send_chat_message(
                 "metadata": meta,
             }
         )
-
-    # 8. Resolve Provider Manager
-    mgr = provider_manager if provider_manager is not None else get_provider_manager()
 
     # 9. Handle No-Evidence Scenario
     if not relevant_docs:
