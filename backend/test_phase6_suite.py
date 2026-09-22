@@ -435,11 +435,132 @@ def run_tests():
         test_failures.append("Cascade Deletion")
 
     # -----------------------------------------------------------------------
+    # 14. Phase 6 PII False Positive & Real-PII Retention Regression Tests
+    # -----------------------------------------------------------------------
+    print("\n--- 14. Running PII False-Positive & Real-PII Retention Regressions ---")
+    from app.services.pii_service import scan_dataframe_for_pii
+
+    # Test A: Normal customer dataset
+    df_a = pd.DataFrame({
+        "customer_id": [101, 102, 103, 104, 105],
+        "customer_name": ["Alice Smith", "Bob Jones", "Charlie Brown", "Diana Prince", "Evan Wright"],
+        "email": ["alice@example.com", "bob@example.com", "charlie@example.com", "diana@example.com", "evan@example.com"],
+        "phone": ["555-111-2222", "555-222-3333", "555-333-4444", "555-444-5555", "555-555-6666"],
+        "age": [25, 34, 42, 29, 51],
+    })
+    findings_a, _ = scan_dataframe_for_pii(df_a)
+    col_findings_a = {}
+    for f in findings_a:
+        col_findings_a.setdefault(f["column_name"], set()).add(f["entity_type"])
+
+    assert "customer_id" not in col_findings_a, f"False positive on customer_id: {col_findings_a}"
+    assert "age" not in col_findings_a, f"False positive on age: {col_findings_a}"
+    assert "PERSON" in col_findings_a.get("customer_name", set()), f"Expected PERSON on customer_name, got {col_findings_a.get('customer_name')}"
+    assert "EMAIL_ADDRESS" in col_findings_a.get("email", set()), f"Expected EMAIL_ADDRESS on email, got {col_findings_a.get('email')}"
+    assert "PHONE_NUMBER" in col_findings_a.get("phone", set()), f"Expected PHONE_NUMBER on phone, got {col_findings_a.get('phone')}"
+    print(f" {PASS} 14a. Dataset A (Normal Customer): Clean results, 0 false positives, all genuine PII detected")
+
+    # Test B: Insurance dataset
+    df_b = pd.DataFrame({
+        "policy_id": ["POL001", "POL002", "POL003", "POL004", "POL005"],
+        "policy_number": ["PN-998811", "PN-998812", "PN-998813", "PN-998814", "PN-998815"],
+        "customer": ["Corporate L3", "Personal Auto", "Commercial Fleet", "Special Tier", "Basic Care"],
+        "premium": [1200.50, 450.00, 3100.25, 890.75, 520.10],
+        "effective_from": ["2022-01-01", "2022-06-01", "2023-01-15", "2023-03-01", "2023-05-10"],
+        "effective_to": ["2023-01-01", "2023-06-01", "2024-01-15", "2024-03-01", "2024-05-10"],
+    })
+    findings_b, _ = scan_dataframe_for_pii(df_b)
+    assert len(findings_b) == 0, f"False positives detected in Insurance dataset: {findings_b}"
+    print(f" {PASS} 14b. Dataset B (Insurance Dataset): Exactly 0 false positives across all business columns")
+
+    # Test C: Exact Bug Reproduction (Customer, Customer Lifetime Value, Policy, Effective To Date)
+    df_c = pd.DataFrame({
+        "Customer": ["BU79786", "QZ44356", "AI49188", "ED36626", "Corporate L3", "Personal Auto", "BC88991", "XZ11223"],
+        "Customer Lifetime Value": [2763.519278, 6979.535903, 12886.43205, 7645.861827, 2813.692575, 4398.210455, 9120.441890, 3310.998124],
+        "Policy": ["Corporate L3", "Personal L3", "Special L2", "Corporate L2", "Personal L1", "Corporate L1", "Personal L2", "Special L1"],
+        "Effective To Date": ["2/24/11", "1/31/11", "2/19/11", "1/20/11", "2/3/11", "1/14/11", "2/12/11", "1/28/11"],
+    })
+    findings_c, _ = scan_dataframe_for_pii(df_c)
+    assert len(findings_c) == 0, f"False positives detected in exact bug dataset: {findings_c}"
+    print(f" {PASS} 14c. Dataset C (Exact Bug Reproduction): Zero US_DRIVER_LICENSE / DATE_TIME / ORG / PHONE false positives")
+
+    # Test D: Genuine PII in Generic Columns
+    df_d = pd.DataFrame({
+        "data": ["john.smith@acme.org", "alice.w@domain.io", "support@helpdesk.com", "billing.team@finance.net"],
+        "user_contact": ["555-019-2834", "555-019-5829", "+1-800-555-0199", "(555) 019-4820"],
+    })
+    findings_d, _ = scan_dataframe_for_pii(df_d)
+    col_findings_d = {}
+    for f in findings_d:
+        col_findings_d.setdefault(f["column_name"], set()).add(f["entity_type"])
+    assert "EMAIL_ADDRESS" in col_findings_d.get("data", set()), f"Expected EMAIL_ADDRESS in generic 'data' column, got {col_findings_d.get('data')}"
+    assert "PHONE_NUMBER" in col_findings_d.get("user_contact", set()), f"Expected PHONE_NUMBER in 'user_contact', got {col_findings_d.get('user_contact')}"
+    print(f" {PASS} 14d. Dataset D (Genuine PII in Generic Columns): Retained 100% genuine PII detection")
+
+    # Test E: Business Identifiers
+    df_e = pd.DataFrame({
+        "customer_id": ["CUST001", "CUST002", "CUST003"],
+        "policy_id": ["POL123456", "POL987654", "POL554433"],
+        "claim_id": ["CLM-000123", "CLM-000456", "CLM-000789"],
+        "transaction_id": ["TXN99881122", "TXN99881123", "TXN99881124"],
+        "employee_id": ["EMP00981", "EMP00982", "EMP00983"],
+    })
+    findings_e, _ = scan_dataframe_for_pii(df_e)
+    assert len(findings_e) == 0, f"False positives detected on Business IDs: {findings_e}"
+    print(f" {PASS} 14e. Dataset E (Business IDs): 0 false positives on alphanumeric codes")
+
+    # Test F: Sensitive DOB vs Operational Dates
+    df_f = pd.DataFrame({
+        "date_of_birth": ["1985-04-12", "1992-11-23", "1978-08-05"],
+        "effective_to_date": ["2024-12-31", "2025-12-31", "2026-06-30"],
+        "created_at": ["2023-01-15 08:30:00", "2023-02-10 14:22:00", "2023-03-05 19:10:00"],
+    })
+    findings_f, _ = scan_dataframe_for_pii(df_f)
+    col_findings_f = {}
+    for f in findings_f:
+        col_findings_f.setdefault(f["column_name"], set()).add(f["entity_type"])
+    assert "DATE_TIME" in col_findings_f.get("date_of_birth", set()), f"DOB not detected as DATE_TIME: {col_findings_f}"
+    assert "effective_to_date" not in col_findings_f, f"Operational date falsely flagged: {col_findings_f}"
+    assert "created_at" not in col_findings_f, f"Timestamp falsely flagged: {col_findings_f}"
+    print(f" {PASS} 14f. Dataset F (DOB vs Operational Dates): DOB accurately detected, operational dates correctly ignored")
+
+    # Test G: Free Text Notes with Embedded Email
+    df_g = pd.DataFrame({
+        "notes": [
+            "Please reach out to support@dataguard.ai for assistance.",
+            "Billing contact is billing@example.org directly.",
+            "Meeting scheduled for next Monday with client team.",
+        ]
+    })
+    findings_g, _ = scan_dataframe_for_pii(df_g)
+    col_findings_g = {}
+    for f in findings_g:
+        col_findings_g.setdefault(f["column_name"], set()).add(f["entity_type"])
+    assert "EMAIL_ADDRESS" in col_findings_g.get("notes", set()), f"Expected EMAIL_ADDRESS in free text notes, got {col_findings_g.get('notes')}"
+    print(f" {PASS} 14g. Dataset G (Unstructured Text Notes): Embedded EMAIL_ADDRESS correctly detected")
+
+    # Test H: System & Telemetry Metrics Dataset (Exact CPU Pressure bug reproduction)
+    df_h = pd.DataFrame({
+        "cpu_pressure": [0.8127391823719283, 0.4281749281749281, 0.9182736451829384, 0.1234567890123456, 0.6543219876543210],
+        "lread": [15243.81726, 89123.44123, 23412.99124, 76123.51829, 41234.88129],
+        "lwrite": [2341.12938, 5671.88273, 1928.33829, 8762.44192, 3451.99281],
+        "read_write_ratio": [6.512389182, 15.718293819, 12.148291039, 8.687291029, 11.948291023],
+        "scall": [98234, 123456, 78129, 234567, 89123],
+        "swap_pressure": [0.0123891823719283, 0.0428174928174928, 0.0918273645182938, 0.0012345678901234, 0.0654321987654321],
+        "sys_activity_ratio": [0.3412389182, 0.5571829381, 0.1214829103, 0.8687291029, 0.4194829102],
+        "workload_type": ["interactive", "batch", "streaming", "compute_heavy", "memory_bound"],
+        "io_pressure": [0.7123891823719283, 0.3281749281749281, 0.8182736451829384, 0.2234567890123456, 0.5543219876543210],
+    })
+    findings_h, _ = scan_dataframe_for_pii(df_h)
+    assert len(findings_h) == 0, f"False positives detected on System/Telemetry metrics dataset: {findings_h}"
+    print(f" {PASS} 14h. Dataset H (System/Telemetry Metrics): Exactly 0 false positives on cpu_pressure, lread, io_pressure, etc.")
+
+    # -----------------------------------------------------------------------
     # Summary
     # -----------------------------------------------------------------------
     print("\n" + "=" * 75)
     if not test_failures:
-        print("  🎉 ALL 30 PHASE 6 PII DETECTION AUTOMATED TESTS PASSED!")
+        print("  🎉 ALL PHASE 6 PII DETECTION AUTOMATED & REGRESSION TESTS PASSED!")
         print("=" * 75)
         return True
     else:
