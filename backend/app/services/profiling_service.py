@@ -9,9 +9,11 @@ Computes comprehensive dataset-level and column-level statistical profiles:
 - Persists profiling results into PostgreSQL attached to DatasetVersion
 """
 
+import re
 import math
 import logging
 from pathlib import Path
+from typing import Optional, Dict, Any, List
 from uuid import UUID
 import numpy as np
 import pandas as pd
@@ -99,6 +101,47 @@ def profile_dataframe(df: pd.DataFrame) -> dict:
     }
 
 
+DATE_STRING_PATTERN = re.compile(
+    r"^(?:\d{1,2}[-/\s](?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[-/\s]\d{2,4}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{2,4}|\d{4}[-/.]\d{1,2}[-/.]\d{1,2}|\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4})"
+    r"(?:[ T]\d{1,2}:\d{1,2}(?::\d{1,2})?(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$",
+    re.IGNORECASE,
+)
+
+
+def _try_parse_datetime_series(non_null: pd.Series) -> Optional[pd.Series]:
+    """Check if an object/string series contains valid dates or timestamps."""
+    if len(non_null) == 0:
+        return None
+
+    str_sample = non_null.head(50).astype(str).str.strip()
+    match_count = sum(bool(DATE_STRING_PATTERN.match(s)) for s in str_sample)
+    if match_count / len(str_sample) < 0.70:
+        return None
+
+    try:
+        # Try standard parsing (with format="mixed" if supported by pandas)
+        try:
+            parsed = pd.to_datetime(non_null, errors="coerce", format="mixed")
+        except Exception:
+            parsed = pd.to_datetime(non_null, errors="coerce")
+
+        # If too many NaT (e.g. day-first dates like 13/09/2024), try dayfirst=True
+        if parsed.isna().mean() > 0.30:
+            try:
+                parsed_df = pd.to_datetime(non_null, errors="coerce", dayfirst=True)
+                if parsed_df.isna().mean() < parsed.isna().mean():
+                    parsed = parsed_df
+            except Exception:
+                pass
+
+        valid = parsed.dropna()
+        if len(valid) / len(non_null) >= 0.70:
+            return valid
+    except Exception:
+        pass
+    return None
+
+
 def _profile_single_column(series: pd.Series, col_name: str, total_rows: int) -> ColumnProfile:
     """Profile an individual pandas Series based on its inferred data type."""
     non_null = series.dropna()
@@ -131,7 +174,7 @@ def _profile_single_column(series: pd.Series, col_name: str, total_rows: int) ->
             series, non_null, col_name, dtype_str, count, missing_count, missing_pct, unique_count, unique_pct
         )
 
-    # 3. Datetime check
+    # 3. Datetime check (native datetime types)
     if pd.api.types.is_datetime64_any_dtype(series):
         min_d = non_null.min().isoformat() if count > 0 else None
         max_d = non_null.max().isoformat() if count > 0 else None
@@ -148,7 +191,25 @@ def _profile_single_column(series: pd.Series, col_name: str, total_rows: int) ->
             max_date=max_d,
         )
 
-    # 4. Text / Categorical fallback
+    # 4. Inferred Datetime check for string/object series (e.g. 12-09-2024, 12/09/2024)
+    parsed_dt = _try_parse_datetime_series(non_null)
+    if parsed_dt is not None:
+        min_d = parsed_dt.min().isoformat() if len(parsed_dt) > 0 else None
+        max_d = parsed_dt.max().isoformat() if len(parsed_dt) > 0 else None
+        return ColumnProfile(
+            name=col_name,
+            type_category="datetime",
+            dtype="datetime64[ns]",
+            count=count,
+            missing_count=missing_count,
+            missing_percentage=missing_pct,
+            unique_count=unique_count,
+            unique_percentage=unique_pct,
+            min_date=min_d,
+            max_date=max_d,
+        )
+
+    # 5. Text / Categorical fallback with high precision
     top_cats = _get_top_categories(non_null, count)
     
     # Calculate string lengths
@@ -158,8 +219,24 @@ def _profile_single_column(series: pd.Series, col_name: str, total_rows: int) ->
     max_len = int(lengths.max()) if count > 0 else None
     avg_len = round(float(lengths.mean()), 1) if count > 0 else None
 
-    # Categorical if low unique count or explicit category
-    is_cat = unique_count <= 50 or (unique_count / count < 0.15 if count > 0 else True)
+    # High-precision categorical detection:
+    # A column is categorical if it has discrete repeating category choices,
+    # and is NOT a unique identifier, hash, free text description, or sentence.
+    is_explicit_cat = isinstance(series.dtype, pd.CategoricalDtype) or dtype_str == "category"
+    if is_explicit_cat:
+        is_cat = True
+    elif count == 0:
+        is_cat = False
+    elif (avg_len or 0) > 50 or (max_len or 0) > 120:
+        # Free-text sentences, long notes, paragraphs
+        is_cat = False
+    elif count < 10:
+        # Small datasets: require value repetition and <= 5 distinct classes
+        is_cat = unique_count < count and unique_count <= 5 and (avg_len or 0) <= 30
+    else:
+        # Standard datasets: require low cardinality ratio (repeating categories)
+        cardinality_ratio = unique_count / count
+        is_cat = (unique_count <= 30 and cardinality_ratio <= 0.40) or (unique_count <= 50 and cardinality_ratio <= 0.15)
 
     return ColumnProfile(
         name=col_name,

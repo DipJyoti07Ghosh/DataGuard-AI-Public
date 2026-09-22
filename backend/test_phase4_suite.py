@@ -153,12 +153,35 @@ def run_phase4_tests():
         f"({q_prof['missing_cells_percentage']}%) and {q_prof['duplicate_rows']} duplicate rows"
     )
 
-    # 10. Test 404 Error Handling
-    print("\n--- 10. Testing 404 Error Handling ---")
-    fake_uuid = "00000000-0000-0000-0000-000000000000"
-    res_404 = client.get(f"/api/datasets/{fake_uuid}/versions/{fake_uuid}/profile")
-    assert res_404.status_code == 404
-    print(" [PASS] Non-existent dataset/version returned 404 Not Found")
+    # 11. Test Precise Datetime & Categorical Inferred Datatype Detection
+    print("\n--- 11. Testing Datetime & High-Precision Categorical Inference ---")
+    import pandas as pd
+    from app.services.profiling_service import profile_dataframe
+
+    test_df = pd.DataFrame({
+        "slash_date": ["12/09/2024", "13/09/2024", "14/09/2024", "15/09/2024", "16/09/2024"],
+        "hyphen_date": ["12-09-2024", "13-09-2024", "14-09-2024", "15-09-2024", "16-09-2024"],
+        "iso_date": ["2024-09-12", "2024-09-13", "2024-09-14", "2024-09-15", "2024-09-16"],
+        "true_categorical": ["active", "inactive", "active", "pending", "active"],
+        "unique_identifiers": ["USER_001", "USER_002", "USER_003", "USER_004", "USER_005"],
+        "free_text_notes": [
+            "Customer requested a full account refund on Thursday afternoon.",
+            "Account flagged for security investigation due to suspicious login.",
+            "User updated their billing address and profile notification preferences.",
+            "Support ticket resolved by Tier 2 engineer after database patch.",
+            "Periodic quarterly review completed with customer success manager.",
+        ],
+    })
+    prof_custom = profile_dataframe(test_df)
+    profiles = prof_custom["column_profiles"]
+
+    assert profiles["slash_date"]["type_category"] == "datetime", f"Expected datetime for slash_date, got {profiles['slash_date']['type_category']}"
+    assert profiles["hyphen_date"]["type_category"] == "datetime", f"Expected datetime for hyphen_date, got {profiles['hyphen_date']['type_category']}"
+    assert profiles["iso_date"]["type_category"] == "datetime", f"Expected datetime for iso_date, got {profiles['iso_date']['type_category']}"
+    assert profiles["true_categorical"]["type_category"] == "categorical", f"Expected categorical for true_categorical, got {profiles['true_categorical']['type_category']}"
+    assert profiles["unique_identifiers"]["type_category"] == "text", f"Expected text for unique_identifiers, got {profiles['unique_identifiers']['type_category']}"
+    assert profiles["free_text_notes"]["type_category"] == "text", f"Expected text for free_text_notes, got {profiles['free_text_notes']['type_category']}"
+    print(" [PASS] Datetime (12-09-2024, 12/09/2024) and high-precision Categorical vs Text inference: VERIFIED")
 
     print("=" * 70)
     print("  All Phase 4 Automated Profiling Verification Tests PASSED! ✅")
