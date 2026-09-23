@@ -15,7 +15,7 @@ import logging
 import time
 from typing import Dict, Any, List, Optional
 from uuid import UUID
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.config import settings
