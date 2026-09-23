@@ -1,0 +1,258 @@
+customer_id,first_name,last_name,email,phone,age,gender,city,state,subscription_type,monthly_spend,account_age_months,total_purchases,satisfaction_score,status,signup_date
+1208,Jessica,Garcia,jessica.garcia@company.com,+1-668-493-4005,57,Male,,,Enterprise,350.83,6,122,4.5,Inactive,2020-05-21
+1111,Patricia,Lopez,patricia.lopez@gmail.com,+1-200-820-6885,53,Male,Baltimore,MD,Pro,433.51,31,221,3.8,Pending,2020-11-11
+1164,Brian,Lee,,+1-393-252-1894,46,Female,Las Vegas,NV,Basic,22.75,34,83,3.8,Pending,2020-02-16
+1137,Dorothy,Davis,dorothy.davis@outlook.com,+1-400-123-2369,67,Prefer not to say,Las Vegas,NV,Free,488.04,51,99,,Active,2020-11-12
+1192,Patricia,Ramirez,patricia.ramirez@company.com,+1-480-224-9491,45,Prefer not to say,Austin,TX,Enterprise,183.93,98,22,4.5,Inactive,2020-01-09
+1057,Dorothy,Lee,dorothy.lee@outlook.com,+1-792-657-3848,35,Prefer not to say,Memphis,TN,Enterprise,185.82,84,459,4.3,Suspended,2020-07-08
+1122,George,Lopez,george.lopez@company.com,+1-952-294-3292,23,Male,Indianapolis,IN,Basic,17.56,76,122,3.0,Active,2020-09-21
+1173,William,Martinez,william.martinez@company.com,+1-552-548-4802,30,Female,Boston,MA,Pro,461.26,110,431,3.9,Pending,2020-03-10
+1250,Andrew,Perez,andrew.perez@example.org,+1-308-839-7258,67,Non-binary,Louisville,KY,Basic,409.34,29,166,,Pending,2020-03-15
+1249,Sarah,Robinson,sarah.robinson@gmail.com,+1-857-354-4440,35,male,,,Free,326.08,81,309,4.9,Suspended,2020-02-23
+1239,George,Moore,george.moore@yahoo.com,+1-956-777-9652,40,Male,Boston,MA,Enterprise,482.5,87,476,4.5,Inactive,2020-03-03
+1113,Mark,Robinson,,+1-234-138-8917,54,Non-binary,,,Free,292.23,89,40,1.6,Suspended,2020-08-17
+1083,Kimberly,White,kimberly.white@gmail.com,+1-984-753-6864,44,Prefer not to say,Seattle,WA,Enterprise,442.0,22,405,1.7,Pending,2020-09-11
+1021,Margaret,Lee,margaret.lee@company.com,+1-360-154-2659,,Non-binary,Philadelphia,PA,Basic,0.01,53,356,3.2,Suspended,N/A
+1013,Betty,Taylor,betty.taylor@outlook.com,+1-466-939-3848,61,Male,,,Enterprise,428.03,72,383,3.2,Active,2020-08-04
+1088,Brian,Wilson,brian.wilson@outlook.com,+1-395-428-6644,41,Male,Columbus,OH,Pro,88.78,45,315,4.3,Pending,2020-10-05
+1225,Brian,Thompson,brian.thompson@company.com,+1-932-129-3625,24,Non-binary,Chicago,IL,Enterprise,384.32,29,368,2.0,Pending,2020-11-04
+1049,Carol,Lewis,carol.lewis@gmail.com,+1-595-362-9851,42,Non-binary,Austin,TX,Free,456.11,106,394,,Pending,2020-08-02
+1023,Patricia,Clark,patricia.clark@example.org,+1-628-648-8779,70,Female,Fort Worth,TX,Enterprise,152.93,51,462,4.4,Active,2020-09-19
+1035,Robert,Gonzalez,robert.gonzalez@outlook.com,+1-989-647-1796,999,Male,Baltimore,MD,Free,328.52,3,24,3.8,Pending,2020-08-13
+1118,Carol,Anderson,carol.anderson@outlook.com,+1-457-297-1557,32,Male,,,Free,33.16,77,336,4.6,Inactive,2020-10-21
+1238,Jennifer,Martinez,jennifer.martinez@outlook.com,+1-292-749-2302,,Male,Columbus,OH,Basic,472.71,22,294,1.2,Suspended,N/A
+1033,Ronald,Harris,ronald.harris@example.org,+1-644-748-8035,150,Prefer not to say,Chicago,IL,Enterprise,482.84,50,2,,Inactive,2020-12-12
+1227,David,Taylor,david.taylor@example.org,+1-427-209-7476,56,Male,,,Enterprise,161.38,105,482,2.2,Inactive,2020-08-22
+1151,Joshua,Gonzalez,joshua.gonzalez@gmail.com,+1-700-202-4373,54,Non-binary,Austin,TX,Enterprise,253.87,98,341,2.4,Suspended,2020-06-14
+1124,Donna,Davis,donna.davis@yahoo.com,+1-636-445-7586,,Non-binary,Chicago,IL,Free,488.05,74,279,1.5,Inactive,2020-01-19
+1197,Kenneth,Thompson,kenneth.thompson@example.org,+1-779-443-5909,72,Prefer not to say,Austin,TX,Pro,85.33,59,448,4.2,Active,2020-08-08
+1106,Karen,Martin,karen.martin@example.org,+1-654-151-3131,39,Male,Baltimore,MD,Enterprise,452.13,7,54,2.5,Active,2020-07-13
+1201,Kevin,Robinson,kevin.robinson@gmail.com,+1-412-324-4325,55,Prefer not to say,,,Basic,200.97,40,217,4.6,Inactive,2020-06-09
+1066,Sandra,Lewis,sandra.lewis@gmail.com,+1-693-219-5224,,Male,Denver,CO,Enterprise,318.66,29,346,,Suspended,2020-07-12
+1080,Donald,Moore,donald.moore@company.com,+1-394-680-4057,52,Non-binary,San Jose,CA,Pro,367.54,36,444,,inactive,2020-02-17
+1119,Brian,Robinson,brian.robinson@company.com,+1-483-887-7995,58,Non-binary,Chicago,IL,Pro,85.17,10,141,,Pending,2020-07-11
+1016,Deborah,Jackson,deborah.jackson@gmail.com,+1-453-772-4951,28,Non-binary,San Diego,CA,Free,383.2,29,294,4.4,Pending,2020-06-27
+1230,James,Lopez,james.lopez@example.org,+1-304-794-3418,,Prefer not to say,Boston,MA,Enterprise,341.33,22,474,1.2,Suspended,2020-08-06
+1181,Steven,Miller,steven.miller@outlook.com,+1-893-638-7598,22,Prefer not to say,,,Pro,294.23,82,216,5.0,Pending,2020-12-14
+1067,Sarah,Garcia,sarah.garcia@yahoo.com,+1-710-854-4271,,Female,Boston,MA,Basic,437.01,27,117,1.8,Inactive,2020-10-12
+1065,Sarah,Davis,sarah.davis@company.com,+1-613-688-1076,30,Non-binary,Washington,DC,Basic,206.53,14,286,1.3,Suspended,2020-06-04
+1051,Ronald,White,ronald.white@gmail.com,+1-566-614-2738,20,Non-binary,Denver,CO,Pro,305.25,37,391,4.7,Pending,2020-07-27
+1147,Margaret,White,margaret.white@example.org,+1-807-379-7557,35,Non-binary,Indianapolis,IN,Enterprise,335.01,52,248,,ACTIVE,2020-08-04
+1245,Mark,Davis,mark.davis@gmail.com,+1-386-141-1008,75,Male,Austin,TX,Pro,109.93,61,143,4.6,Active,2020-07-06
+1105,Karen,Smith,karen.smith@outlook.com,+1-854-314-6257,,Female,Denver,CO,Basic,146.85,69,163,4.1,Active,2020-05-05
+1005,David,Davis,,+1-454-666-5668,59,Male,Dallas,TX,Pro,106.7,78,260,1.8,Pending,2020-05-21
+1149,Deborah,Martinez,not_an_email,+1-703-541-3203,63,Non-binary,Baltimore,MD,Enterprise,246.29,15,291,3.7,Pending,2020-08-18
+1248,Donald,Harris,donald.harris@example.org,+1-998-499-7567,42,Non-binary,San Francisco,CA,Basic,96.11,21,292,1.9,Active,2020-09-15
+1194,Jennifer,Johnson,invalid,+1-520-968-2065,20,Female,Milwaukee,WI,Free,459.96,57,28,,Pending,2020-02-04
+1143,Joseph,Martinez,joseph.martinez@yahoo.com,+1-280-535-2830,31,Male,Phoenix,AZ,Free,0.01,97,220,,Active,2020-01-26
+1060,Elizabeth,Martin,elizabeth.martin@company.com,+1-829-714-1639,29,Male,Houston,TX,Free,243.71,17,461,3.4,Active,2020-11-21
+1006,Joshua,Wilson,joshua.wilson@yahoo.com,+1-981-582-2195,52,Male,Jacksonville,FL,Free,11.83,28,20,,Pending,2020-09-10
+1215,Charles,Harris,charles.harris@outlook.com,+1-550-348-4372,32,Male,,,Basic,401.72,90,368,1.9,Pending,2020-09-11
+1056,Donna,Perez,,+1-343-556-3608,66,Female,,,Basic,369.28,62,480,2.4,Inactive,2020-08-08
+1002,Susan,Thomas,susan.thomas@outlook.com,+1-545-660-3139,38,Prefer not to say,Dallas,TX,Pro,447.61,98,24,1.2,Pending,2020-01-04
+1141,Michael,Martin,michael.martin@example.org,+1-530-993-6180,28,Non-binary,Portland,OR,Pro,344.29,89,185,1.4,Suspended,2020-03-01
+1025,Deborah,Brown,deborah.brown@example.org,555.123.4567,36,Non-binary,Las Vegas,NV,Enterprise,,74,311,2.9,Inactive,2020-05-13
+1010,Sandra,Smith,sandra.smith@outlook.com,+1-777-903-5979,200,Female,Jacksonville,FL,Enterprise,50000.0,64,395,4.1,Inactive,2020-03-01
+1216,Susan,Davis,susan.davis@company.com,+1-942-578-6103,23,Female,San Francisco,CA,Basic,126.24,23,310,2.0,Suspended,2020-10-15
+1098,James,Martin,james.martin@yahoo.com,+1-422-702-8794,49,Prefer not to say,,,Enterprise,223.73,77,307,1.0,Suspended,2020
+1185,Kenneth,Hernandez,kenneth.hernandez@gmail.com,+1-703-982-1381,,Non-binary,Fort Worth,TX,Enterprise,94.35,4,440,3.1,Pending,2020
+1009,Steven,Lopez,steven.lopez@yahoo.com,+1-236-666-7870,27,Female,,,Pro,127.89,118,368,2.3,Active,2020-10-12
+1048,Dorothy,Williams,dorothy.williams@yahoo.com,+1-625-656-9798,50,Prefer not to say,Las Vegas,NV,Free,-50.0,114,109,3.7,Suspended,2020-06-10
+1219,Thomas,Martin,thomas.martin@yahoo.com,+1-460-353-3644,,Male,Charlotte,NC,Free,386.63,83,364,4.7,Pending,2020-12-19
+1162,Anthony,Thompson,anthony.thompson@example.org,+1-462-174-2561,65,Male,Columbus,OH,Free,169.77,31,241,4.6,Active,2020-01-09
+1108,Steven,Anderson,steven.anderson@outlook.com,+1-986-456-3087,28,Male,Louisville,KY,Enterprise,409.69,102,54,2.3,Active,2020-05-18
+1014,John,Smith,john.smith@company.com,+1-331-194-6432,30,Male,Chicago,IL,Free,471.43,7,86,4.7,Pending,2020-12-13
+1101,Susan,Sanchez,susan.sanchez@company.com,+1-246-441-6728,44,F,,,Free,322.11,89,144,2.0,Active,2020-05-10
+1211,Brian,Lewis,,+1-654-153-1076,,Male,,,Enterprise,384.72,119,127,2.5,Inactive,2020
+1121,Joseph,Smith,joseph.smith@company.com,+1-324-680-9770,62,Non-binary,Fort Worth,TX,Pro,342.51,52,28,3.5,Active,2020-06-18
+1177,Margaret,Wilson,margaret.wilson@company.com,+1-728-913-6927,44,Male,Milwaukee,WI,Enterprise,77.06,2,367,4.2,Active,2020-02-11
+1132,Amanda,Williams,amanda.williams@yahoo.com,+1-341-442-4909,63,Male,Seattle,WA,Enterprise,370.0,97,297,4.5,Inactive,2020-12-25
+1200,Andrew,Martinez,andrew.martinez@outlook.com,+1-453-154-5588,27,Female,Las Vegas,NV,Enterprise,108.57,11,401,2.9,Active,2020-03-17
+1077,Lisa,Williams,lisa.williams@yahoo.com,+1-257-372-7429,66,Male,Memphis,TN,Enterprise,94.89,115,430,2.0,Pending,2020-01-04
+1045,James,Taylor,james.taylor@company.com,+1-348-154-1927,19,Female,Houston,TX,Pro,376.34,21,146,3.7,Inactive,2020-01-23
+1008,Deborah,Ramirez,deborah.ramirez@gmail.com,1234567890,,Prefer not to say,Dallas,TX,Pro,264.31,34,364,4.9,Active,2020-08-15
+1127,Ronald,Anderson,ronald.anderson@gmail.com,+1-750-280-3589,24,Male,Los Angeles,CA,Enterprise,259.88,10,458,1.9,Pending,2020-10-19
+1103,Andrew,Clark,andrew.clark@example.org,+1-598-291-2914,54,Non-binary,Philadelphia,PA,Pro,356.37,35,211,1.3,Inactive,2020-06-15
+1061,Joshua,Brown,joshua.brown@outlook.com,+1-688-884-4809,26,Male,,,Pro,,70,209,2.0,Active,2020-12-24
+1072,Daniel,Lee,daniel.lee@outlook.com,+1-819-760-7479,,Non-binary,San Jose,CA,Enterprise,391.58,47,382,3.3,Pending,2020-07-06
+1081,Brian,Moore,brian.moore@yahoo.com,+1-736-799-9151,42,Female,,,Pro,164.69,83,164,1.4,Active,4/20/2020
+1217,Steven,Smith,steven.smith@company.com,+1-285-877-5918,200,Female,Portland,OR,Basic,132.36,60,156,2.8,Pending,2020-09-20
+1142,Dorothy,Ramirez,dorothy.ramirez@example.org,+1-919-874-2867,63,Prefer not to say,Seattle,WA,Enterprise,458.44,15,419,1.5,active,2020-08-12
+1150,Melissa,Jackson,melissa.jackson@outlook.com,+1-589-199-8014,200,Non-binary,,,Pro,208.91,8,338,2.0,Inactive,N/A
+1148,Donna,Martin,donna.martin@gmail.com,(555) 123-4567,66,Prefer not to say,,,Enterprise,104.96,85,254,3.0,Suspended,2020-09-11
+1157,Patricia,Thompson,,+1-459-665-7302,68,Non-binary,Milwaukee,WI,Pro,452.06,88,62,3.1,Inactive,2020-08-13
+1120,Donna,Lee,donna.lee@outlook.com,+1-305-135-2194,46,Male,Houston,TX,Pro,389.73,3,459,,Active,2020-01-22
+1229,Matthew,Harris,matthew.harris@gmail.com,+1-740-844-5637,43,Non-binary,Fort Worth,TX,Basic,352.05,71,201,1.4,Suspended,2020-10-28
+1167,Ronald,Lee,ronald.lee@outlook.com,+1-702-920-8083,25,Non-binary,Phoenix,AZ,Basic,182.73,13,426,2.5,Inactive,2020-08-15
+1138,Mark,Sanchez,mark.sanchez@yahoo.com,+1-945-534-7786,,Female,Charlotte,NC,Free,76.1,39,243,5.0,Suspended,2020-02-19
+1116,Ronald,Wilson,ronald.wilson@yahoo.com,N/A,42,Female,Portland,OR,Pro,31.89,34,386,4.3,Active,2020-03-15
+1075,Kenneth,Davis,,+1-582-293-7745,18,Prefer not to say,Las Vegas,NV,Enterprise,128.7,92,377,3.6,Pending,2020-04-09
+1011,Ashley,Johnson,ashley.johnson@outlook.com,+1-295-144-4792,63,Prefer not to say,,,Pro,231.94,96,43,3.3,Inactive,2020-11-27
+1183,Robert,Wilson,robert.wilson@outlook.com,+1-779-563-6534,54,Prefer not to say,Indianapolis,IN,Enterprise,418.06,107,310,1.5,Inactive,2020-09-21
+1030,Dorothy,Harris,,+1-814-513-6236,75,Female,San Diego,CA,Free,329.42,38,132,4.6,Pending,2020-07-24
+1156,Jessica,Robinson,jessica,,31,Non-binary,Columbus,OH,Enterprise,207.15,111,301,1.2,Suspended,2020-12-04
+1214,Joseph,Smith,joseph.smith@gmail.com,+1-516-342-8020,66,Female,Washington,DC,Free,34.66,48,255,2.2,Inactive,2020-07-07
+1237,James,Perez,james.perez@yahoo.com,+1-873-229-3337,63,Prefer not to say,San Francisco,CA,Pro,31.17,93,327,4.9,Inactive,2020-11-20
+1096,Paul,Brown,paul.brown@example.org,+1-912-659-3216,67,Prefer not to say,Philadelphia,PA,Enterprise,165.11,4,91,2.8,Inactive,2020-08-03
+1242,Robert,Garcia,robert.garcia@company.com,+1-881-372-2946,30,Prefer not to say,Oklahoma City,OK,Enterprise,277.31,103,349,3.9,ACTIVE,2020-07-17
+1112,David,Jones,david.jones@gmail.com,+1-347-838-8974,22,Prefer not to say,New York,NY,Basic,46.91,83,412,2.7,cancelled,2020-12-20
+1071,Richard,Jackson,richard.jackson@example.org,+1-378-899-5663,59,Non-binary,,,Pro,338.23,63,396,3.9,Active,2020-07-20
+1054,Margaret,Garcia,margaret.garcia@yahoo.com,+1-426-829-8145,38,Non-binary,,,Pro,71.48,94,169,,Pending,2020-08-12
+1130,Donald,Thomas,donald.thomas@example.org,+1-971-112-7662,23,Female,San Diego,CA,Basic,182.41,31,331,,Active,2020-08-22
+1190,Deborah,Sanchez,deborah.sanchez@gmail.com,,18,Prefer not to say,El Paso,TX,Free,114.65,3,388,2.1,Suspended,2020-04-03
+1084,Jessica,Jackson,jessica.jackson@company.com,+1-984-663-5162,31,Non-binary,Seattle,WA,Enterprise,-50.0,51,0,3.9,Suspended,2020-10-01
+1246,Kenneth,Lopez,kenneth.lopez@outlook.com,+1-415-698-7292,,Male,San Diego,CA,Free,69.59,96,308,1.5,Inactive,2020-04-23
+1043,Ashley,Smith,ashley.smith@gmail.com,+1-766-543-8912,65,Female,San Francisco,CA,Basic,366.59,17,53,2.5,Suspended,2020-09-13
+1133,Andrew,Lewis,andrew.lewis@example.org,+1-576-919-2075,46,Female,San Jose,CA,Enterprise,48.22,51,459,1.7,Active,2020-02-06
+1102,Steven,Sanchez,steven.sanchez@yahoo.com,+1-693-259-8546,59,Non-binary,,,Enterprise,393.07,53,475,4.0,Suspended,2020-10-24
+1204,Jennifer,Hernandez,,1234567890,30,Female,Louisville,KY,Enterprise,227.74,72,15,2.5,Inactive,2020-05-24
+1053,Patricia,Ramirez,patricia.ramirez@company.com,+1-860-662-2198,53,Non-binary,Portland,OR,Free,129.09,26,371,3.3,Suspended,2020-06-05
+1089,Charles,Smith,charles.smith@gmail.com,+1-512-560-8719,62,Male,Austin,TX,Pro,108.46,69,108,1.8,Suspended,2020-09-16
+1062,Margaret,Jackson,margaret.jackson@outlook.com,+1-896-506-4337,57,Prefer not to say,,,Enterprise,93.47,72,284,2.9,Suspended,2020-10-12
+1125,Anthony,Harris,anthony.harris@company.com,+1-282-106-1118,19,Female,Philadelphia,PA,Free,354.84,76,454,2.1,Pending,2020-12-05
+1226,Melissa,White,melissa.white@example.org,+1-647-927-4823,42,Female,Boston,MA,Pro,62.27,12,57,1.4,Inactive,2020-12-04
+1041,Michael,Gonzalez,michael.gonzalez@example.org,+1-762-100-2489,20,Non-binary,Columbus,OH,Basic,329.03,59,486,2.4,Active,2020-04-28
+1152,Amanda,Ramirez,amanda.ramirez@example.org,+1-544-379-2102,24,Prefer not to say,Denver,CO,Enterprise,108.82,102,39,3.6,Suspended,2020-09-26
+1050,Carol,Wilson,carol.wilson@yahoo.com,+1-750-948-8130,24,Male,Memphis,TN,Basic,16.76,92,169,1.2,active,2020-01-06
+1169,Thomas,Lopez,thomas.lopez@gmail.com,+1-987-615-1266,55,Male,Dallas,TX,Enterprise,93.88,24,431,2.6,Active,2020-07-23
+1024,Carol,Wilson,carol.wilson@yahoo.com,+1-809-364-6238,,Male,San Antonio,TX,Free,197.11,51,282,2.3,Suspended,2020-09-15
+1017,Ashley,Moore,ashley.moore@company.com,+1-238-192-1920,29,Female,San Jose,CA,Basic,14.86,62,0,,Inactive,2020-03-11
+1202,Daniel,Rodriguez,daniel.rodriguez@yahoo.com,+1-652-339-5351,,Male,,,Pro,451.23,38,431,3.0,Active,2020-05-08
+1220,Ronald,Lewis,ronald.lewis@gmail.com,+1-311-751-6642,,Female,,,Pro,375.62,120,383,2.6,Suspended,2020-01-06
+1227,David,Taylor,david.taylor@example.org,+1-427-209-7476,56,Male,,,Enterprise,161.38,105,482,2.2,Inactive,2020-08-22
+1241,Paul,Lewis,paul.lewis@gmail.com,+1-699-107-3549,44,Non-binary,Phoenix,AZ,Basic,99999.99,48,153,2.5,Inactive,2020-09-26
+1094,Joseph,Johnson,joseph.johnson@gmail.com,+1-476-522-4646,66,Female,Columbus,OH,Basic,37.74,119,488,4.9,Pending,2020-12-11
+1129,Donna,Lewis,donna.lewis@example.org,+1-435-188-7745,54,M,Philadelphia,PA,Basic,297.83,108,236,2.1,Pending,9/13/2020
+1055,Mary,Ramirez,john@,+1-795-692-7637,58,Female,San Francisco,CA,Free,278.04,70,457,5.0,Pending,2020-11-25
+1144,Matthew,Smith,matthew.smith@outlook.com,+1-793-456-6770,27,Female,Chicago,IL,Basic,254.93,9,50,,Active,2020-09-07
+1231,Barbara,Lee,barbara.lee@gmail.com,+1-996-574-7260,42,Non-binary,Boston,MA,Enterprise,186.82,16,59,1.3,Pending,2020-11-22
+1018,Brian,Gonzalez,brian.gonzalez@outlook.com,+1-509-430-3235,24,Female,Denver,CO,Enterprise,396.96,63,332,2.3,Suspended,26-10-2020
+1199,David,Gonzalez,david.gonzalez@gmail.com,+1-546-315-5998,68,Prefer not to say,,,Basic,187.97,48,338,1.7,Pending,2020-12-03
+1115,Paul,Williams,paul.williams@outlook.com,+1-458-235-5603,68,Non-binary,Louisville,KY,Pro,12.03,15,309,1.7,Inactive,2020-11-15
+1100,Timothy,Lee,timothy.lee@company.com,+1-941-805-5705,23,Prefer not to say,San Francisco,CA,Pro,133.53,74,319,2.4,Inactive,2020-10-19
+1134,Michelle,Smith,michelle.smith@gmail.com,+1-222-992-4806,30,Non-binary,San Jose,CA,Enterprise,291.46,84,330,4.1,Pending,
+1082,Susan,Lee,susan.lee@gmail.com,+1-679-920-1994,74,Non-binary,,,Enterprise,411.9,102,362,1.2,Suspended,2020-09-02
+1174,Steven,Jones,steven.jones@yahoo.com,+1-820-603-2653,30,Prefer not to say,Philadelphia,PA,Enterprise,155.31,27,285,,Active,2020-06-09
+1146,Margaret,Miller,margaret.miller@company.com,+1-895-476-3937,22,Male,Louisville,KY,Enterprise,337.69,51,224,3.1,Active,2020-02-05
+1180,Melissa,Smith,melissa.smith@yahoo.com,+1-963-695-9737,39,Female,Charlotte,NC,Pro,153.1,86,401,4.3,Inactive,2020-12-13
+1160,Anthony,Clark,anthony.clark@yahoo.com,+1-221-123-4747,999,Male,Baltimore,MD,Enterprise,103.14,90,436,1.7,Pending,2020-10-14
+1068,Joshua,Ramirez,,+1-982-623-5591,49,Prefer not to say,Dallas,TX,Basic,376.33,17,27,3.1,ACTIVE,2020-08-18
+1095,Amanda,Sanchez,amanda.sanchez@gmail.com,+1-662-567-1694,51,Female,Los Angeles,CA,Enterprise,492.0,6,285,2.5,Active,2020-04-10
+1128,Ashley,Johnson,ashley.johnson@yahoo.com,+1-421-724-8454,,Female,Baltimore,MD,Enterprise,189.88,59,368,1.8,Suspended,2020-05-07
+1070,Melissa,Jones,melissa.jones@gmail.com,+1-380-531-9185,,Female,Indianapolis,IN,Pro,393.74,39,128,3.2,Active,
+1163,Jennifer,Hernandez,jennifer.hernandez@company.com,+1-345-366-2914,51,Non-binary,El Paso,TX,Free,489.37,64,446,4.9,Suspended,2020-12-12
+1090,Sandra,Lee,sandra.lee@company.com,+1-876-377-6901,22,Male,New York,NY,Free,149.79,114,332,2.5,ACTIVE,2020-09-23
+1171,Mary,Miller,mary.miller@yahoo.com,+1-865-347-8139,59,Female,Indianapolis,IN,Free,153.95,60,75,,Active,2020-02-06
+1078,Karen,Robinson,karen.robinson@gmail.com,+1-962-662-9534,28,Male,Austin,TX,Pro,,39,101,2.4,Active,2020-11-07
+1153,Ashley,Miller,ashley.miller@company.com,+1-474-753-9728,70,Prefer not to say,Oklahoma City,OK,Free,263.52,47,236,1.6,Inactive,2020-12-22
+1109,Lisa,Moore,lisa.moore@yahoo.com,+1-878-785-2276,,Prefer not to say,,,Free,298.12,60,166,3.2,Pending,2020-03-10
+1047,Paul,Brown,paul.brown@company.com,+1-485-669-5329,20,Female,Fort Worth,TX,Basic,294.07,33,2,2.3,Inactive,2020-01-05
+1159,Michelle,Jones,michelle.jones@yahoo.com,+1-843-412-6140,43,Male,New York,NY,Free,83.12,67,365,4.9,Inactive,2020-10-22
+1136,Daniel,Jones,daniel.jones@example.org,+1-719-439-5842,65,Prefer not to say,,,Pro,484.95,97,293,3.7,Pending,2020-06-23
+1176,Paul,Thomas,paul.thomas@gmail.com,+1-357-762-6959,73,Non-binary,Boston,MA,Basic,65.88,26,224,4.9,Active,2020-04-27
+1046,George,Martinez,george.martinez@gmail.com,+1-590-496-7825,60,Non-binary,El Paso,TX,Free,11.42,33,103,3.5,Pending,2020-04-21
+1039,Donna,Smith,donna.smith@yahoo.com,+1-694-599-2850,61,Prefer not to say,Louisville,KY,Enterprise,27.76,34,335,2.3,Inactive,2020-11-28
+1188,Kevin,Miller,kevin.miller@example.org,+1-488-146-3644,71,Male,Denver,CO,Pro,49.41,90,62,4.3,Suspended,2020-07-07
+1209,Deborah,Hernandez,deborah.hernandez@yahoo.com,+1-458-312-9291,46,Male,Columbus,OH,Enterprise,,82,355,3.7,Pending,2020-07-11
+1093,Mark,Wilson,mark.wilson@outlook.com,+1-355-897-4079,,Male,,,Basic,96.45,98,313,3.5,Inactive,2020-10-08
+1031,Brian,Lewis,brian.lewis@outlook.com,+1-299-582-3096,29,Non-binary,Seattle,WA,Basic,473.73,116,171,3.6,Inactive,2020-06-08
+1086,Patricia,Robinson,patricia.robinson@outlook.com,+1-644-526-2974,39,Female,Portland,OR,Free,318.77,81,195,1.2,Active,2020-06-18
+1158,Deborah,Lee,deborah.lee@gmail.com,+1-480-987-2312,68,Prefer not to say,,,Enterprise,369.79,119,430,2.3,Pending,2020-02-27
+1020,Mark,Thomas,mark.thomas@outlook.com,+1-759-484-2661,,Prefer not to say,Baltimore,MD,Basic,85.51,10,409,4.4,Suspended,2020-01-11
+1092,Karen,Robinson,karen.robinson@company.com,+1-755-234-4387,39,Female,Washington,DC,Basic,431.98,40,352,3.8,Inactive,2020-07-25
+1073,Mary,Harris,mary.harris@gmail.com,+1-306-368-3544,,Male,Fort Worth,TX,Enterprise,158.14,32,377,2.1,Inactive,2020-03-17
+1184,Donald,White,donald.white@gmail.com,+1-369-824-1406,59,Non-binary,Dallas,TX,Free,99999.99,11,98,4.8,Active,2020-10-17
+1170,Carol,Brown,carol.brown@gmail.com,+1-205-504-2911,52,Male,Columbus,OH,Basic,329.62,59,354,2.6,Pending,2020-05-20
+1172,Amanda,Wilson,,+1-954-692-5764,,Male,Columbus,OH,Enterprise,202.84,66,302,3.9,Pending,2020-04-23
+1044,George,Moore,george.moore@example.org,+1-847-322-4291,38,Female,,,Pro,344.87,118,344,1.5,Inactive,2020-09-18
+1126,Matthew,Wilson,matthew.wilson@yahoo.com,+1-396-220-9686,53,other,New York,NY,Pro,432.05,70,259,1.9,Inactive,2020-05-02
+1234,Karen,Ramirez,karen.ramirez@yahoo.com,+1-816-665-4539,31,Non-binary,Memphis,TN,Pro,68.6,80,216,1.3,Suspended,2020-05-13
+1175,Matthew,Harris,matthew.harris@example.org,+1-473-254-9444,67,Male,Los Angeles,CA,Free,463.68,57,409,,Active,2020-02-26
+1179,Dorothy,Moore,dorothy.moore@gmail.com,+1-723-665-6115,31,Non-binary,San Jose,CA,Basic,16.59,114,407,,Suspended,2020-04-27
+1074,Barbara,Jackson,barbara.jackson@example.org,N/A,47,female,,,Pro,243.42,30,412,1.4,Suspended,2020-06-14
+1168,Joseph,Lee,joseph.lee@yahoo.com,+1-707-639-9596,63,Male,Oklahoma City,OK,Pro,236.77,11,464,4.2,Suspended,2020-03-05
+1091,Melissa,Garcia,melissa.garcia@outlook.com,+1-563-740-5953,40,Female,New York,NY,Pro,406.89,81,131,4.5,Active,2020-09-09
+1038,Timothy,Williams,timothy.williams@outlook.com,+1-387-216-7566,70,Prefer not to say,Jacksonville,FL,Enterprise,139.56,50,353,4.4,Pending,2020-11-26
+1236,Joseph,Gonzalez,joseph.gonzalez@gmail.com,+1-379-639-6022,68,Prefer not to say,Houston,TX,Free,266.84,90,292,4.5,Suspended,2020-10-04
+1042,Charles,Moore,charles.moore@gmail.com,+1-246-268-9067,41,Female,San Francisco,CA,Enterprise,57.95,79,100,,Pending,2020-04-15
+1059,Joshua,Lee,joshua.lee@outlook.com,+1-287-321-8359,74,Prefer not to say,New York,NY,Enterprise,89.43,107,210,3.4,N/A,2020-10-22
+1007,Andrew,Hernandez,andrew.hernandez@gmail.com,+1-517-815-8167,55,Female,,,Free,126.02,119,222,1.5,Active,2020-05-22
+1058,Barbara,Garcia,barbara.garcia@gmail.com,+1-876-335-7793,56,Non-binary,,,Free,243.35,62,245,1.8,Inactive,2020-11-27
+1001,Joshua,Lee,joshua.lee@company.com,+1-584-562-2237,,Male,Dallas,TX,Enterprise,260.23,36,355,4.7,Suspended,2020-08-16
+1222,Robert,Brown,robert.brown@gmail.com,+1-584-717-9520,51,Non-binary,San Antonio,TX,Enterprise,239.25,44,309,2.7,Suspended,2020-11-11
+1107,Ronald,Harris,ronald.harris@yahoo.com,+1-295-932-8672,54,Male,Charlotte,NC,Enterprise,158.64,83,363,4.1,Pending,2020-04-08
+1131,Kevin,Smith,kevin.smith@gmail.com,+1-594-807-6454,58,Male,Louisville,KY,Pro,215.82,35,357,4.8,Inactive,2020-11-03
+1243,Kenneth,White,kenneth.white@company.com,+1-496-388-8961,45,Male,New York,NY,Enterprise,127.63,20,373,3.0,Inactive,2020-05-25
+1076,David,Martinez,david.martinez@company.com,+1-832-563-5458,150,Prefer not to say,Houston,TX,Basic,,20,25,,Active,2020-03-04
+1191,Sarah,Jackson,sarah.jackson@yahoo.com,+1-765-298-3875,49,Male,San Francisco,CA,Basic,374.26,17,132,4.7,Inactive,2020-09-24
+1027,Joshua,Smith,joshua.smith@yahoo.com,+1-259-355-1541,30,Prefer not to say,,,Free,459.43,91,101,2.1,Pending,2020-09-13
+1228,Steven,Lee,,+1-498-821-7171,31,Male,Memphis,TN,Pro,80.59,92,107,4.4,Inactive,2020-12-24
+1235,Amanda,Lopez,amanda.lopez@example.org,N/A,,Female,Denver,CO,Pro,496.26,56,194,1.1,Inactive,2020-02-09
+1032,Richard,Taylor,richard.taylor@company.com,+1-742-405-7768,73,Male,,,Basic,73.0,26,175,2.6,Pending,2020-03-11
+1205,Elizabeth,Hernandez,elizabeth.hernandez@example.org,+1-822-687-7404,58,Prefer not to say,Denver,CO,Basic,474.6,9,273,2.5,Pending,2020-02-11
+1221,Linda,Anderson,,unknown,,Female,,,Basic,133.38,116,446,,inactive,2020-11-06
+1223,David,Smith,,+1-486-816-5072,25,Non-binary,Washington,DC,Enterprise,311.08,85,445,2.9,Pending,2020-11-07
+1178,Dorothy,Martinez,dorothy.martinez@example.org,+1-511-838-6139,43,Non-binary,Columbus,OH,Free,414.37,116,270,3.4,Inactive,24-12-2020
+1140,Margaret,Ramirez,margaret.ramirez@company.com,+1-910-937-2959,58,Non-binary,Dallas,TX,Free,423.41,21,297,1.2,Suspended,2020-08-23
+1015,Kimberly,Thomas,kimberly.thomas@outlook.com,+1-592-240-7868,23,N/A,Los Angeles,CA,Basic,99999.99,103,278,4.2,Pending,2020-12-12
+1080,Donald,Moore,donald.moore@company.com,+1-394-680-4057,52,Non-binary,San Jose,CA,Pro,367.54,36,444,,inactive,2020-02-17
+1040,Patricia,Smith,patricia.smith@example.org,+1-680-972-9123,28,Female,Nashville,TN,Free,376.96,42,123,2.3,Suspended,2020-01-17
+1206,Charles,Miller,charles.miller@example.org,+1-271-565-1941,36,Non-binary,,,Free,90.05,111,465,2.6,Inactive,2020-02-05
+1085,Sandra,Lopez,sandra.lopez@outlook.com,+1-575-696-5093,26,Female,Phoenix,AZ,Pro,406.48,12,292,2.6,Inactive,2020-12-03
+1079,Elizabeth,Lopez,elizabeth.lopez@yahoo.com,+1-361-611-2497,23,Non-binary,Portland,OR,Free,34.59,83,78,3.8,Active,2020-03-16
+1042,Charles,Moore,charles.moore@gmail.com,+1-246-268-9067,41,Female,San Francisco,CA,Enterprise,57.95,79,100,,Pending,2020-04-15
+1114,Deborah,Smith,deborah.smith@example.org,+1-680-687-6431,47,Prefer not to say,Indianapolis,IN,Pro,480.49,103,150,2.2,Active,2020-12-20
+1145,Carol,Brown,carol.brown@outlook.com,+1-588-534-4510,71,Female,Philadelphia,PA,Enterprise,60.86,41,63,2.9,Inactive,2020-08-25
+1195,Donna,Martin,donna.martin@gmail.com,+1-664-629-6377,39,Female,Houston,TX,Free,55.83,77,365,1.3,Inactive,2020-10-05
+1123,Sandra,Perez,sandra.perez@example.org,+1-352-858-4817,,Male,Louisville,KY,Free,369.05,63,334,1.1,Active,2020-04-23
+1244,Kevin,Lee,kevin.lee@gmail.com,+1-335-510-1628,32,Non-binary,Phoenix,AZ,Basic,464.9,55,9,3.5,Active,2020-01-13
+1052,Timothy,Lee,timothy.lee@example.org,+1-768-244-3019,18,Male,Jacksonville,FL,Free,288.5,51,275,3.2,Active,2020-05-07
+1224,Jennifer,Lopez,jennifer.lopez@gmail.com,+1-951-494-5814,48,Female,Columbus,OH,Basic,435.58,113,292,4.1,Active,2020-03-16
+1182,Nancy,Robinson,nancy.robinson@company.com,+1-312-223-7055,56,Non-binary,,,Free,263.77,16,190,,Suspended,2020-05-10
+1087,Elizabeth,Jones,elizabeth.jones@company.com,+1-785-863-1807,23,Prefer not to say,Austin,TX,Pro,47.11,65,222,4.1,Inactive,2020-03-16
+1210,Donald,Jones,,+1-365-274-1295,70,Male,Indianapolis,IN,Basic,150.6,69,379,2.6,Active,2020-11-25
+1189,Kenneth,Hernandez,kenneth.hernandez@yahoo.com,+1-861-102-8807,62,Male,New York,NY,Free,337.99,53,284,4.6,Pending,2020-07-18
+1139,Robert,Clark,robert.clark@example.org,+1-511-605-8593,37,Female,Memphis,TN,Free,396.65,20,134,2.2,Pending,2020-02-21
+1028,George,Williams,george.williams@company.com,+1-250-266-4511,19,Female,San Jose,CA,Basic,340.46,35,333,2.6,Active,2020-11-01
+1218,Michelle,Jackson,michelle.jackson@gmail.com,,44,N/A,Chicago,IL,Enterprise,478.76,99,467,4.0,Suspended,2020-09-23
+1003,Nancy,Rodriguez,nancy.rodriguez@yahoo.com,+1-253-505-6005,41,Female,Chicago,IL,Enterprise,,91,48,1.0,Pending,2020-02-05
+1203,Ronald,Thompson,ronald.thompson@outlook.com,+1-208-888-5906,52,Non-binary,,,Pro,392.65,52,484,2.6,Active,2020-08-21
+1232,David,Brown,david.brown@example.org,+1-389-515-1323,22,Prefer not to say,Austin,TX,Enterprise,36.65,108,299,3.2,Active,2020-04-22
+1154,Jessica,Brown,jessica.brown@gmail.com,+1-451-916-6087,,Prefer not to say,Phoenix,AZ,Enterprise,282.11,56,216,3.6,Active,2020-04-06
+1161,Sarah,Martinez,sarah.martinez@company.com,+1-333-541-4385,49,Female,Boston,MA,Pro,364.72,25,214,1.7,Inactive,2020-01-10
+1046,George,Martinez,george.martinez@gmail.com,+1-590-496-7825,60,Non-binary,El Paso,TX,Free,11.42,33,103,3.5,Pending,2020-04-21
+1069,Thomas,Garcia,thomas.garcia@yahoo.com,+1-475-582-6621,34,Non-binary,Seattle,WA,Basic,251.89,27,214,3.8,Suspended,2020-06-28
+1022,Linda,Martinez,linda.martinez@company.com,+1-700-776-5341,43,Male,Las Vegas,NV,Enterprise,96.52,114,195,2.5,Pending,2020-01-09
+1198,James,Lopez,james.lopez@outlook.com,+1-230-668-2887,22,Female,New York,NY,Pro,223.0,81,299,4.7,Suspended,2020-01-01
+1064,Richard,Ramirez,richard.ramirez@example.org,+1-492-299-1550,69,Female,Oklahoma City,OK,Basic,338.64,47,122,3.6,Inactive,2020-02-09
+1034,John,Clark,john.clark@outlook.com,+1-666-845-9524,37,Non-binary,Los Angeles,CA,Enterprise,444.55,18,175,5.0,Pending,2020-06-25
+1012,Joseph,Williams,joseph.williams@example.org,+1-311-259-2731,26,Female,,,Enterprise,235.7,53,61,3.1,Inactive,2020-08-10
+1165,Paul,Clark,paul.clark@example.org,+1-417-697-1067,54,female,,,Enterprise,460.6,32,393,3.0,Active,2020-06-01
+1213,Amanda,Moore,amanda.moore@example.org,+1-375-357-2552,72,Non-binary,Las Vegas,NV,Enterprise,340.56,99,355,1.5,Inactive,2020-11-25
+1196,Karen,Jackson,karen.jackson@yahoo.com,+1-350-580-6057,52,Non-binary,Baltimore,MD,Pro,187.57,2,265,3.3,Inactive,2020-01-08
+1240,Charles,Martinez,invalid,+1-418-102-7449,,Female,,,Pro,464.91,83,263,4.3,Active,2020-08-20
+1212,Kimberly,Lee,,+1-754-504-8010,57,Male,San Antonio,TX,Basic,110.82,46,165,1.7,Pending,2020-11-11
+1029,Sandra,Rodriguez,sandra.rodriguez@outlook.com,+1-893-633-7506,47,Male,San Antonio,TX,Free,258.2,85,494,4.4,Suspended,2020-09-21
+1006,Joshua,Wilson,joshua.wilson@yahoo.com,+1-981-582-2195,52,Male,Jacksonville,FL,Free,11.83,28,20,,Pending,2020-09-10
+1099,Donna,Perez,,+1-786-906-3906,62,Prefer not to say,El Paso,TX,Pro,466.08,12,393,2.2,Suspended,2020-07-27
+1101,Susan,Sanchez,susan.sanchez@company.com,+1-246-441-6728,44,F,,,Free,322.11,89,144,2.0,Active,2020-05-10
+1247,Ronald,Ramirez,ronald.ramirez@outlook.com,+1-574-559-2923,53,Prefer not to say,Louisville,KY,Free,244.0,68,476,,Active,2020-03-20
+1155,Karen,Ramirez,karen.ramirez@company.com,+1-572-787-2479,75,Prefer not to say,Chicago,IL,Basic,121.84,74,376,3.0,Active,2020-09-22
+1004,Michael,Hernandez,michael.hernandez@outlook.com,+1-340-491-3181,74,Female,Jacksonville,FL,Free,267.6,2,312,3.6,Pending,2020-06-24
+1207,Emily,Miller,emily.miller@company.com,+1-482-306-1121,63,Female,San Francisco,CA,Enterprise,36.67,52,309,4.2,Suspended,2020-10-16
+1193,Richard,Garcia,richard.garcia@gmail.com,+1-841-740-2584,37,Male,Austin,TX,Enterprise,218.81,4,303,4.2,Suspended,2020-05-08
+1187,David,Martinez,,+1-285-966-9199,44,Female,Denver,CO,Basic,189.79,22,400,2.0,Pending,2020-09-15
+1210,Donald,Jones,,+1-365-274-1295,70,Male,Indianapolis,IN,Basic,150.6,69,379,2.6,Active,2020-11-25
+1135,William,Thompson,invalid,+1-379-959-3514,36,Female,Seattle,WA,Basic,62.87,41,294,1.5,Suspended,2020-06-06
+1186,Elizabeth,Wilson,,+1-584-947-2981,38,Male,Baltimore,MD,Basic,123.61,77,300,1.9,Pending,2020-02-09
+1026,Ashley,Ramirez,ashley.ramirez@gmail.com,+1-433-237-5923,61,Prefer not to say,El Paso,TX,Pro,138.36,54,309,3.6,Inactive,2020-08-07
+1104,Lisa,Robinson,lisa.robinson@example.org,+1-517-894-6363,64,Female,Indianapolis,IN,Free,,67,346,5.0,Inactive,2020-12-02
+1166,Kenneth,Perez,,+1-871-737-8423,39,Non-binary,New York,NY,Basic,109.63,7,410,3.6,Suspended,2020-01-24
+1233,Robert,Williams,robert.williams@outlook.com,+1-572-657-3811,50,Prefer not to say,Houston,TX,Free,127.93,6,484,4.8,Suspended,2020-11-18
+1117,Daniel,Taylor,daniel.taylor@gmail.com,1234567890,20,Prefer not to say,Oklahoma City,OK,Pro,170.81,35,410,1.4,active,2020-08-25
+1063,Donna,Thompson,donna.thompson@gmail.com,+1-364-498-1086,,Male,Oklahoma City,OK,Basic,238.48,77,222,1.4,Suspended,2020-04-12
+1110,Kevin,Sanchez,kevin.sanchez@yahoo.com,+1-876-252-8421,66,Non-binary,New York,NY,Enterprise,309.71,58,100,1.8,Suspended,2020-05-19
+1019,Kevin,Jackson,kevin.jackson@yahoo.com,+1-539-863-2274,49,Female,Houston,TX,Pro,491.28,22,325,4.5,cancelled,2020-12-22
+1037,Jennifer,Harris,jennifer.harris@gmail.com,+1-462-759-4787,22,Prefer not to say,San Francisco,CA,Pro,135.74,7,51,4.3,Active,2020-05-12
+1036,Michael,Taylor,michael.taylor@gmail.com,+1-489-216-2741,57,M,Boston,MA,Basic,306.46,100,134,4.3,Inactive,2020-06-23
+1097,Paul,Martin,paul.martin@example.org,+1-589-144-3799,42,Non-binary,Philadelphia,PA,Basic,85.25,19,91,4.1,Active,2020-07-10

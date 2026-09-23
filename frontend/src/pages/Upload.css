@@ -1,0 +1,1109 @@
+/* ===========================================================
+   DATA GUARD AI — Upload / Ingestion Page
+   ===========================================================
+   Scoped styles for the dataset upload workspace.
+   Loaded only by src/pages/Upload.jsx.
+   =========================================================== */
+
+.du-page {
+  max-width: 1480px;
+  margin: auto;
+  display: grid;
+  gap: 16px;
+  color: var(--dg2-text, #f8fafc);
+  animation: du-enter .35s ease both;
+}
+
+@keyframes du-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Hero ---------- */
+.du-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 22px 24px 24px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 16px;
+  background: linear-gradient(120deg,
+    color-mix(in srgb, #2563eb 10%, var(--dg2-panel, #111827)),
+    var(--dg2-panel, #111827) 60%,
+    color-mix(in srgb, #22d3ee 6%, var(--dg2-panel, #111827)));
+  flex-wrap: wrap;
+}
+
+.du-hero nav {
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.du-hero nav i {
+  margin: 0 6px;
+  font-style: normal;
+  opacity: .6;
+}
+
+.du-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.du-title h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: -.04em;
+  color: var(--dg2-text, #f8fafc);
+}
+
+.du-title span {
+  padding: 4px 10px;
+  border: 1px solid rgba(217, 119, 6, .5);
+  border-radius: 999px;
+  color: #fbbf24;
+  background: rgba(217, 119, 6, .12);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.du-hero h2 {
+  margin: 4px 0 6px;
+  font-size: 16px;
+  color: var(--dg2-text, #f8fafc);
+}
+
+.du-hero p {
+  margin: 0;
+  max-width: 620px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.du-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-self: flex-start;
+}
+
+/* ---------- Orbit badge ---------- */
+.du-orbit {
+  width: 340px;
+  height: 130px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #2563eb 32%, transparent);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(34, 211, 238, .22), transparent 45%),
+    linear-gradient(120deg, rgba(59, 130, 246, .12), rgba(139, 92, 246, .15));
+}
+
+.du-orbit b,
+.du-orbit i,
+.du-orbit em {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.du-orbit b {
+  left: 140px;
+  top: 32px;
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #168bd4, #12d6c5);
+  font-size: 34px;
+  box-shadow: 0 12px 28px -14px rgba(18, 214, 197, .9);
+}
+
+.du-orbit i,
+.du-orbit em {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #079b87;
+  font-size: 10px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.du-orbit i {
+  left: 68px;
+  bottom: 16px;
+}
+
+.du-orbit em {
+  right: 52px;
+  top: 20px;
+  background: #2e70cd;
+}
+
+/* ---------- Error banner ---------- */
+.du-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 11px;
+  border: 1px solid rgba(244, 63, 94, .35);
+  background: rgba(244, 63, 94, .12);
+  color: #fda4af;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.du-error strong {
+  color: #fecdd3;
+  font-weight: 800;
+}
+
+.du-error span {
+  flex: 1;
+}
+
+.du-error button {
+  padding: 6px 12px;
+  border: 1px solid rgba(244, 63, 94, .4);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.du-error button:hover {
+  background: rgba(244, 63, 94, .18);
+}
+
+/* ---------- Dataset label / description form ---------- */
+.du-config {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+  padding: 18px 22px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 14px;
+  background: var(--dg2-panel, #111827);
+}
+
+.du-config label {
+  display: grid;
+  gap: 6px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.du-config input {
+  padding: 10px 12px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 9px;
+  background: #0d1525;
+  color: #e2e8f0;
+  font: inherit;
+  font-size: 13px;
+}
+
+.du-config input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .15);
+}
+
+.du-config input::placeholder {
+  color: #475569;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.du-hint {
+  grid-column: 1 / -1;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+/* ---------- Dropzone ---------- */
+.du-drop {
+  padding: 42px 26px;
+  border: 2px dashed color-mix(in srgb, #2563eb 55%, var(--dg2-line, #1e293b));
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 0%,
+      color-mix(in srgb, #2563eb 12%, transparent),
+      transparent 45%),
+    var(--dg2-panel, #111827);
+  text-align: center;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+
+.du-drop.drag {
+  border-color: #22d3ee;
+  background:
+    radial-gradient(circle at 50% 0%,
+      color-mix(in srgb, #22d3ee 18%, transparent),
+      transparent 55%),
+    var(--dg2-panel, #111827);
+  transform: scale(1.005);
+}
+
+.du-drop > strong {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #0fae9f, #12d6c5);
+  color: #06202b;
+  font-size: 30px;
+  font-weight: 900;
+  box-shadow: 0 14px 30px -16px rgba(18, 214, 197, .9);
+}
+
+.du-drop h3 {
+  margin: 16px 0 6px;
+  font-size: 19px;
+  letter-spacing: -.02em;
+  color: var(--dg2-text, #f8fafc);
+}
+
+.du-drop p {
+  margin: 0 0 16px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 13px;
+}
+
+.du-drop button {
+  padding: 10px 18px;
+  border: 1px solid rgba(96, 165, 250, .55);
+  border-radius: 10px;
+  background: rgba(37, 99, 235, .16);
+  color: #bfdbfe;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .18s;
+}
+
+.du-drop button:hover:not(:disabled) {
+  background: rgba(37, 99, 235, .28);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.du-drop button:disabled {
+  opacity: .6;
+  cursor: progress;
+}
+
+.du-drop > small {
+  display: block;
+  margin-top: 14px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+/* ---------- File row (pre-ingest) ---------- */
+.du-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid color-mix(in srgb, #22d3ee 32%, var(--dg2-line, #1e293b));
+  border-radius: 14px;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, #22d3ee 8%, var(--dg2-panel, #111827)),
+    var(--dg2-panel, #111827));
+  flex-wrap: wrap;
+}
+
+.du-file > b {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0fae9f, #12d6c5);
+  color: #06202b;
+  font-size: 20px;
+}
+
+.du-file > span {
+  display: grid;
+  gap: 3px;
+  min-width: 220px;
+  flex: 1;
+}
+
+.du-file strong {
+  color: var(--dg2-text, #f8fafc);
+  font-size: 13.5px;
+  font-family: var(--font-mono, monospace);
+}
+
+.du-file small {
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11px;
+}
+
+.du-file .badge {
+  font-size: 10px;
+  padding: 4px 10px;
+}
+
+.du-file > button {
+  padding: 8px 14px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 9px;
+  background: transparent;
+  color: #94a3b8;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .18s;
+}
+
+.du-file > button:hover {
+  color: #f43f5e;
+  border-color: rgba(244, 63, 94, .5);
+}
+
+.du-file .du-primary {
+  border: 1px solid rgba(96, 165, 250, .5);
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #fff;
+  padding: 10px 18px;
+  box-shadow: 0 8px 20px -12px rgba(37, 99, 235, .8);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.du-file .du-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* ---------- Pipeline strip ---------- */
+.du-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  border: 1px solid rgba(34, 211, 238, .28);
+  border-radius: 12px;
+  background: color-mix(in srgb, #22d3ee 6%, var(--dg2-panel, #111827));
+  font-size: 12px;
+  color: var(--dg2-muted, #94a3b8);
+}
+
+.du-pipeline b {
+  color: #22d3ee;
+  font-weight: 700;
+}
+
+.du-pipeline i {
+  height: 1px;
+  flex: 1;
+  background: rgba(34, 211, 238, .35);
+}
+
+/* ---------- Guidelines row ---------- */
+.du-guidelines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  padding: 14px 20px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 12px;
+  background: var(--dg2-panel, #111827);
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 12px;
+}
+
+.du-guidelines > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.du-guidelines strong {
+  color: var(--dg2-text, #f8fafc);
+  font-weight: 700;
+}
+
+.guideline-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22d3ee;
+}
+
+/* ---------- Replace confirm modal ---------- */
+.du-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 6, 23, .65);
+  backdrop-filter: blur(6px);
+}
+
+.du-modal {
+  width: min(460px, 100%);
+  padding: 24px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 16px;
+  background: var(--dg2-panel, #111827);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .8);
+}
+
+.du-modal h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  color: var(--dg2-text, #f8fafc);
+}
+
+.du-modal p {
+  margin: 0 0 22px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.du-modal p strong {
+  color: var(--dg2-text, #f8fafc);
+  font-family: var(--font-mono, monospace);
+}
+
+.du-modal > div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.du-modal button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 9px;
+  background: transparent;
+  color: #cbd5e1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .18s;
+}
+
+.du-modal button:hover {
+  border-color: rgba(96, 165, 250, .5);
+  color: #fff;
+}
+
+.du-modal button.confirm {
+  border-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #fff;
+  box-shadow: 0 8px 18px -12px rgba(37, 99, 235, .8);
+}
+
+.du-modal button.confirm:hover {
+  filter: brightness(1.08);
+}
+
+/* ---------- Post-upload file card ---------- */
+.du-filecard {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  border: 1px solid color-mix(in srgb, #22d3ee 34%, var(--dg2-line, #1e293b));
+  border-radius: 14px;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, #22d3ee 8%, var(--dg2-panel, #111827)),
+    var(--dg2-panel, #111827));
+  flex-wrap: wrap;
+}
+
+.du-filecard > b {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0fae9f, #12d6c5);
+  color: #06202b;
+  font-size: 24px;
+}
+
+.du-filecard > span {
+  display: grid;
+  gap: 4px;
+  min-width: 210px;
+}
+
+.du-filecard small {
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.du-filecard strong {
+  color: var(--dg2-text, #f8fafc);
+  font-size: 15px;
+  font-family: var(--font-mono, monospace);
+}
+
+.du-filecard em {
+  color: #34d399;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.du-filecard > div {
+  display: flex;
+  justify-content: space-around;
+  gap: 26px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.du-filecard label {
+  display: grid;
+  gap: 4px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.du-filecard label b {
+  color: var(--dg2-text, #f8fafc);
+  font-size: 13px;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---------- Success banner ---------- */
+.du-success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 22px;
+  border: 1px solid rgba(16, 185, 129, .4);
+  border-radius: 14px;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, #10b981 10%, var(--dg2-panel, #111827)),
+    var(--dg2-panel, #111827));
+  flex-wrap: wrap;
+}
+
+.du-success > span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.du-success > span > b {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, .18);
+  color: #34d399;
+  font-size: 16px;
+}
+
+.du-success strong {
+  display: grid;
+  gap: 3px;
+  font-size: 14px;
+  color: var(--dg2-text, #f8fafc);
+}
+
+.du-success small {
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.du-success > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.du-success a {
+  padding: 8px 12px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 9px;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .18s;
+}
+
+.du-success a:hover {
+  border-color: rgba(96, 165, 250, .5);
+  color: #fff;
+  background: rgba(37, 99, 235, .12);
+}
+
+/* ---------- Metrics grid ---------- */
+.du-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.du-metrics article {
+  position: relative;
+  padding: 16px 18px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 13px;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, #2563eb 8%, var(--dg2-panel, #111827)),
+    var(--dg2-panel, #111827));
+  overflow: hidden;
+}
+
+.du-metrics article::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #22d3ee;
+}
+
+.du-metrics article:nth-child(2)::before { background: #3b82f6; }
+.du-metrics article:nth-child(3)::before { background: #a855f7; }
+.du-metrics article:nth-child(4)::before { background: #f59e0b; }
+.du-metrics article:nth-child(5)::before { background: #10b981; }
+
+.du-metrics i,
+.du-metrics small,
+.du-metrics strong,
+.du-metrics em {
+  display: block;
+  font-style: normal;
+}
+
+.du-metrics i {
+  float: right;
+  color: #a855f7;
+  font-size: 14px;
+}
+
+.du-metrics small,
+.du-metrics em {
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.du-metrics strong {
+  margin: 6px 0 4px;
+  font-size: 20px;
+  letter-spacing: -.03em;
+  color: var(--dg2-text, #f8fafc);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Stored file meta strip ---------- */
+.du-meta {
+  padding: 12px 18px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 10px;
+  background: var(--dg2-panel, #111827);
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11px;
+  line-height: 2;
+}
+
+.du-meta b {
+  margin-left: 6px;
+  color: var(--dg2-text, #f8fafc);
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.du-meta i {
+  display: inline-block;
+  height: 12px;
+  margin: 0 12px;
+  border-left: 1px solid var(--dg2-line, #1e293b);
+}
+
+/* ---------- Schema explorer ---------- */
+.du-schema {
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 15px;
+  overflow: hidden;
+  background: var(--dg2-panel, #111827);
+}
+
+.du-schema > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--dg2-line, #1e293b);
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.du-schema h2 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--dg2-text, #f8fafc);
+}
+
+.du-schema small {
+  display: block;
+  margin-top: 3px;
+  color: var(--dg2-muted, #94a3b8);
+  font-size: 11px;
+}
+
+.du-schema header > div {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.du-schema header button {
+  padding: 8px 12px;
+  border: 1px solid var(--dg2-line, #1e293b);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--dg2-muted, #94a3b8);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .18s;
+}
+
+.du-schema header button:hover {
+  border-color: rgba(96, 165, 250, .5);
+  color: #fff;
+}
+
+.du-schema header button.active {
+  border-color: rgba(59, 130, 246, .6);
+  background: rgba(37, 99, 235, .18);
+  color: #bfdbfe;
+}
+
+/* Table wrapper */
+.du-table {
+  overflow-x: auto;
+  max-height: 540px;
+}
+
+.du-table table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+
+.du-table th {
+  padding: 12px 14px;
+  background: rgba(30, 64, 175, .2);
+  color: #dbeafe;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--dg2-line, #1e293b);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.du-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, .08);
+  color: #cbd5e1;
+  vertical-align: middle;
+}
+
+.du-table tr:last-child td {
+  border-bottom: none;
+}
+
+.du-table tr:hover {
+  background: rgba(59, 130, 246, .05);
+}
+
+.du-table .column-name-code {
+  color: #93c5fd;
+  font-family: var(--font-mono, monospace);
+  font-size: 12.5px;
+}
+
+/* Raw preview */
+.du-preview {
+  max-height: 420px;
+  overflow: auto;
+  margin: 0;
+  padding: 18px 20px;
+  background: #0b1220;
+  color: #cbd5e1;
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+/* ---------- Dtype badges (used inside table) ---------- */
+.du-page .dtype-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.du-page .dtype-numeric  { background: rgba(59, 130, 246, .15);  color: #60a5fa; border: 1px solid rgba(59, 130, 246, .3); }
+.du-page .dtype-datetime { background: rgba(168, 85, 247, .15);  color: #c084fc; border: 1px solid rgba(168, 85, 247, .3); }
+.du-page .dtype-bool     { background: rgba(234, 179, 8, .15);   color: #facc15; border: 1px solid rgba(234, 179, 8, .3); }
+.du-page .dtype-object   { background: rgba(148, 163, 184, .15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, .3); }
+
+/* Sample chips */
+.du-page .sample-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 340px;
+}
+
+.du-page .sample-chip {
+  padding: 2px 7px;
+  border: 1px solid rgba(148, 163, 184, .18);
+  border-radius: 4px;
+  background: rgba(148, 163, 184, .08);
+  color: #cbd5e1;
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.du-page .sample-chip--masked {
+  background: rgba(245, 158, 11, .12);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, .35);
+}
+
+/* ---------- Badges (used inside du-file) ---------- */
+.du-page .badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.du-page .badge--success { background: rgba(16, 185, 129, .15); color: #34d399; border: 1px solid rgba(16, 185, 129, .35); }
+.du-page .badge--warning { background: rgba(245, 158, 11, .15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, .35); }
+.du-page .badge--accent  { background: rgba(99, 102, 241, .15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, .35); }
+.du-page .badge--neutral { background: rgba(148, 163, 184, .15); color: #cbd5e1; }
+
+/* ---------- Button variants used in hero ---------- */
+.du-page .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .18s;
+  border: 1px solid transparent;
+}
+
+.du-page .btn--secondary {
+  background: rgba(30, 41, 59, .55);
+  color: #cbd5e1;
+  border-color: var(--dg2-line, #1e293b);
+}
+
+.du-page .btn--secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, .5);
+  color: #fff;
+}
+
+.du-page .btn--sm {
+  padding: 7px 12px;
+  font-size: 11.5px;
+}
+
+/* ---------- Spinner ---------- */
+.du-page .spinner-inline {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, .3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: du-spin .8s linear infinite;
+}
+
+@keyframes du-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Utility ---------- */
+.du-page .text-warning { color: #fbbf24 !important; }
+.du-page .dash-muted   { color: var(--dg2-muted, #94a3b8); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .du-orbit { display: none; }
+  .du-config { grid-template-columns: 1fr; }
+  .du-hero { padding: 18px; }
+  .du-title h1 { font-size: 22px; }
+}
+
+@media (max-width: 640px) {
+  .du-filecard { align-items: flex-start; flex-direction: column; }
+  .du-filecard > div { width: 100%; justify-content: space-between; }
+  .du-success { align-items: flex-start; flex-direction: column; }
+  .du-success > div { width: 100%; }
+  .du-file { align-items: flex-start; flex-direction: column; }
+  .du-file > button { width: 100%; }
+  .du-pipeline { padding: 12px 14px; font-size: 10px; gap: 6px; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .du-page,
+  .du-page * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ===========================================================
+   Light theme
+   =========================================================== */
+:root[data-theme='light'] .du-page {
+  color: #0f172a;
+}
+
+:root[data-theme='light'] .du-hero,
+:root[data-theme='light'] .du-config,
+:root[data-theme='light'] .du-drop,
+:root[data-theme='light'] .du-filecard,
+:root[data-theme='light'] .du-schema,
+:root[data-theme='light'] .du-meta,
+:root[data-theme='light'] .du-guidelines,
+:root[data-theme='light'] .du-metrics article,
+:root[data-theme='light'] .du-success,
+:root[data-theme='light'] .du-file,
+:root[data-theme='light'] .du-modal,
+:root[data-theme='light'] .du-pipeline {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+:root[data-theme='light'] .du-hero h1,
+:root[data-theme='light'] .du-hero h2,
+:root[data-theme='light'] .du-title h1,
+:root[data-theme='light'] .du-drop h3,
+:root[data-theme='light'] .du-file strong,
+:root[data-theme='light'] .du-filecard strong,
+:root[data-theme='light'] .du-success strong,
+:root[data-theme='light'] .du-schema h2,
+:root[data-theme='light'] .du-metrics strong,
+:root[data-theme='light'] .du-modal h2 {
+  color: #0f172a;
+}
+
+:root[data-theme='light'] .du-hero p,
+:root[data-theme='light'] .du-hero nav,
+:root[data-theme='light'] .du-drop p,
+:root[data-theme='light'] .du-drop > small,
+:root[data-theme='light'] .du-file small,
+:root[data-theme='light'] .du-filecard small,
+:root[data-theme='light'] .du-filecard label,
+:root[data-theme='light'] .du-success small,
+:root[data-theme='light'] .du-schema small,
+:root[data-theme='light'] .du-metrics small,
+:root[data-theme='light'] .du-metrics em,
+:root[data-theme='light'] .du-guidelines,
+:root[data-theme='light'] .du-meta,
+:root[data-theme='light'] .du-pipeline {
+  color: #64748b;
+}
+
+:root[data-theme='light'] .du-config input {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+:root[data-theme='light'] .du-table th {
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+
+:root[data-theme='light'] .du-table td {
+  color: #334155;
+  border-color: #f1f5f9;
+}
+
+:root[data-theme='light'] .du-preview {
+  background: #f8fafc;
+  color: #334155;
+}

@@ -1,0 +1,309 @@
+/* ===========================================================
+   DataGuard AI — Application Shell
+   ===========================================================
+   Ported from the DATA GUARD AI workspace shell.
+   Owns: fixed sidebar, top bar, nav groups, backend pill,
+         mobile drawer, theme toggle, aurora background.
+
+   Consumes tokens declared in src/index.css (--dg2-*).
+   Depends on: src/styles/product-polish.css (loaded after) for
+               the light-theme overrides and product refinements.
+   =========================================================== */
+
+:root {
+  --dg2-bg:     #0b0f19;
+  --dg2-panel:  #111827;
+  --dg2-line:   #1e293b;
+  --dg2-text:   #f8fafc;
+  --dg2-muted:  #94a3b8;
+  --dg2-blue:   #3b82f6;
+}
+
+/* ---------- Root shell ---------- */
+.dg2-app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--dg2-bg);
+  color: var(--dg2-text);
+}
+
+.dg2-aurora {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(700px 360px at 78% -10%, rgba(37, 99, 235, .17), transparent 65%),
+    radial-gradient(520px 300px at 4% 90%, rgba(99, 102, 241, .11), transparent 65%);
+}
+
+/* ---------- Sidebar ---------- */
+.dg2-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 20;
+  width: 236px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  border-right: 1px solid var(--dg2-line);
+  background: rgba(11, 15, 25, .92);
+  backdrop-filter: blur(18px);
+}
+
+.dg2-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 7px 20px;
+  color: var(--dg2-text);
+  text-decoration: none;
+}
+
+.dg2-logo {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.dg2-brand b {
+  display: block;
+  font-size: 16px;
+}
+
+.dg2-brand em {
+  font-style: normal;
+  color: #60a5fa;
+}
+
+.dg2-brand small {
+  display: block;
+  color: var(--dg2-muted);
+  font-size: 10px;
+}
+
+.dg2-nav-group {
+  margin: 10px 0;
+}
+
+.dg2-nav-group > p {
+  padding: 0 10px;
+  margin: 0 0 5px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .09em;
+}
+
+.dg2-nav-group nav {
+  display: grid;
+  gap: 3px;
+}
+
+.dg2-nav-group a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  color: var(--dg2-muted);
+  font-size: 13px;
+  text-decoration: none;
+  transition: .18s;
+}
+
+.dg2-nav-group a:hover {
+  background: rgba(59, 130, 246, .08);
+  color: var(--dg2-text);
+}
+
+.dg2-nav-group a.active {
+  background: linear-gradient(90deg, rgba(37, 99, 235, .36), rgba(59, 130, 246, .15));
+  box-shadow: inset 0 0 0 1px rgba(96, 165, 250, .24);
+  color: #fff;
+}
+
+.dg2-nav-group i {
+  width: 16px;
+  color: #93c5fd;
+  font-style: normal;
+  text-align: center;
+}
+
+.dg2-nav-group mark {
+  margin-left: auto;
+  border-radius: 20px;
+  padding: 2px 6px;
+  background: rgba(244, 63, 94, .17);
+  color: #fda4af;
+  font-size: 9px;
+}
+
+/* ---------- Sidebar footer ---------- */
+.dg2-bottom {
+  margin-top: auto;
+  display: grid;
+  gap: 9px;
+}
+
+.dg2-backend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+  padding: 10px;
+  border: 1px solid var(--dg2-line);
+  border-radius: 10px;
+  background: rgba(30, 41, 59, .35);
+  font-size: 11px;
+}
+
+.dg2-backend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 9px #22c55e;
+}
+
+.dg2-backend b,
+.dg2-backend small {
+  display: block;
+}
+
+.dg2-backend small {
+  margin-top: 1px;
+  color: #86efac;
+  font-size: 9px;
+}
+
+.dg2-theme {
+  border: 1px solid var(--dg2-line);
+  border-radius: 9px;
+  padding: 8px;
+  background: var(--dg2-panel);
+  color: var(--dg2-muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* ---------- Main ---------- */
+.dg2-main {
+  min-width: 0;
+  flex: 1;
+  margin-left: 236px;
+  padding: 0 30px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.dg2-topbar {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -30px 25px;
+  padding: 0 30px;
+  border-bottom: 1px solid var(--dg2-line);
+  background: rgba(11, 15, 25, .62);
+  backdrop-filter: blur(14px);
+}
+
+.dg2-topbar small {
+  display: block;
+  color: #64748b;
+  font-size: 9px;
+  letter-spacing: .1em;
+}
+
+.dg2-topbar b {
+  font-size: 20px;
+}
+
+.dg2-topbar > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.dg2-topbar a {
+  color: var(--dg2-muted);
+  font-size: 12px;
+}
+
+.dg2-topbar span {
+  border: 1px solid rgba(96, 165, 250, .38);
+  border-radius: 7px;
+  padding: 6px 9px;
+  background: rgba(37, 99, 235, .16);
+  color: #bfdbfe;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.dg2-topbar button {
+  border: 1px solid var(--dg2-line);
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: var(--dg2-panel);
+  color: var(--dg2-muted);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.dg2-topbar i {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1e3a8a;
+  font-style: normal;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .dg2-sidebar {
+    display: none;
+  }
+  .dg2-main {
+    margin-left: 0;
+    padding: 0 16px 30px;
+  }
+  .dg2-topbar {
+    margin: 0 -16px 20px;
+    padding: 0 16px;
+  }
+  .dg2-topbar small {
+    display: none;
+  }
+}
+
+/* ---------- Light theme overrides ---------- */
+:root[data-theme='light'] {
+  --dg2-bg:    #f8fafc;
+  --dg2-panel: #fff;
+  --dg2-line:  #e2e8f0;
+  --dg2-text:  #0f172a;
+  --dg2-muted: #64748b;
+}
+
+:root[data-theme='light'] .dg2-sidebar,
+:root[data-theme='light'] .dg2-topbar {
+  background: rgba(255, 255, 255, .88);
+}
+
+:root[data-theme='light'] .dg2-nav-group a.active {
+  color: #1d4ed8;
+  background: #eff6ff;
+}
+
+:root[data-theme='light'] .dg2-backend {
+  background: #f8fafc;
+}
