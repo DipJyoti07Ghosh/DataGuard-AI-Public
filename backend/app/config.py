@@ -29,6 +29,11 @@ class Settings(BaseSettings):
         default="postgresql+psycopg2://dataguard:dataguard_dev@localhost:5432/dataguard_ai"
     )
 
+    # Auth
+    jwt_secret: str = Field(default="change-me-in-production")
+    jwt_expire_minutes: int = Field(default=60 * 24 * 7)
+    google_client_id: str = Field(default="")
+
     # File Storage
     upload_dir: str = Field(default="./uploads")
     max_upload_size_mb: int = Field(default=100)
