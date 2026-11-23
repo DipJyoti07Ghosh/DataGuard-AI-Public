@@ -5,7 +5,8 @@
  * All API calls go through these functions.
  */
 
-const API_BASE = '/api';
+const BACKEND_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = `${BACKEND_URL}/api`;
 
 /**
  * Generic fetch wrapper with error handling.
