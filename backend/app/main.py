@@ -15,6 +15,7 @@ from app.api.datasets import router as datasets_router
 from app.api.profiling import router as profiling_router
 from app.api.quality import router as quality_router
 from app.api.pii import router as pii_router
+from app.api.auth import router as auth_router
 
 
 # ---------------------------------------------------------------------------
@@ -106,6 +107,7 @@ app.add_middleware(
 # Routers
 # ---------------------------------------------------------------------------
 app.include_router(health_router)
+app.include_router(auth_router)
 app.include_router(datasets_router)
 app.include_router(profiling_router)
 app.include_router(quality_router, prefix="/api/datasets")
