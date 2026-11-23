@@ -33,6 +33,11 @@ scikit-learn==1.5.1
 
 chardet==5.2.0
 
+bcrypt==4.2.1
+PyJWT==2.10.1
+google-auth>=2.35.0
+requests>=2.32.0
+
 # Phase 11: RAG
 # pgvector==0.3.6  # Uncomment in Phase 11
 # sentence-transformers==3.4.1  # Uncomment in Phase 11
