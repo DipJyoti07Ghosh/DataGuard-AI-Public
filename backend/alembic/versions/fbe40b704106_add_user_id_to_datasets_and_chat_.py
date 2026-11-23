@@ -20,6 +20,11 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+    from app.auth.auth_database import AuthBase
+    from app.auth import models as _auth_models  # noqa: F401
+
+    op.execute('CREATE SCHEMA IF NOT EXISTS "auth"')
+    AuthBase.metadata.create_all(bind=op.get_bind(), checkfirst=True)
     op.add_column(
         'datasets',
         sa.Column('user_id', postgresql.UUID(as_uuid=True), nullable=True),
